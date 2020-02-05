@@ -1,0 +1,205 @@
+.topnav {
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  z-index: 1;
+  transition: background 0.4s ease;
+  position: absolute;
+  background: #00000080;
+
+  .nav-container {
+    max-width: 1250px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    #nav-toggle {
+      margin: 16px;
+      cursor: pointer;
+      padding: 10px 35px 16px 0px;
+      span {
+        position: relative;
+      }
+      span,
+      span:before,
+      span:after {
+        cursor: pointer;
+        border-radius: 1px;
+        height: 3px;
+        width: 26px;
+        background: white;
+        position: absolute;
+        display: block;
+        content: "";
+        transition: all 300ms ease-in-out;
+      }
+      span:before {
+        top: -8px;
+      }
+      span:after {
+        bottom: -8px;
+      }
+      &.active span {
+        background-color: transparent;
+        &:before,
+        &:after {
+          top: 0;
+        }
+        &:before {
+          transform: rotate(45deg);
+        }
+        &:after {
+          transform: rotate(-45deg);
+        }
+      }
+    }
+
+    .nav-items {
+      align-items: flex-start;
+      flex-direction: column;
+      display: flex;
+      width: 100%;
+      height: 0;
+      transition: height 0.3s ease;
+
+      &.active {
+        height: 280px;
+      }
+
+      .nav-user-info {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        color: white;
+        padding: 14px 32px;
+
+        .username {
+          font-weight: bold;
+          margin-right: 16px;
+          margin-left: 6px;
+        }
+
+        .btn-logout, .btn-management {
+          border: none;
+          background: unset;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          font-weight: bold;
+          opacity: 0.75;
+
+          svg {
+            fill: red;
+          }
+
+          &:hover {
+            opacity: 1;
+          }
+        }
+
+        .btn-management {
+          text-decoration: none;
+          color: white;
+          padding: 0;
+          margin: 0;
+          margin-right: 12px;
+        }
+
+        .btn-login {
+          padding: 6px 12px;
+          margin: 0;
+          background: transparent;
+          border: 2px solid white;
+          border-radius: 5px;
+          color: white;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: background-color 0.2s ease, border-color 0.2s ease;
+
+          &:hover,
+          &:active {
+            background-color: #009688;
+            border-color: #009688;
+          }
+        }
+      }
+    }
+
+    a {
+      display: flex;
+      justify-content: center;
+      padding: 14px 32px;
+      align-items: center;
+      text-decoration: none;
+      color: white;
+
+      & span {
+        position: relative;
+        color: #f2f2f2;
+        text-decoration: none;
+        font-size: 14px;
+        text-transform: uppercase;
+
+        &:hover {
+          &::after {
+            width: 100%;
+            transition: all 0.6s ease;
+          }
+        }
+      }
+
+      &:hover {
+        & span::after {
+          width: 100%;
+          transition: all 0.6s ease;
+        }
+      }
+
+      & span::after {
+        content: " ";
+        width: 0%;
+        height: 3px;
+        background-color: white;
+        position: absolute;
+        left: 0;
+        top: 120%;
+      }
+
+      &.active {
+        & span::after {
+          width: 100%;
+        }
+      }
+    }
+  }
+  &.shrink {
+    position: fixed !important;
+    width: calc(100% - 16px);
+    background: $primaryColor;
+    transition: background 0.4s ease;
+
+    & > .btn-login {
+      &:hover, &:active {
+        border-color: white;
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .topnav {
+    background: unset;
+  }
+  #nav-toggle {
+    display: none !important;
+  }
+  .nav-items {
+    height: unset !important;
+    flex-direction: row !important;
+  }
+}

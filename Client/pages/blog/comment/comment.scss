@@ -1,0 +1,154 @@
+.box-comment {
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  width: 100%;
+  margin-bottom: 10px;
+  border-radius: 5px;
+
+  padding: 16px;
+  box-sizing: border-box;
+
+  h2 {
+    margin: 0;
+    margin-bottom: 16px;
+  }
+
+  .input-comment-require-auth {
+    display: flex;
+    padding: 16px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .input-comment-container {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+
+    i {
+      width: 30px;
+      height: 30px;
+      font-size: 30px;
+      margin-right: 10px;
+      color: $primaryColor;
+    }
+
+    .send-button {
+      margin: 0 6px;
+      cursor: pointer;
+      display: block;
+    }
+
+    .input-text {
+      flex: 1;
+      padding: 6px 12px;
+      border-radius: 15px;
+      border: 1px dashed #aaa;
+      font-size: 13px;
+      cursor: text;
+
+      &:empty:before {
+        content: attr(placeholder);
+        display: block;
+      }
+
+      &:focus {
+        outline: 0px solid transparent;
+      }
+    }
+  }
+
+  .comment-item {
+    display: flex;
+    align-items: flex-start;
+    margin: 10px 0;
+
+    .material-icons {
+      width: 30px;
+      height: 30px;
+      font-size: 30px;
+      margin-right: 10px;
+      color: $primaryColor;
+    }
+
+    .comment-item-main {
+      display: flex;
+      width: 100%;
+      flex-direction: column;
+
+      .container {
+        padding: 10px;
+        border-radius: 15px;
+        background: #f1f1f1;
+
+        .comment-info {
+          display: flex;
+          border-bottom: 1px solid #e4e4e4;
+
+          .username {
+            flex: 1;
+            font-size: 12px;
+            font-weight: bold;
+          }
+
+          .time {
+            font-size: 12px;
+            font-style: italic;
+          }
+        }
+
+        .content {
+          padding: 10px 0;
+          font-size: 14px;
+        }
+
+        .comment-actions {
+          display: flex;
+          align-items: center;
+
+          .comment-like,
+          .comment-dislike,
+          .comment-reply {
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            font-size: 10px;
+
+            svg {
+              width: 16px;
+              margin-right: 6px;
+            }
+          }
+          .comment-like {
+            &.active {
+              color: blue;
+              svg {
+                fill: blue;
+              }
+            }
+          }
+          .comment-dislike {
+            &.active {
+              color: red;
+              svg {
+                fill: red;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+@media only screen and (min-width: 800px) {
+  .send-button {
+    display: none !important;
+  }
+}

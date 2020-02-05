@@ -1,0 +1,124 @@
+.popup-background {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 500;
+  background: #00000080;
+  top: 0;
+  left: 0;
+}
+.popup {
+  width: 100%;
+  height: auto;
+  align-items: center;
+  box-sizing: border-box;
+  border-radius: 4px;
+  font-size: 13px;
+  margin-bottom: 16px;
+  background-color: #fff;
+  position: absolute;
+  z-index: 500;
+  background: white;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+
+  .popup-header {
+    display: flex;
+    width: 100%;
+    border-bottom: 1px solid #f1f1f1;
+    span {
+      flex: 1;
+      padding: 16px 12px;
+      font-size: 16px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+  }
+
+  .icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    position: relative;
+    position: absolute;
+    right: 2px;
+    top: 2px;
+    cursor: pointer;
+    opacity: 0.6;
+
+    &::before {
+      content: "";
+      width: 16px;
+      height: 3px;
+      position: absolute;
+      background-color: #000;
+      transform: translate(-50%, -50%) rotate(-45deg);
+      top: 50%;
+      left: 50%;
+      transition: all 0.3s ease;
+    }
+    &::after {
+      content: "";
+      width: 16px;
+      height: 3px;
+      position: absolute;
+      background-color: #000;
+      transform: translate(-50%, -50%) rotate(45deg);
+      top: 50%;
+      left: 50%;
+      transition: all 0.3s ease;
+    }
+
+    &:hover {
+      opacity: 1;
+      &::before {
+        transform: translate(-50%, -50%) rotate(45deg);
+      }
+      &::after {
+        transform: translate(-50%, -50%) rotate(135deg);
+      }
+    }
+  }
+  .popup-content {
+    display: flex;
+    width: 100%;
+    padding: 16px;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+
+  &.mini {
+    width: 400px !important;
+  }
+  &.small {
+    width: 520px !important;
+  }
+  &.large {
+    width: 900px !important;
+  }
+  &.fullScreen {
+    height: 100%;
+    max-width: 1200px;
+    width: 100% !important;
+
+    .popup-content {
+      height: 100%;
+      overflow-y: auto;
+    }
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .popup {
+    width: 768px;
+  }
+}
+
+@media only screen and (min-width: 900px) {
+  .popup {
+    width: 900px;
+  }
+}

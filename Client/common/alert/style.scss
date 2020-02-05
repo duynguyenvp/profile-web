@@ -1,0 +1,127 @@
+.alert-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: auto;
+  max-height: 800px;
+  z-index: 1000;
+  box-sizing: border-box;
+  padding: 10px;
+
+}
+.alert-item {
+  width: 100%;
+  height: auto;
+  align-items: center;
+  box-sizing: border-box;
+  border-radius: 4px;
+  position: relative;
+  font-size: 13px;
+  border: 1px solid transparent;
+  margin-bottom: 16px;
+  &:first-child {
+    margin-top: 70px;
+  }
+
+  &.success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+
+    .icon {
+      &::before,
+      &::after {
+        background-color: #155724;
+      }
+    }
+  }
+  &.warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+
+    .icon {
+      &::before,
+      &::after {
+        background-color: #856404;
+      }
+    }
+  }
+  &.error {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+
+    .icon {
+      &::before,
+      &::after {
+        background-color: #721c24;
+      }
+    }
+  }
+
+  .icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    position: relative;
+    position: absolute;
+    right: 2px;
+    top: 2px;
+    cursor: pointer;
+    opacity: 0.6;
+
+    &::before {
+      content: "";
+      width: 12px;
+      height: 2px;
+      position: absolute;
+      background-color: #000;
+      transform: translate(-50%, -50%) rotate(-45deg);
+      top: 50%;
+      left: 50%;
+      transition: all 0.4s ease;
+    }
+    &::after {
+      content: "";
+      width: 12px;
+      height: 2px;
+      position: absolute;
+      background-color: white;
+      transform: rotate(45deg);
+      top: 0;
+      left: 0;
+      transform: translate(-50%, -50%) rotate(45deg);
+      top: 50%;
+      left: 50%;
+      transition: all 0.4s ease;
+    }
+
+    &:hover {
+      opacity: 1;
+      &::before {
+        transform: translate(-50%, -50%) rotate(45deg);
+      }
+      &::after {
+        transform: translate(-50%, -50%) rotate(135deg);
+      }
+    }
+  }
+  .alert-content {
+    display: flex;
+    width: 100%;
+    padding: 16px 30px 16px 16px;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .alert-container {
+    width: 300px !important;
+    margin-right: 40px !important;
+  }
+}

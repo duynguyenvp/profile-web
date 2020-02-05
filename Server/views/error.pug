@@ -1,0 +1,12 @@
+html
+  head
+    title= title
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(http-equiv="Content-Type", content="text/html;charset=UTF-8")
+    link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Roboto&display=swap", async)
+    link(rel="stylesheet", href="/material-design-icons/material-icons.css", async)
+  body
+    div(id='app')
+      div(class='error-container')
+        h3(class='error-title')
+        div(class='error-content') !{message}

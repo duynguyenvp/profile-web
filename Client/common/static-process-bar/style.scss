@@ -1,0 +1,32 @@
+.processBarItem {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .processBarContainer {
+    background-color: #f1f1f1;
+    box-sizing: border-box;
+    border-radius: 16px;
+
+    .processBarValue {
+      display: block;
+      border-radius: 16px;
+      color: #fff !important;
+      background-color: #009688 !important;
+      text-align: center;
+      font-size: 12px;
+      height: 12px;
+    }
+  }
+}
+
+@media only screen and (min-width: 800px) {
+  .processBarItem {
+    .processBarContainer {
+      .processBarValue {
+        font-size: 14px;
+        height: 16px;
+      }
+    }
+  }
+}
