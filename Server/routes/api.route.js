@@ -146,7 +146,7 @@ router.post('/uploadBase64Image', apiRequireAuth, (req, res) => {
     const headers = req.body.headers
 
     const matches = req.body.base64image.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
-    const dir = './upload/images/';
+    const dir = './assets/images/';
     fs.access(dir, fs.constants.F_OK, (err) => {
         if (err) fs.mkdirSync(dir, { recursive: true }, (err) => {
             console.log('fs', err)

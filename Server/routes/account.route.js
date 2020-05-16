@@ -63,7 +63,7 @@ router.get('/login:returnUrl?', checkAuth, (req, res) => {
     )
 
     res.send(templateLogin({
-        title: `Login`,
+        title: `Đăng nhập`,
         styles: [...css].join(''),
         body: markup,
         context: JSON.stringify({ message: message })
