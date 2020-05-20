@@ -12,17 +12,6 @@ import passport from 'passport'
 // const https = require('https');
 import session from 'cookie-session'
 
-import { createProxyMiddleware } from 'http-proxy-middleware'
-const jsonPlaceholderProxy = createProxyMiddleware({
-    target: 'http://localhost:4000',
-    changeOrigin: false, // for vhosted sites, changes host header to match to target's host
-    logLevel: 'debug',
-    pathRewrite: {
-        '/admin.js' : '/admin.js',
-        '^/assets' : '/assets',
-    }
-});
-
 const port = 80
 
 import resumeRoute from './routes/resume.route'
@@ -60,7 +49,7 @@ app.use(session({
     saveUninitialized: true,
     resave: true,
     keys: ['aabbccddee', 'aabbccddee123'],
-    maxAge: 30 * 60 * 1000 //30 minutes
+    maxAge: 90 * 60 * 1000 //90 minutes
 }))
 
 app.use(passport.initialize());
@@ -85,7 +74,6 @@ app.use('/bai-viet/:userName?', (req, res, next) => {
 app.use('/api', apiRoute)
 
 app.use('/', homeRoute)
-app.use('/', jsonPlaceholderProxy)
 
 // https.createServer({
 //     key: fs.readFileSync(__dirname + '/server.key'),

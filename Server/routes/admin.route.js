@@ -3,16 +3,6 @@ const router = express.Router()
 import request from 'request'
 import System from '../constants/System'
 
-import { createProxyMiddleware } from 'http-proxy-middleware'
-const jsonPlaceholderProxy = createProxyMiddleware({
-    target: 'http://localhost:4000',
-    changeOrigin: true, // for vhosted sites, changes host header to match to target's host
-    logLevel: 'debug',
-    pathRewrite: {
-        '^/bundle.js': '/bundle.js'
-    }
-});
-
 
 // import httpProxy from 'http-proxy'
 // import HttpProxyRules from 'http-proxy-rules'
