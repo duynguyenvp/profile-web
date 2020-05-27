@@ -26,6 +26,7 @@ module.exports = env => {
 			home2: ["@babel/polyfill", './Client/pages/home2/index.js'],
 			blog: ["@babel/polyfill", './Client/pages/blog/index.js'],
 			admin: ["@babel/polyfill", './Client/pages/admin/index.js'],
+			admin2: ['./Client/pages/admin2/index.js'],
 		},
 		module: {
 			rules: [
@@ -45,7 +46,7 @@ module.exports = env => {
 						limit: 1024
 					}
 				},
-				{ test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=100000' },
+				{ test: /\.(woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=100000' },
 				{
 					test: /\.mp4$/,
 					use: 'file-loader?name=videos/[name].[ext]',
