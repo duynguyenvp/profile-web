@@ -12,7 +12,7 @@ import passport from 'passport'
 // const https = require('https');
 import session from 'cookie-session'
 
-const port = 80
+const port = 8080
 
 import resumeRoute from './routes/resume.route'
 import accountRoute from './routes/account.route'

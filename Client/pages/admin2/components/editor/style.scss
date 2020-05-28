@@ -1,0 +1,13 @@
+.ql-toolbar {
+  border-radius: 4px 4px 0 0;
+  background-color: white;
+}
+
+.ql-container {
+  height: unset !important;
+  min-height: 150px;
+  flex: 1;
+  overflow: auto;
+  background-color: white;
+  border-radius: 0 0 4px 4px;
+}
