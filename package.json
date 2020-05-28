@@ -6,7 +6,8 @@
   "dependencies": {
     "@babel/polyfill": "^7.7.0",
     "puppeteer": "^2.0.0",
-    "express": "4.17.1"
+    "express": "4.17.1",
+    "compression": "1.7.4"
   },
   "devDependencies": {
     "@ant-design/compatible": "^1.0.2",
