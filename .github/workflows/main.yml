@@ -15,6 +15,8 @@ jobs:
   cd:
     runs-on: ubuntu-18.04
     steps:
+      - name: Check out code
+        uses: actions/checkout@v2
       - name: Login to Docker Hub
         run: docker login -u ${{ secrets.DOCKER_USER }} 
              -p ${{ secrets.DOCKER_PASSWORD }}
