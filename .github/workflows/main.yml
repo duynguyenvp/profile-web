@@ -15,7 +15,7 @@ jobs:
   cd:
     runs-on: ubuntu-latest
     container:
-      image: node
+      image: node:latest
 
     steps:
       - uses: actions/checkout@v1
