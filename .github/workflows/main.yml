@@ -13,18 +13,12 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   cd:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
-      - name: docker build
-        uses: actions/docker/cli@master
-        with:
-          args: build -t ${{ secrets.DOCKER_USER }}/somethingaboutmeweb .
-      - name: docker login
-        uses: actions/docker/login@master
-        env:
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USER }}
-      - name: docker push
-        uses: actions/docker/cli@master
-        with:
-          args: push ${{ secrets.DOCKER_USER }}/somethingaboutmeweb
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_USER }} 
+             -p ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build Docker image
+        run: docker build -t ${{ secrets.DOCKER_USER }}/somethingaboutmeweb:latest -t ${{ secrets.DOCKER_USER }}/somethingaboutmeweb:${GITHUB_SHA::8} .
+      - name: Publish Docker image
+        run: docker push ${{ secrets.DOCKER_USER }}/somethingaboutmeweb:latest
