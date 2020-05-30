@@ -1,25 +1,25 @@
 import React, { useEffect, useRef, useState, Fragment } from 'react'
-import { addOrUpdatePost } from '../../store/postStore';
-import { Form, Drawer, Button, Input, notification, Layout } from 'antd';
-const { Header, Footer, Sider, Content } = Layout;
+import { addOrUpdatePost } from '../../store/postStore'
+import { Form, Drawer, Button, Input, notification, Layout } from 'antd'
+const { Header, Footer, Sider, Content } = Layout
 import ImageManager from '../../components/image-manager'
 import getApiInstance from '../../api/generic-api'
 
 import Quill from 'quill'
-import ImageResize from 'quill-image-resize-module';
+import ImageResize from 'quill-image-resize-module'
 
-Quill.register('modules/imageResize', ImageResize);
+Quill.register('modules/imageResize', ImageResize)
 
 import 'modules/quill/dist/quill.core.css'
 import 'modules/quill/dist/quill.snow.css'
-import { getAuthentication } from '../../store/authStore';
+import { getAuthentication } from '../../store/authStore'
 
 const openNotificationWithIcon = (type, content) => {
     notification[type]({
         message: 'Thông báo',
         description: content,
-    });
-};
+    })
+}
 const PostForm = ({ onClose, callback, post, content }) => {
     const onFinish = values => {
         let data = { ...values }
@@ -103,7 +103,7 @@ const PostForm = ({ onClose, callback, post, content }) => {
                 <Button type="primary" htmlType="submit">Lưu</Button>
             </Form.Item>
         </Form>
-    );
+    )
 }
 
 const EditorContent = ({ post, callback }) => {
@@ -122,17 +122,17 @@ const EditorContent = ({ post, callback }) => {
             },
             placeholder: 'Nhập nội dung...',
             theme: 'snow'  // or 'bubble'
-        }));
+        }))
     }, [])
     useEffect(() => {
         // quill editor add image handler
         editor && editor.getModule('toolbar').addHandler('image', () => {
-            const range = editor.getSelection();
+            const range = editor.getSelection()
             setRange(range)
             setFlagOpenImageManager(true)
             // push image url to rich editor.
-            // editor.insertEmbed(range && range.index || 0, 'image', src);
-        });
+            // editor.insertEmbed(range && range.index || 0, 'image', src)
+        })
         editor && editor.on('text-change', function (range, oldRange, source) {
             callback(editor.root.innerHTML)
         })
@@ -141,7 +141,7 @@ const EditorContent = ({ post, callback }) => {
         <ImageManager visible={flagOpenImageManager}
             close={closeImageManager}
             callback={(src) => {
-                editor && editor.insertEmbed(range && range.index || 0, 'image', src);
+                editor && editor.insertEmbed(range && range.index || 0, 'image', src)
                 setRange(null)
             }} />
         <div className="editor-content" ref={refEditor}
@@ -151,6 +151,13 @@ const EditorContent = ({ post, callback }) => {
 
 const PostPopup = ({ visible, onClose, post, callback }) => {
     const [content, setContent] = useState('')
+    const [broken, setBroken] = useState(false)
+    const [collapsed, setCollapsed] = useState(false)
+
+    const onCollapse = collapsed => {
+        setCollapsed(collapsed);
+    };
+    const siderProps = broken ? { collapsedWidth: "0" } : { collapsible: true }
     return (
         <Drawer
             title={`${post && Object.keys(post) ? "Chỉnh sửa bài viết" : "Viết bài mới"}`}
@@ -202,7 +209,10 @@ const PostPopup = ({ visible, onClose, post, callback }) => {
                         }} />
                     </Content>
                 </Layout>
-                <Sider width={350} className="editor-right-side">
+                <Sider
+                    width={350}
+                    className="editor-right-side"
+                >
                     <PostForm onClose={onClose} post={post} content={content} callback={callback} />
                 </Sider>
             </Layout>

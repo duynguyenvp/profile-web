@@ -83,6 +83,7 @@ router.get('/:postUrl?', (req, res) => {
         }
         res.send(template({
             initdata: JSON.stringify(initdata),
+            resource_version: System.RESOURCE_VERSION,
             main: markup,
             styles: [...css].join(''),
             title: pageTitle,

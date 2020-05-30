@@ -64,6 +64,7 @@ router.get('/login:returnUrl?', checkAuth, (req, res) => {
 
     res.send(templateLogin({
         title: `Đăng nhập`,
+        resource_version: System.RESOURCE_VERSION,
         styles: [...css].join(''),
         body: markup,
         context: JSON.stringify({ message: message })
@@ -75,6 +76,7 @@ router.get('/register:returnUrl?', checkAuth, (req, res) => {
     req.app.locals.messages = null;
     res.send(templateRegister({
         title: `Register`,
+        resource_version: System.RESOURCE_VERSION,
         context: JSON.stringify({ message: message })
     }))
 });
