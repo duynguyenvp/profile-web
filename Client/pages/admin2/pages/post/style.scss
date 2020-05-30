@@ -57,6 +57,8 @@
         .editor-content {
             width: 100%;
             border: unset !important;
+            background-color: transparent;
+            height: 100% !important;
             .ql-editor {
                 position: relative;
                 min-height: 100%;

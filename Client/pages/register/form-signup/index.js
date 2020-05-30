@@ -119,6 +119,9 @@ class FormSignup extends Component {
                         <div className="field-control">
                             <button className="btn-register" onClick={this.signup}>ĐĂNG KÝ</button>
                         </div>
+                        <div className="field-control">
+                            <a href="/account/login" className="btn-return-to-login">Đã có tài khoản?</a>
+                        </div>
                     </form>
                 </div>
             </div>

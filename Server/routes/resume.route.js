@@ -10,6 +10,7 @@ import StyleContext from 'isomorphic-style-loader/StyleContext'
 import Resume from '../../Client/pages/portfolio/Resume'
 import ResumePrint from '../../Client/pages/portfolio/ResumePrint'
 import puppeteer from 'puppeteer'
+import System from '../constants/System'
 
 router.get('/view/:userId?', (req, res) => {
     const css = new Set() // CSS for all rendered React components
@@ -20,7 +21,13 @@ router.get('/view/:userId?', (req, res) => {
         </StyleContext.Provider>
     )
 
-    res.send(template({ message: markup, styles: [...css].join(''), title: `Resume`, initPrint: false }))
+    res.send(template({
+        message: markup,
+        styles: [...css].join(''),
+        title: `Resume`,
+        initPrint: false,
+        resource_version: System.RESOURCE_VERSION
+    }))
 });
 
 router.get('/print/:userId?', (req, res) => {
@@ -32,7 +39,13 @@ router.get('/print/:userId?', (req, res) => {
         </StyleContext.Provider>
     )
 
-    res.send(template({ body: markup, styles: [...css].join('') + 'html, body { height: unset !important;}', title: `Resume`, initPrint: true }))
+    res.send(template({
+        body: markup,
+        styles: [...css].join('') + 'html, body { height: unset !important;}',
+        title: `Resume`,
+        initPrint: true,
+        resource_version: System.RESOURCE_VERSION
+    }))
 });
 
 async function printPDF(url) {

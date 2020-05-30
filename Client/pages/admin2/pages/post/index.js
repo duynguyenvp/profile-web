@@ -24,23 +24,22 @@ const Post = props => {
     const state = usePostStore();
     const { take, page, total, data } = state
     useEffect(() => {
-        loadData()
-    }, [auth])
+        loadData(auth)
+    }, [auth && auth.id])
 
-    const loadData = () => {
-        const user = getAuthentication()
-
-        getApiInstance().postWithForm({
+    const loadData = (auth) => {
+        auth && auth.id && getApiInstance().postWithForm({
             url: '/Post/GetAll',
             data: {
                 Take: take,
                 Skip: (page - 1) * take,
                 Condition: filterText,
-                UserId: user && user.id
+                UserId: auth.id
             }
         }).then(res => {
             const { successful, result } = res
             if (successful) {
+                if (!result) return
                 const { total, data } = result
                 setPosts({ ...state, total, data })
             }
