@@ -10,5 +10,5 @@ WORKDIR /app
 COPY --from=build-deps /tmp/package.json .
 RUN npm install --production
 COPY --from=build-deps /tmp/Published/Client .
-EXPOSE 8080
+EXPOSE 80
 CMD ["node", "server.js"]
