@@ -31,5 +31,5 @@ jobs:
       - name: pull image
         run: docker pull ${{ secrets.DOCKER_USER }}/somethingaboutmeweb:latest
       - name: docker run
-        run: docker run -it -d -p 80:80 -v /$HOME/Data/web/upload:/app/upload ${{ secrets.DOCKER_USER }}/somethingaboutmeweb:latest
+        run: docker run -it -d -p 80:80 --net="host" -v /$HOME/Data/web/upload:/app/upload ${{ secrets.DOCKER_USER }}/somethingaboutmeweb:latest
 
