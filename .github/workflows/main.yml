@@ -28,8 +28,12 @@ jobs:
     needs: cd
     runs-on: self-hosted
     steps:
+      - name: stop and remove all containers based on image name
+        run: docker rm $(docker stop $(docker ps -a -q --filter ancestor=${{ secrets.DOCKER_USER }}/somethingaboutmeweb:latest --format="{{.ID}}"))
       - name: pull image
         run: docker pull ${{ secrets.DOCKER_USER }}/somethingaboutmeweb:latest
       - name: docker run
         run: docker run -it -d -p 80:80 --net="host" -v /$HOME/Data/web/upload:/app/upload ${{ secrets.DOCKER_USER }}/somethingaboutmeweb:latest
+      - name: remove all untagged images
+        run: docker image prune -f
 
