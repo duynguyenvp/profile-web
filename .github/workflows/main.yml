@@ -9,7 +9,7 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-
+	
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   cd:
@@ -24,3 +24,12 @@ jobs:
         run: docker build -t ${{ secrets.DOCKER_USER }}/somethingaboutmeweb:latest -t ${{ secrets.DOCKER_USER }}/somethingaboutmeweb:${GITHUB_SHA::8} .
       - name: Publish Docker image
         run: docker push ${{ secrets.DOCKER_USER }}/somethingaboutmeweb:latest
+  deploy:
+    needs: cd
+    runs-on: self-hosted
+    steps:
+      - name: pull image
+        run: docker pull ${{ secrets.DOCKER_USER }}/somethingaboutmeweb:latest
+      - name: docker run
+        run: docker run -it -d -p 80:80 -v /$HOME/Data/web/upload:/app/upload ${{ secrets.DOCKER_USER }}/somethingaboutmeweb:latest
+
