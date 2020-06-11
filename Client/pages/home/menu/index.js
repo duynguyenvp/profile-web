@@ -14,17 +14,31 @@ class Menu extends RComponent {
 
         this.state = {
             isOpen: false,
-            isReady: false
+            isReady: false,
+            isMobile: false
         }
 
         this.onMount(() => {
             this.setState({ isReady: true })
         })
         this.onMount(() => {
+            var x = window.matchMedia("(max-width: 900px)")
+            this.matchMedia(x)
+            x.addListener(this.matchMedia)
+        })
+        this.onMount(() => {
             this.onUnmount(subscribe(() => {
                 this.forceUpdate()
             }))
         })
+    }
+
+    matchMedia = (event) => {
+        if (event.matches) {
+            this.setState({ isMobile: true })
+        } else {
+            this.setState({ isMobile: false })
+        }
     }
 
     menuClick = (data) => {
@@ -72,7 +86,7 @@ class Menu extends RComponent {
     }
 
     render() {
-        const { isOpen } = this.state
+        const { isOpen, isMobile } = this.state
         const { isShirk, active } = this.props
 
         const user = getState()
@@ -84,8 +98,15 @@ class Menu extends RComponent {
                         this.setState({
                             isOpen: !isOpen
                         })
-                    }}><span></span></div>
-                    <div className={`nav-items ${isOpen ? "active" : ""}`}>
+                    }}>
+                        <div className="btn-menu-toggle">
+                            <span></span>
+                        </div>
+                        {
+                            isMobile && this.renderBoxUser(user)
+                        }
+                    </div>
+                    <div className={`nav-items  ${isMobile ? "mobile" : ""} ${isOpen ? "active" : ""}`}>
                         <a href="/#home" className={active == "home" ? "active" : ""}
                             onClick={() => { this.menuClick({ id: 'firstZoneId', active: 'home', route: 'home' }) }}>
                             <span>Trang chủ</span>
@@ -107,7 +128,7 @@ class Menu extends RComponent {
                             <span>Blog</span>
                         </a>
                         {
-                            this.renderBoxUser(user)
+                            !isMobile && this.renderBoxUser(user)
                         }
                     </div>
                 </div>

@@ -13,7 +13,7 @@
     flex-direction: column;
     padding: 10px;
     width: 100%;
-    max-width: 1250px;
+    max-width: 1100px;
 
     .box-contact {
       display: flex;
@@ -79,15 +79,17 @@
           font-size: 18px;
           font-weight: 600;
           cursor: pointer;
-          background-color: $primaryColor;
+          background-color: white;
           border: none;
-          color: white;
-          border-radius: 4px;
+          color: $primaryColor;
+          border-radius: 50px;
+          border: 2px solid $primaryColor;;
           padding: 12px;
           margin: 16px 0;
 
           &:active {
             opacity: 0.75;
+            font-weight: bolder;
           }
         }
       }

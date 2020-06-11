@@ -38,7 +38,7 @@ class FirstZone extends Component {
                         <div className="value2" data-aos="fade-up">Bạn có thể xây dựng trang cá nhân ngay bây giờ!</div>
                         <div data-aos="fade-up">
                             <button className="btn-view-more" onClick={this.viewMore}>
-                                <i className="material-icons">arrow_downward</i>
+                                <i className="material-icons">keyboard_arrow_down</i>
                             </button>
                         </div>
                     </Fragment>

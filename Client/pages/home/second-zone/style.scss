@@ -1,18 +1,18 @@
-.thirdZone {
+.secondZone {
   height: auto;
   width: 100%;
   display: flex;
   justify-content: center;
-  background-color: white;
+  background-color: #fafafa;
 
-  .thirdZoneContent {
+  .secondZoneContent {
     width: 100%;
-    max-width: 1250px;
+    max-width: 1100px;
     display: flex;
     flex-direction: column;
     padding: 150px 0;
 
-    .thirdZoneLeftPanel {
+    .secondZoneLeftPanel {
       flex: 3;
       display: flex;
       flex-direction: column;
@@ -20,7 +20,7 @@
       padding: 16px 16px 16px 32px;
 
       p {
-        font-size: 22px;
+        font-size: 18px;
         margin: 0;
         position: relative;
         margin-bottom: 16px;
@@ -38,7 +38,7 @@
       }
     }
 
-    .thirdZoneRightPanel {
+    .secondZoneRightPanel {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -54,12 +54,12 @@
 }
 
 @media only screen and (min-width: 800px) {
-  .thirdZone {
-    .thirdZoneContent {
+  .secondZone {
+    .secondZoneContent {
       width: 100%;
       flex-direction: row;
 
-      .thirdZoneLeftPanel {
+      .secondZoneLeftPanel {
         flex: 3;
         margin-right: 6px;
       }
@@ -68,12 +68,12 @@
 }
 
 @media only screen and (min-width: 1100px) {
-  .thirdZone {
-    .thirdZoneContent {
+  .secondZone {
+    .secondZoneContent {
       width: 100%;
       flex-direction: row;
 
-      .thirdZoneLeftPanel {
+      .secondZoneLeftPanel {
         flex: 3;
         margin-right: 16px;
       }
