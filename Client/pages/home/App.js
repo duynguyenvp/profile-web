@@ -155,7 +155,7 @@ class App extends Component {
                     this.props.children
                 }
                 <div className="plane" style={{ display: isDisplayPlane ? 'flex' : 'none' }} onClick={this.gotoTop}>
-                    <i className="material-icons">local_airport</i>
+                    <i className="material-icons">keyboard_arrow_up</i>
                 </div>
             </React.Fragment>
         );

@@ -1,5 +1,5 @@
 import SecondZone from './second-zone'
-import App from '../home2/App'
+import App from '../home/App'
 import getApiInstance from '../../ajax/generic-api'
 
 import React, { useEffect, useState } from 'react';

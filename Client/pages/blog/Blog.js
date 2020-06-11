@@ -153,7 +153,7 @@ class Blog extends RComponent {
 
     render() {
         const { postData, suggestions } = { ...this.props, ...getPostState() }
-        const { content, title, postTime } = postData
+        const { content, title, postTime, userName } = postData
         const { timeline, postRecently } = this.state
 
         return (
@@ -174,14 +174,18 @@ class Blog extends RComponent {
                                                 <span>Ngày đăng: &nbsp;</span>
                                                 <span>{postTime != "{postTime}" ? dateToStringFormatCultureVi(postTime) : postTime}</span>
                                             </span>
+                                            <span className="post-author">
+                                                <span>Tác giả: &nbsp;</span>
+                                                <span>{userName || ""}</span>
+                                            </span>
                                         </div>
                                         <div className="post-content" dangerouslySetInnerHTML={{ __html: content }}>
                                         </div>
                                         {
                                             this.renderFacebookControls()
                                         }
-                                        <hr />
-                                        {/* <div className="suggestion">
+                                        {/* <hr />
+                                            <div className="suggestion">
                                             <h3>Có thể bạn quan tâm</h3>
                                             <div className="suggestion-body">
                                                 <div className="suggestion-item" onClick={() => {

@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import App from '../home2/App'
+import App from '../home/App'
 import Blog from './Blog'
 import StyleContext from 'isomorphic-style-loader/StyleContext'
 

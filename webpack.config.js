@@ -23,9 +23,9 @@ module.exports = env => {
 			login: ["@babel/polyfill", './Client/pages/login/index.js'],
 			register: ["@babel/polyfill", './Client/pages/register/index.js'],
 			portfolio: ["@babel/polyfill", './Client/pages/portfolio/index.js'],
-			home2: ["@babel/polyfill", './Client/pages/home2/index.js'],
+			home: ["@babel/polyfill", './Client/pages/home/index.js'],
 			blog: ["@babel/polyfill", './Client/pages/blog/index.js'],
-			admin2: ['./Client/pages/admin2/index.js'],
+			admin: ['./Client/pages/admin/index.js'],
 		},
 		module: {
 			rules: [
