@@ -50,7 +50,8 @@ router.get('/print/:userId?', (req, res) => {
 
 async function printPDF(url) {
     const browser = await puppeteer.launch({
-        headless: true
+        headless: true,
+        args: ['--no-sandbox']
     });
     const page = await browser.newPage();
     await page.goto(url, { waitUntil: 'networkidle0' });

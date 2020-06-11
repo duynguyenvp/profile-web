@@ -39,8 +39,9 @@
 
     &:hover,
     &:active {
-      background-color: $primaryColor;
-      border-color: $primaryColor;
+      i {
+        font-size: 64px;
+      }
     }
   }
 }
