@@ -51,7 +51,8 @@ router.get('/print/:userId?', (req, res) => {
 async function printPDF(url) {
     const browser = await puppeteer.launch({
         headless: true,
-        args: ['--no-sandbox']
+        executablePath: process.env.CHROME_BIN || null,
+        args: ['--no-sandbox', '--headless', '--disable-gpu', '--disable-dev-shm-usage']
     });
     const page = await browser.newPage();
     await page.goto(url, { waitUntil: 'networkidle0' });
