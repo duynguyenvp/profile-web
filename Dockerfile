@@ -7,7 +7,8 @@ RUN npm install && npm audit fix && npm run publish
 
 FROM node:current-alpine
 WORKDIR /app
-RUN apt-get install -y ca-certificates \
+RUN apk update && apk upgrade && \
+    apk add --no-cache bash ca-certificates \
                             fonts-liberation \
                             gconf-service \
                             libappindicator1 \
