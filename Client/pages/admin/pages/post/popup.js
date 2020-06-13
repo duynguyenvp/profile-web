@@ -68,12 +68,12 @@ const PostForm = ({ onClose, callback, post, content }) => {
         <Form
             layout="vertical"
             labelCol={{ span: 4 }}
-            wrapperCol={{ span: 12 }}
+            wrapperCol={{ span: 24 }}
             onFinish={onFinish}>
             <Form.Item
                 name="title"
                 label="Tiêu đề"
-                labelCol={12}
+                labelCol={24}
                 initialValue={title}
                 rules={[
                     {
@@ -87,7 +87,7 @@ const PostForm = ({ onClose, callback, post, content }) => {
             <Form.Item
                 name="tag"
                 label="Tags"
-                labelCol={12}
+                labelCol={24}
                 initialValue={tag}
                 rules={[
                     {
@@ -108,6 +108,8 @@ const PostForm = ({ onClose, callback, post, content }) => {
 
 const EditorContent = ({ post, callback }) => {
     const [flagOpenImageManager, setFlagOpenImageManager] = useState(false)
+    const [emojiPicker, setEmojiPicker] = useState(null)
+    const [emojiPickerState, setEmojiPickerState] = useState(false)
     const [range, setRange] = useState(null)
     const [editor, setEditor] = useState(null)
     const refEditor = useRef()
@@ -115,49 +117,117 @@ const EditorContent = ({ post, callback }) => {
         setFlagOpenImageManager(false)
     }
     useEffect(() => {
-        setEditor(new Quill(refEditor.current, {
+        window.QuillEditor = new Quill(refEditor.current, {
             modules: {
                 toolbar: '#toolbar',
                 imageResize: {}
             },
             placeholder: 'Nhập nội dung...',
             theme: 'snow'  // or 'bubble'
-        }))
+        })
+        setEditor(window.QuillEditor)
     }, [])
     useEffect(() => {
+        if (!editor) return
         // quill editor add image handler
-        editor && editor.getModule('toolbar').addHandler('image', () => {
+        editor.getModule('toolbar').addHandler('image', () => {
             const range = editor.getSelection()
             setRange(range)
             setFlagOpenImageManager(true)
             // push image url to rich editor.
             // editor.insertEmbed(range && range.index || 0, 'image', src)
         })
-        editor && editor.on('text-change', function (range, oldRange, source) {
+        editor.on('text-change', function (range, oldRange, source) {
             callback(editor.root.innerHTML)
         })
     }, [editor])
-    return <Fragment>
-        <ImageManager visible={flagOpenImageManager}
-            close={closeImageManager}
-            callback={(src) => {
-                editor && editor.insertEmbed(range && range.index || 0, 'image', src)
-                setRange(null)
-            }} />
-        <div className="editor-content" ref={refEditor}
-            dangerouslySetInnerHTML={{ __html: post && post.content || '' }}></div>
-    </Fragment>
+    const handleClickEmojiButton = e => {
+        e.stopPropagation();
+        setEmojiPickerState(!emojiPickerState)
+    }
+    const initEmojiBox = async () => {
+        await import("emoji-mart/css/emoji-mart.css");
+        const { Picker } = await import("emoji-mart")
+        setEmojiPicker(<div className="input-emojibox">
+            <Picker
+                title="Pick your emoji…"
+                emoji="point_up"
+                set="facebook"
+                native={true}
+                showPreview={false}
+                onSelect={emoji => insertEmoji(emoji.native)}
+            />
+        </div>)
+    }
+    useEffect(() => {
+        initEmojiBox()
+    }, [])
+
+    const renderEmojiPicker = () => {
+        if (emojiPickerState) return <Fragment>{emojiPicker}</Fragment>
+        return null
+    }
+
+    const insertEmoji = emoji => {
+        setEmojiPickerState(false)
+        const currentRange = window.QuillEditor && window.QuillEditor.getSelection()
+        window.QuillEditor && window.QuillEditor.insertText(currentRange && currentRange.index || 0, emoji);
+    }
+    return <Layout>
+        <Header className="editor-main-header">
+            <div id="toolbar">
+                <select className="ql-size" defaultValue="small">
+                    <option value="small"></option>
+                    <option value="large"></option>
+                    <option value="huge"></option>
+                </select>
+                <button className="ql-bold"></button>
+                <button className="ql-italic"></button>
+                <button className="ql-underline"></button>
+                <span className="ql-formats">
+                    <select className="ql-color"></select>
+                    <select className="ql-background"></select>
+                </span>
+                <button className="ql-align" value="justify"></button>
+                <button className="ql-align" value="center"></button>
+                <button className="ql-align" value="right"></button>
+                <span className="ql-formats">
+                    <button className="ql-list" value="ordered" />
+                    <button className="ql-list" value="bullet" />
+                    <button className="ql-indent" value="-1" />
+                    <button className="ql-indent" value="+1" />
+                </span>
+                <button className="ql-script" value="sub"></button>
+                <button className="ql-script" value="super"></button>
+                <button className="ql-link"></button>
+                <button className="ql-image"></button>
+                <span className="ql-formats">
+                    <button className="ql-blockquote"></button>
+                    <button className="ql-code-block"></button>
+                </span>
+                <button className={emojiPickerState ? 'ql-active' : ''}
+                onClick={handleClickEmojiButton}>
+                    <i className="material-icons" style={{ fontSize: 18, float: "left" }}>mood</i>
+                </button>
+                {renderEmojiPicker()}
+            </div>
+        </Header>
+        <Content className="editor-main-content">
+            <ImageManager visible={flagOpenImageManager}
+                close={closeImageManager}
+                callback={(src) => {
+                    editor && editor.insertEmbed(range && range.index || 0, 'image', src)
+                    setRange(null)
+                }} />
+            <div className="editor-content" ref={refEditor}
+                dangerouslySetInnerHTML={{ __html: post && post.content || '' }}></div>
+        </Content>
+    </Layout>
+
 }
 
 const PostPopup = ({ visible, onClose, post, callback }) => {
     const [content, setContent] = useState('')
-    const [broken, setBroken] = useState(false)
-    const [collapsed, setCollapsed] = useState(false)
-
-    const onCollapse = collapsed => {
-        setCollapsed(collapsed);
-    };
-    const siderProps = broken ? { collapsedWidth: "0" } : { collapsible: true }
     return (
         <Drawer
             title={`${post && Object.keys(post) ? "Chỉnh sửa bài viết" : "Viết bài mới"}`}
@@ -169,46 +239,9 @@ const PostPopup = ({ visible, onClose, post, callback }) => {
             bodyStyle={{ padding: 0 }}
         >
             <Layout className="editor-layout">
-                <Layout>
-                    <Header className="editor-main-header">
-                        <div id="toolbar">
-                            <select className="ql-size" defaultValue="small">
-                                <option value="small"></option>
-                                <option value="large"></option>
-                                <option value="huge"></option>
-                            </select>
-                            <button className="ql-bold"></button>
-                            <button className="ql-italic"></button>
-                            <button className="ql-underline"></button>
-                            <span className="ql-formats">
-                                <select className="ql-color"></select>
-                                <select className="ql-background"></select>
-                            </span>
-                            <button className="ql-align" value="justify"></button>
-                            <button className="ql-align" value="center"></button>
-                            <button className="ql-align" value="right"></button>
-                            <span className="ql-formats">
-                                <button className="ql-list" value="ordered" />
-                                <button className="ql-list" value="bullet" />
-                                <button className="ql-indent" value="-1" />
-                                <button className="ql-indent" value="+1" />
-                            </span>
-                            <button className="ql-script" value="sub"></button>
-                            <button className="ql-script" value="super"></button>
-                            <button className="ql-link"></button>
-                            <button className="ql-image"></button>
-                            <span className="ql-formats">
-                                <button className="ql-blockquote"></button>
-                                <button className="ql-code-block"></button>
-                            </span>
-                        </div>
-                    </Header>
-                    <Content className="editor-main-content">
-                        <EditorContent post={post} callback={text => {
-                            setContent(text)
-                        }} />
-                    </Content>
-                </Layout>
+                <EditorContent post={post} callback={text => {
+                    setContent(text)
+                }} />
                 <Sider
                     width={350}
                     className="editor-right-side"

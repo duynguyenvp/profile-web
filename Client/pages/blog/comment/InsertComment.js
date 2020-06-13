@@ -8,6 +8,30 @@ import { getCommentState, setCommentState } from '../../../services/commentServi
 
 import getApiInstance from '../../../ajax/generic-api'
 
+function getCaretPosition(editableDiv) {
+    var caretPos = 0,
+        sel, range;
+    if (window.getSelection) {
+        sel = window.getSelection();
+        if (sel.rangeCount) {
+            range = sel.getRangeAt(0);
+            if (range.commonAncestorContainer.parentNode == editableDiv) {
+                caretPos = range.endOffset;
+            }
+        }
+    } else if (document.selection && document.selection.createRange) {
+        range = document.selection.createRange();
+        if (range.parentElement() == editableDiv) {
+            var tempEl = document.createElement("span");
+            editableDiv.insertBefore(tempEl, editableDiv.firstChild);
+            var tempRange = range.duplicate();
+            tempRange.moveToElementText(tempEl);
+            tempRange.setEndPoint("EndToEnd", range);
+            caretPos = tempRange.text.length;
+        }
+    }
+    return caretPos;
+}
 class InsertComment extends RComponent {
     detectEnter = false
     static propTypes = {
@@ -21,7 +45,9 @@ class InsertComment extends RComponent {
 
         this.state = {
             returnUrl: '/',
-            isMobile: false
+            isMobile: false,
+            emojiPickerState: false,
+            emojiPicker: null
         }
 
         this.onMount(() => {
@@ -41,21 +67,23 @@ class InsertComment extends RComponent {
                 returnUrl: returnUrl,
                 isMobile
             })
-
-            // const self = this
-            // window.onresize = () => {
-            //     let value = true
-            //     if (window.matchMedia("(min-width: 800px)").matches) {
-            //         value = false
-            //     }
-            //     self.handleWindowResize(value)
-            // }
+            this.initEmojiBox()
         })
     }
 
-    // handleWindowResize = (value) => {
-    //     this.setState({ isMobile: value })
-    // }
+    initEmojiBox = async () => {
+        await import("emoji-mart/css/emoji-mart.css");
+        const { Picker } = await import("emoji-mart")
+        this.setState({
+            emojiPicker: <div className="input-emojibox">
+                <Picker
+                    title="Pick your emoji…"
+                    emoji="point_up"
+                    onSelect={emoji => this.insertEmoji(emoji.native)}
+                />
+            </div>
+        })
+    }
 
     addNewComment = (comment) => {
         const { postData } = getPostState()
@@ -112,19 +140,38 @@ class InsertComment extends RComponent {
             this.detectEnter = false
         }
     }
+
+    toggleEmojiPicker = () => {
+        this.setState({ emojiPickerState: !this.state.emojiPickerState })
+    }
+
+    insertEmoji = (emoji) => {
+        this.inputComment.innerHTML = this.inputComment.innerHTML + emoji
+    }
+
     render() {
         const user = getState()
+        const { emojiPicker, emojiPickerState } = this.state
         if (user && user.username)
             return (
                 <div className="input-comment-container">
                     <i className="material-icons">account_circle</i>
-                    <div contentEditable={true}
-                        ref={instance => this.inputComment = instance}
-                        className="input-text"
-                        placeholder="Viết bình luận ..."
-                        onKeyDown={this.handleKeydown}
-                        onInput={this.onInput}></div>
-                    <i className="material-icons send-button" onClick={this.send}>send</i>
+                    <div className="input-wrapper">
+                        <div contentEditable={true}
+                            ref={instance => this.inputComment = instance}
+                            className="input-text"
+                            placeholder="Viết bình luận ..."
+                            onKeyDown={this.handleKeydown}
+                            onInput={this.onInput}></div>
+                        <div className="input-controls">
+                            {emojiPickerState && emojiPicker}
+                            {
+                                emojiPicker &&
+                                <i className="material-icons emoji-button" onClick={this.toggleEmojiPicker}>mood</i>
+                            }
+                            <i className="material-icons send-button" onClick={this.send}>send</i>
+                        </div>
+                    </div>
                 </div>
             );
         const { returnUrl } = this.state
