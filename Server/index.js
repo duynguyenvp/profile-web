@@ -1,8 +1,3 @@
-// import webpack from 'webpack'
-// import configFun from '../webpack.config.js'
-
-// const webpackConfig = configFun();
-// const compiler = webpack(webpackConfig);
 import path from 'path';
 import compression from 'compression'
 import express from 'express'
@@ -11,6 +6,7 @@ import cookieParser from 'cookie-parser'
 import passport from 'passport'
 // const https = require('https');
 import session from 'cookie-session'
+import logger from './logger'
 
 const port = 80
 
@@ -22,22 +18,10 @@ import blogRoute from './routes/blog.route'
 import adminRoute from './routes/admin.route'
 import errorRoute from './routes/error.route'
 
-// import { checkAuthRoles } from './middlewares/admin.auth.middleware'
-
 require('./passport');
 
 const app = express()
 app.locals.port = port;
-// webpack hmr
-// app.use(require("webpack-dev-middleware")(compiler, {
-//     noInfo: true, publicPath: webpackConfig.output.publicPath
-// }));
-
-// app.use(require("webpack-hot-middleware")(compiler, {
-//     log: false,
-//     path: "/__what",
-//     heartbeat: 2000
-// }));
 
 app.set('views', __dirname + '/views')
 app.set('view engine', 'pug')
@@ -84,4 +68,4 @@ app.use('/', homeRoute)
 
 app.disable('x-powered-by');
 
-app.listen(port, () => console.log(`Server is listening on port ${port}!`))
+app.listen(port, () => logger.info(`Server is listening on port ${port}!`))

@@ -34,13 +34,11 @@ class FirstZone extends Component {
                 </div>
                 {
                     isLoaded && <Fragment>
-                        <div className="value1" data-aos="fade-down">ĐÂY LÀ THẾ GIỚI RIÊNG CỦA BẠN</div>
-                        <div className="value2" data-aos="fade-up">Bạn có thể xây dựng trang cá nhân ngay bây giờ!</div>
-                        <div data-aos="fade-up">
-                            <button className="btn-view-more" onClick={this.viewMore}>
-                                <i className="material-icons">keyboard_arrow_down</i>
-                            </button>
-                        </div>
+                        <div className="value1" id="welcome-text-1">ĐÂY LÀ THẾ GIỚI RIÊNG CỦA BẠN</div>
+                        <div className="value2" id="welcome-text-2">Bạn có thể xây dựng trang cá nhân ngay bây giờ!</div>
+                        <button className="btn-view-more" onClick={this.viewMore}>
+                            <i className="material-icons">keyboard_arrow_down</i>
+                        </button>
                     </Fragment>
                 }
             </div>

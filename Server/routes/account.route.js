@@ -2,7 +2,7 @@ import express from 'express'
 const router = express.Router()
 import request from 'request'
 import passport from 'passport'
-
+import logger from '../logger'
 import System from '../constants/System'
 import { checkAuth } from '../middlewares/auth.middleware'
 import { isSafeUrl } from '../../Client/utils/string-utils'
@@ -146,6 +146,7 @@ router.post('/signin', (req, res) => {
     request.post({ url: `${System.API}/User/Sigin`, formData: formData }, function optionalCallback(err, httpResponse, body) {
         if (err) {
             res.send(err);
+            logger.error('login failed:' + JSON.stringify(err))
             return console.error('login failed:', err);
         }
         body = JSON.parse(body);
@@ -158,6 +159,7 @@ router.post('/signin', (req, res) => {
             res.redirect(302, ReturnUrl)
         } else {
             if (body.errorCode >= 900) {
+                logger.error('login failed:' + JSON.stringify(body))
                 req.app.locals.signinMessage = body.errorMessage
                 res.redirect('/account/login')
             } else {
