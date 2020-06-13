@@ -94,12 +94,12 @@ class Menu extends RComponent {
         return (
             <div className={`topnav ${isShirk ? 'shrink' : ''}`} id="myTopnav">
                 <div className="nav-container">
-                    <div id="nav-toggle" className={isOpen ? "active" : ""} onClick={() => {
-                        this.setState({
-                            isOpen: !isOpen
-                        })
-                    }}>
-                        <div className="btn-menu-toggle">
+                    <div id="nav-toggle" className={isOpen ? "active" : ""}>
+                        <div className="btn-menu-toggle" onClick={() => {
+                            this.setState({
+                                isOpen: !isOpen
+                            })
+                        }}>
                             <span></span>
                         </div>
                         {
