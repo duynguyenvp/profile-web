@@ -1,37 +1,12 @@
-import React, { Component } from 'react';
+import React, { Fragment } from 'react';
 import { RComponent } from '../../../common/r-component'
 import PropTypes from 'prop-types'
 
 import { getState, subscribe } from '../../../services/userService'
 import { getPostState } from '../../../services/postService'
 import { getCommentState, setCommentState } from '../../../services/commentService'
-
 import getApiInstance from '../../../ajax/generic-api'
 
-function getCaretPosition(editableDiv) {
-    var caretPos = 0,
-        sel, range;
-    if (window.getSelection) {
-        sel = window.getSelection();
-        if (sel.rangeCount) {
-            range = sel.getRangeAt(0);
-            if (range.commonAncestorContainer.parentNode == editableDiv) {
-                caretPos = range.endOffset;
-            }
-        }
-    } else if (document.selection && document.selection.createRange) {
-        range = document.selection.createRange();
-        if (range.parentElement() == editableDiv) {
-            var tempEl = document.createElement("span");
-            editableDiv.insertBefore(tempEl, editableDiv.firstChild);
-            var tempRange = range.duplicate();
-            tempRange.moveToElementText(tempEl);
-            tempRange.setEndPoint("EndToEnd", range);
-            caretPos = tempRange.text.length;
-        }
-    }
-    return caretPos;
-}
 class InsertComment extends RComponent {
     detectEnter = false
     static propTypes = {
@@ -46,8 +21,9 @@ class InsertComment extends RComponent {
         this.state = {
             returnUrl: '/',
             isMobile: false,
+            Picker: null,
             emojiPickerState: false,
-            emojiPicker: null
+            emojiPickerShouldUp: false
         }
 
         this.onMount(() => {
@@ -72,17 +48,25 @@ class InsertComment extends RComponent {
     }
 
     initEmojiBox = async () => {
+        const { emojiPickerShouldUp } = this.state
         await import("emoji-mart/css/emoji-mart.css");
         const { Picker } = await import("emoji-mart")
-        this.setState({
-            emojiPicker: <div className="input-emojibox">
-                <Picker
-                    title="Pick your emoji…"
-                    emoji="point_up"
-                    onSelect={emoji => this.insertEmoji(emoji.native)}
-                />
-            </div>
-        })
+        this.setState({ Picker })
+    }
+
+    renderEmojiPicker = () => {
+        const { Picker, emojiPickerState, emojiPickerShouldUp } = this.state
+        if (emojiPickerState && Picker) return <div className={`input-emojibox ${emojiPickerShouldUp ? "up" : "down"}`} id="input-emojibox">
+        <Picker
+            title="Pick your emoji…"
+            emoji="point_up"
+            set="facebook"
+            native={true}
+            onSelect={emoji => this.insertEmoji(emoji.native)}
+        />
+    </div>
+
+        return null
     }
 
     addNewComment = (comment) => {
@@ -142,7 +126,22 @@ class InsertComment extends RComponent {
     }
 
     toggleEmojiPicker = () => {
-        this.setState({ emojiPickerState: !this.state.emojiPickerState })
+        const { emojiPickerState, isMobile } = this.state
+        if (emojiPickerState) {
+            this.setState({ emojiPickerState: false })
+        } else {
+            const app = document.getElementById('app')
+            const inputControls = document.getElementsByClassName('input-controls')[0]
+            const boundingClientRect = inputControls.getBoundingClientRect()
+            const top = boundingClientRect.top
+            const bottom = app.clientHeight - boundingClientRect.bottom
+            let emojiPickerShouldUp = false
+            if (!isMobile && top > bottom) {
+                emojiPickerShouldUp = true
+            }
+            this.setState({ emojiPickerState: true, emojiPickerShouldUp })
+        }
+
     }
 
     insertEmoji = (emoji) => {
@@ -151,7 +150,7 @@ class InsertComment extends RComponent {
 
     render() {
         const user = getState()
-        const { emojiPicker, emojiPickerState } = this.state
+        const { Picker } = this.state
         if (user && user.username)
             return (
                 <div className="input-comment-container">
@@ -164,9 +163,9 @@ class InsertComment extends RComponent {
                             onKeyDown={this.handleKeydown}
                             onInput={this.onInput}></div>
                         <div className="input-controls">
-                            {emojiPickerState && emojiPicker}
+                            {this.renderEmojiPicker()}
                             {
-                                emojiPicker &&
+                                Picker &&
                                 <i className="material-icons emoji-button" onClick={this.toggleEmojiPicker}>mood</i>
                             }
                             <i className="material-icons send-button" onClick={this.send}>send</i>

@@ -63,11 +63,21 @@
         flex: 1;
         display: flex;
         justify-content: flex-end;
+        position: relative;
         .input-emojibox {
           position: absolute;
-          top: 100%;
+          
+          &.up {
+            top: unset !important;
+            bottom: 100% !important;
+          }
+          &.down {
+            top: 100% !important;
+            bottom: unset !important;
+          }
         }
         .emoji-button {
+          user-select: none;
           margin: 0 6px;
           cursor: pointer;
           display: block;
