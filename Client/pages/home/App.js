@@ -1,7 +1,6 @@
 import React, { Component, Suspense } from 'react';
 import InitAlert from '../../common/alert'
-import 'aos/dist/aos.css';
-let AOS = null
+import { gsap } from 'gsap/dist/gsap';
 let SmoothScroll = null
 
 import Menu from './menu'
@@ -18,18 +17,21 @@ const menuMeta = [
 ]
 
 class App extends Component {
-    state = {
-        isShirk: false,
-        active: 'home',
-        route: 'home'
+    constructor(props) {
+        super(props)
+        this.state = {
+            isShirk: false,
+            active: 'home',
+            route: 'home'
+        }
+
     }
+
     handleScroll = (e) => {
-        AOS && AOS.refresh()
         const { active, isShirk, isDisplayPlane, route } = this.state
         let nextState = {
             active, isShirk, isDisplayPlane
         }
-        const app = document.getElementById('app');
         if (app.scrollTop > 80 || document.documentElement.scrollTop > 80) {
             nextState = { ...nextState, isShirk: true, isDisplayPlane: true };
         } else {
@@ -49,17 +51,63 @@ class App extends Component {
         }
     }
 
+    GsapInit = async () => {
+        let { ScrollTrigger } = await import('gsap/ScrollTrigger');
+        gsap.registerPlugin(ScrollTrigger)
+        gsap.core.globals("ScrollTrigger", ScrollTrigger)
+        gsap.fromTo('#welcome-text-1', {
+            y: -100,
+            opacity: 0
+        }, {
+            scrollTrigger: {
+                trigger: "#welcome-text-1"
+            },
+            y: 0,
+            opacity: 1,
+            duration: 1
+        })
+        gsap.fromTo('#welcome-text-2', {
+            y: 100,
+            opacity: 0
+        }, {
+            scrollTrigger: {
+                trigger: "#welcome-text-2"
+            },
+            y: 0,
+            opacity: 1,
+            duration: 1
+        })
+
+        var secondZoneTimeline = gsap.timeline({
+            scrollTrigger: {
+                scroller: "#app",
+                trigger: ".secondZone",
+                start: "top center",
+                end: "top"
+            }
+        });
+
+        secondZoneTimeline.from(".secondZone p", { scale: 0.3, rotation: 45, autoAlpha: 0, ease: "power2", duration: 2 })
+        .from(".secondZone .secondZoneRightPanel", { scale: 0.3, rotation: 45, autoAlpha: 0, ease: "power2", duration: 1.5 }, "-=1")
+        .from(".secondZone .btn-try-now", { scale: 0.3, rotation: 45, autoAlpha: 0, ease: "power2", duration: 1.5 }, "-=2")
+        var thirdZoneTimeline = gsap.timeline({
+            scrollTrigger: {
+                scroller: "#app",
+                trigger: ".thirdZone",
+                start: "top center",
+                end: "top"
+            }
+        });
+        
+        thirdZoneTimeline.from(".thirdZone .thirdZoneRightPanel", { scale: 0.3, rotation: 45, autoAlpha: 0, ease: "power2", duration: 2 })
+        .from(".thirdZone p", { scale: 0.3, rotation: 45, autoAlpha: 0, ease: "power2", duration: 1.5 }, "-=1")
+        .from(".thirdZone .btn-try-now", { scale: 0.3, rotation: 45, autoAlpha: 0, ease: "power2", duration: 1.5 }, "-=2")
+    }
+
     componentDidMount() {
+        this.GsapInit();
         window.addEventListener('scroll', this.handleScroll, true);
         InitAlert()
-
-        import('aos').then(aos => {
-            AOS = aos.default
-            AOS && AOS.init({
-                duration: 1000,
-                offset: 200
-            });
-        })
 
         import('smoothscroll-polyfill').then(smoothscroll => {
             SmoothScroll = smoothscroll.default
@@ -154,7 +202,9 @@ class App extends Component {
                 {
                     this.props.children
                 }
-                <div className="plane" style={{ display: isDisplayPlane ? 'flex' : 'none' }} onClick={this.gotoTop}>
+                <div className="plane"
+                    style={{ display: isDisplayPlane ? 'flex' : 'none' }}
+                    onClick={this.gotoTop}>
                     <i className="material-icons">keyboard_arrow_up</i>
                 </div>
             </React.Fragment>

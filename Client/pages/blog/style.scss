@@ -1,6 +1,12 @@
 .topnav {
   position: unset !important;
   background-color: $primaryColor !important;
+
+  .btn-login {
+    &:hover, &:active {
+      border-color: white !important;
+    }
+  }
 }
 .blog {
   height: auto;

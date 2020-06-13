@@ -9,14 +9,14 @@ class ThirdZone extends Component {
         return (
             <div className="thirdZone" id="thirdZoneId">
                 <div className="thirdZoneContent">
-                    <div className="thirdZoneRightPanel" data-aos="zoom-in-down">
+                    <div className="thirdZoneRightPanel">
                         <BlogIcon />
                     </div>
                     <div className="thirdZoneLeftPanel">
-                        <p data-aos="fade-down">Bạn có thể tạo blog của riêng mình ở đây.</p>
-                        <p data-aos="fade-down">Chia sẻ những thông tin hữu ích, hay đơn giản là viết bất cứ thứ gì bạn muốn</p>
-                        <p data-aos="fade-down">Tạo ra một thế giới của riêng bạn, mang màu sắc và cá tính riêng</p>
-                        <div data-aos="fade-up" style={{display: 'flex'}}>
+                        <p>Bạn có thể tạo blog của riêng mình ở đây.</p>
+                        <p>Chia sẻ những thông tin hữu ích, hay đơn giản là viết bất cứ thứ gì bạn muốn</p>
+                        <p>Tạo ra một thế giới của riêng bạn, mang màu sắc và cá tính riêng</p>
+                        <div style={{display: 'flex'}}>
                             <a href="/quan-tri/blog-post" className="btn-try-now">Tạo ngay Blog</a>
                         </div>
                     </div>
