@@ -34,27 +34,48 @@
       color: $primaryColor;
     }
 
-    .send-button {
-      margin: 0 6px;
-      cursor: pointer;
-      display: block;
-    }
-
-    .input-text {
+    .input-wrapper {
+      display: flex;
+      position: relative;
       flex: 1;
-      padding: 6px 12px;
+      flex-wrap: wrap;
       border-radius: 15px;
       border: 1px dashed #aaa;
-      font-size: 13px;
-      cursor: text;
+      .input-text {
+        padding: 6px 12px;
+        font-size: 13px;
+        cursor: text;
+        flex: 1 1 auto;
+        word-break: break-all;
 
-      &:empty:before {
-        content: attr(placeholder);
-        display: block;
+        &:empty:before {
+          content: attr(placeholder);
+          display: block;
+        }
+
+        &:focus {
+          outline: 0px solid transparent;
+        }
       }
 
-      &:focus {
-        outline: 0px solid transparent;
+      .input-controls {
+        align-self: flex-end;
+        flex: 1;
+        display: flex;
+        justify-content: flex-end;
+        .input-emojibox {
+          position: absolute;
+          top: 100%;
+        }
+        .emoji-button {
+          margin: 0 6px;
+          cursor: pointer;
+          display: block;
+        }
+        .send-button {
+          cursor: pointer;
+          display: block;
+        }
       }
     }
   }
@@ -145,7 +166,6 @@
     }
   }
 }
-
 
 @media only screen and (min-width: 800px) {
   .send-button {
