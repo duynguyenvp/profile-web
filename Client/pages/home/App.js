@@ -52,6 +52,8 @@ class App extends Component {
     }
 
     GsapInit = async () => {
+        //Chỉ thực hiện với trang chủ
+        if (this.state.route != 'home') return
         let { ScrollTrigger } = await import('gsap/ScrollTrigger');
         gsap.registerPlugin(ScrollTrigger)
         gsap.core.globals("ScrollTrigger", ScrollTrigger)
@@ -87,9 +89,9 @@ class App extends Component {
             }
         });
 
-        secondZoneTimeline.from(".secondZone p", { scale: 0.3, rotation: 45, autoAlpha: 0, ease: "power2", duration: 2 })
-        .from(".secondZone .secondZoneRightPanel", { scale: 0.3, rotation: 45, autoAlpha: 0, ease: "power2", duration: 1.5 }, "-=1")
-        .from(".secondZone .btn-try-now", { scale: 0.3, rotation: 45, autoAlpha: 0, ease: "power2", duration: 1.5 }, "-=2")
+        secondZoneTimeline.from(".secondZone p", { scale: 0.3, rotation: 45, autoAlpha: 0, ease: "power2", duration: 1.5 })
+        .from(".secondZone .secondZoneRightPanel", { scale: 0.3, rotation: 45, autoAlpha: 0, ease: "power2", duration: 1.2 }, "-=0.8")
+        .from(".secondZone .btn-try-now", { scale: 0.3, rotation: 45, autoAlpha: 0, ease: "power2", duration: 1.2 }, "-=1")
         var thirdZoneTimeline = gsap.timeline({
             scrollTrigger: {
                 scroller: "#app",
@@ -99,9 +101,9 @@ class App extends Component {
             }
         });
         
-        thirdZoneTimeline.from(".thirdZone .thirdZoneRightPanel", { scale: 0.3, rotation: 45, autoAlpha: 0, ease: "power2", duration: 2 })
-        .from(".thirdZone p", { scale: 0.3, rotation: 45, autoAlpha: 0, ease: "power2", duration: 1.5 }, "-=1")
-        .from(".thirdZone .btn-try-now", { scale: 0.3, rotation: 45, autoAlpha: 0, ease: "power2", duration: 1.5 }, "-=2")
+        thirdZoneTimeline.from(".thirdZone .thirdZoneRightPanel", { scale: 0.3, rotation: 45, autoAlpha: 0, ease: "power2", duration: 1.5 })
+        .from(".thirdZone p", { scale: 0.3, rotation: 45, autoAlpha: 0, ease: "power2", duration: 1.2 }, "-=0.8")
+        .from(".thirdZone .btn-try-now", { scale: 0.3, rotation: 45, autoAlpha: 0, ease: "power2", duration: 1.2 }, "-=1")
     }
 
     componentDidMount() {
