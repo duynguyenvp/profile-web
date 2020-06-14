@@ -7,6 +7,7 @@ import getApiInstance from '../../ajax/generic-api'
 import { dateToStringFormatCultureVi } from '../../utils/date-utils'
 import { getPostState, setPostState, subscribePost } from '../../services/postService'
 import withStyles from 'isomorphic-style-loader/withStyles'
+import BoxSearch from './box-search/BoxSearch'
 class Blog extends RComponent {
     static propTypes = {
         postData: PropTypes.object,
@@ -216,6 +217,7 @@ class Blog extends RComponent {
                         }
                     </div>
                     <div className="right-side">
+                        <BoxSearch changePost={this.changePost} />
                         <div className="recent">
                             <h2 className="box-title">Bài viết mới nhất</h2>
                             <div className="recent-body">

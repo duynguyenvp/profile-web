@@ -155,10 +155,10 @@
               cursor: pointer;
 
               .suggestion-item-avatar {
-                background-image: url("../../common-resources/images/post-avatar.jpg");
+                background-image: url("../../common-resources/images/default-post-image.png");
                 background-position: center;
                 background-repeat: no-repeat;
-                background-size: cover;
+                background-size: contain;
                 width: 100%;
                 height: 80px;
                 border-radius: 4px 4px 0 0;
@@ -181,6 +181,7 @@
     }
 
     .right-side {
+      max-width: 900px;
       flex: 3;
       display: flex;
       flex-direction: column;
@@ -204,10 +205,10 @@
           cursor: pointer;
 
           .recent-item-avatar {
-            background-image: url("../../common-resources/images/post-avatar.jpg");
+            background-image: url("../../common-resources/images/default-post-image.png");
             background-position: center;
             background-repeat: no-repeat;
-            background-size: cover;
+            background-size: contain;
             width: 100px;
             height: 60px;
             border-radius: 4px;
@@ -303,21 +304,6 @@
           }
         }
       }
-    }
-  }
-}
-
-@media only screen and (min-width: 800px) {
-  .right-side {
-    flex-direction: row !important;
-
-    .recent {
-      flex: 4;
-      margin-right: 10px;
-    }
-
-    .timeline {
-      flex: 2;
     }
   }
 }
