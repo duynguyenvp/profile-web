@@ -51,9 +51,9 @@ class App extends Component {
         }
     }
 
-    GsapInit = async () => {
+    GsapInit = async (route) => {
         //Chỉ thực hiện với trang chủ
-        if (this.state.route != 'home') return
+        if (route != 'home') return
         let { ScrollTrigger } = await import('gsap/ScrollTrigger');
         gsap.registerPlugin(ScrollTrigger)
         gsap.core.globals("ScrollTrigger", ScrollTrigger)
@@ -107,7 +107,6 @@ class App extends Component {
     }
 
     componentDidMount() {
-        this.GsapInit();
         window.addEventListener('scroll', this.handleScroll, true);
         InitAlert()
 
@@ -128,6 +127,7 @@ class App extends Component {
             newRoute = 'resume'
             active = 'resume'
         }
+        this.GsapInit(newRoute);
         this.setState({
             route: newRoute
         }, () => {

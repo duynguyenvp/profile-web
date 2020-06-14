@@ -75,16 +75,23 @@ const BoxSearch = ({ changePost }) => {
 
     return <div className="box-search">
         <div className="box-header">
-            <input
-                className="input-search-text"
-                placeholder="Nhập từ khóa tìm kiềm ..."
-                value={keyword}
-                onChange={onChange}
-                onKeyUp={onKeyUp}
-                onKeyDown={onKeyDown} />
+            <div className="search-wrapper">
+                <input
+                    className="input-search-text"
+                    placeholder="Nhập từ khóa tìm kiếm ..."
+                    value={keyword}
+                    onChange={onChange}
+                    onKeyUp={onKeyUp}
+                    onKeyDown={onKeyDown} />
+                {
+                    keyword && <button className="btn-search-clear" onClick={onRefresh}>
+                        <i className="material-icons">cancel</i>
+                    </button>
+                }
+            </div>
             <button
-                className="btn-refresh"
-                onClick={onRefresh}>Làm mới</button>
+                className="btn-search"
+                onClick={search}>Tìm kiếm</button>
         </div>
         <div className="box-body">
             {
@@ -94,7 +101,7 @@ const BoxSearch = ({ changePost }) => {
                 isShowStatus && keyword && !isSearching && <h5 className="box-search-status">Đã tìm thấy {(searchResults && searchResults.length) || 0} bài viết</h5>
             }
             {
-                keyword && !isSearching && searchResults && searchResults.length && searchResults.map((item, i) => {
+                keyword && !isSearching && searchResults && searchResults.map((item, i) => {
                     return (
                         <React.Fragment key={i}>
                             <div className="search-item" onClick={() => { this.changePost(item.id) }}>

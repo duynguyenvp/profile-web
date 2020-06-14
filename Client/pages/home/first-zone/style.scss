@@ -36,9 +36,10 @@
     i {
       font-size: 56px;
     }
-
+    
     &:hover,
     &:active {
+      outline: 0px solid transparent;
       i {
         font-size: 64px;
       }

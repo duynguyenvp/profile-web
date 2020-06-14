@@ -9,23 +9,42 @@
 
     .box-header {
         display: flex;
-
-        .input-search-text {
-            padding: 6px 12px;
-            font-size: 13px;
-            cursor: text;
-            flex: 1 1 auto;
-            word-break: break-all;
+        .search-wrapper {
+            position: relative;
+            display: flex;
             margin-right: 16px;
-            border-radius: 50px;
-            border: 1px solid $primaryColor;
+            flex: 1;
+            .btn-search-clear {
+                position: absolute;
+                right: 0px;
+                border: none;
+                background: transparent;
+                cursor: pointer;
+                top: 50%;
+                transform: translateY(-50%);
+                i {
+                    font-size: 20px;
+                }
+                &:focus {
+                    outline: 0px solid transparent;
+                }
+            }
+            .input-search-text {
+                padding: 6px 24px 6px 12px;
+                font-size: 13px;
+                cursor: text;
+                flex: 1 1 auto;
+                word-break: break-all;
+                border-radius: 50px;
+                border: 1px solid $primaryColor;
 
-            &:focus {
-                outline: 0px solid transparent;
+                &:focus {
+                    outline: 0px solid transparent;
+                }
             }
         }
 
-        .btn-refresh {
+        .btn-search {
             padding: 6px 12px;
             margin: 0;
             background: transparent;
@@ -51,6 +70,8 @@
     .box-body {
         display: flex;
         flex-direction: column;
+        overflow-y: auto;
+        max-height: 500px;
 
         .box-search-status {
             margin: 16px 0;
