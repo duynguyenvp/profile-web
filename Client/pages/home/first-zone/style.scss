@@ -38,7 +38,8 @@
     }
     
     &:hover,
-    &:active {
+    &:active,
+    &:focus {
       outline: 0px solid transparent;
       i {
         font-size: 64px;

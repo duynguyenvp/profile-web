@@ -252,9 +252,12 @@ class Blog extends RComponent {
                                         if (a.id < b.id) return 1
                                         return 0
                                     }).map((item, index) => {
-                                        return <li key={index}>
-                                            <span className={`caret ${item.isOpen ? 'caret-down' : ''}`}
-                                                onClick={() => { this.timelineItemToggle(item) }}>{item.name}</span>
+                                        return <li key={index} className="timeline-li">
+                                            <div className="timeline-item"
+                                                onClick={() => { this.timelineItemToggle(item) }}>
+                                                <i className={`material-icons timeline-item-icon ${item.isOpen ? "down" : ""}`}>chevron_right</i>
+                                                <span>{item.name}</span>
+                                            </div>
                                             <ul className={`nested ${item.isOpen ? 'active' : ''}`}>
                                                 {
                                                     item.listPost && item.listPost.map(post =>

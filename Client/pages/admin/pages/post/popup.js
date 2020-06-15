@@ -236,6 +236,7 @@ const PostPopup = ({ visible, onClose, post, callback }) => {
             onClose={onClose}
             visible={visible}
             destroyOnClose={true}
+            keyboard={false}
             bodyStyle={{ padding: 0 }}
         >
             <Layout className="editor-layout">
