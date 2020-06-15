@@ -25,6 +25,8 @@
                 i {
                     font-size: 20px;
                 }
+                &:hover,
+                &:active,
                 &:focus {
                     outline: 0px solid transparent;
                 }
@@ -60,7 +62,8 @@
             opacity: 0.75;
 
             &:hover,
-            &:active {
+            &:active,
+            &:focus {
                 opacity: 1;
                 outline: 0px solid transparent;
             }
