@@ -34,7 +34,7 @@ jobs:
       - name: pull image
         run: docker pull ${{ secrets.DOCKER_USER }}/somethingaboutmeweb:latest
       - name: docker run
-        run: docker run -it -d -p 8080:80 --net="host" -v /$HOME/Data/web/upload:/app/upload -v /$HOME/Data/web/Logs:/app/Logs ${{ secrets.DOCKER_USER }}/somethingaboutmeweb:latest
+        run: docker run -it -d --net="host" -v /$HOME/Data/web/upload:/app/upload -v /$HOME/Data/web/Logs:/app/Logs ${{ secrets.DOCKER_USER }}/somethingaboutmeweb:latest
       - name: remove all untagged images
         run: docker image prune -f
 

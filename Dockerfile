@@ -19,5 +19,5 @@ WORKDIR /app
 COPY --from=build-deps /tmp/package.json .
 COPY --from=build-deps /tmp/node_modules/ ./node_modules/
 COPY --from=build-deps /tmp/Published/Client .
-EXPOSE 80
+EXPOSE 8080
 CMD ["node", "server.js"]
