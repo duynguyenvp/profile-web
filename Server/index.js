@@ -8,7 +8,7 @@ import passport from 'passport'
 import session from 'cookie-session'
 import logger from './logger'
 
-const port = 80
+const port = 8080
 
 import resumeRoute from './routes/resume.route'
 import accountRoute from './routes/account.route'
