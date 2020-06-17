@@ -53,7 +53,7 @@ async function printPDF(url) {
         ignoreHTTPSErrors: true,
         headless: true,
         executablePath: process.env.CHROME_BIN || null,
-        args: ['--no-sandbox', '--headless', '--disable-gpu', '--disable-dev-shm-usage']
+        args: ['--no-sandbox', '--headless', '--disable-gpu', '--disable-dev-shm-usage', "--proxy-server='direct://'", '--proxy-bypass-list=*']
     });
     const page = await browser.newPage();
     await page.goto(url, { waitUntil: 'networkidle0' });
