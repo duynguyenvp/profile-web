@@ -2,7 +2,7 @@ import express from 'express'
 const router = express.Router()
 
 const template = require('../views/portfolio.pug')
-
+import logger from '../logger'
 import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 import StyleContext from 'isomorphic-style-loader/StyleContext'
@@ -71,6 +71,9 @@ router.post('/getprint', (req, res) => {
     printPDF(uri).then(pdf => {
         res.set({ 'Content-Type': 'application/pdf', 'Content-Length': pdf.length })
         res.send(pdf)
+    }).catch(error => {
+        logger.error('print resume was failed:' + JSON.stringify(err))
+        res.send(error)
     })
 });
 
