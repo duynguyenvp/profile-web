@@ -50,6 +50,7 @@ router.get('/print/:userId?', (req, res) => {
 
 async function printPDF(url) {
     const browser = await puppeteer.launch({
+        ignoreHTTPSErrors: true,
         headless: true,
         executablePath: process.env.CHROME_BIN || null,
         args: ['--no-sandbox', '--headless', '--disable-gpu', '--disable-dev-shm-usage']
