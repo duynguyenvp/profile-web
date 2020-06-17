@@ -72,7 +72,8 @@ router.post('/getprint', (req, res) => {
         res.set({ 'Content-Type': 'application/pdf', 'Content-Length': pdf.length })
         res.send(pdf)
     }).catch(error => {
-        logger.error('print resume was failed:' + JSON.stringify(err))
+        logger.error('print resume was failed:' + JSON.stringify(error))
+        console.error('print resume was failed:' + JSON.stringify(error))
         res.send(error)
     })
 });
