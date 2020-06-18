@@ -52,8 +52,7 @@ async function printPDF(url) {
     const browser = await puppeteer.launch({
         ignoreHTTPSErrors: true,
         headless: true,
-        executablePath: process.env.CHROME_BIN || null,
-        args: ['--no-sandbox', '--headless', "--proxy-server='direct://'", '--proxy-bypass-list=*']
+        args: ['--no-sandbox', '--headless', '--disable-gpu', '--disable-dev-shm-usage', '--allow-running-insecure-content']
     });
     const page = await browser.newPage();
     await page.goto(url, { waitUntil: 'networkidle0' });
