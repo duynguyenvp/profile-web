@@ -68,6 +68,8 @@ async function printPDF(url) {
 router.post('/getprint', (req, res) => {
     const url = req.body.url
     const uri = `${req.protocol}://${req.hostname}:${req.app.locals.port}${url}`
+    logger.info(uri)
+    console.log(uri)
     printPDF(uri).then(pdf => {
         res.set({ 'Content-Type': 'application/pdf', 'Content-Length': pdf.length })
         res.send(pdf)
