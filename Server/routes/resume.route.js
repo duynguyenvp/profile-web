@@ -52,6 +52,7 @@ async function printPDF(url) {
     const browser = await puppeteer.launch({
         ignoreHTTPSErrors: true,
         headless: true,
+        executablePath: process.env.CHROME_BIN || null,
         args: ['--no-sandbox', '--headless', '--disable-gpu', '--disable-dev-shm-usage', '--allow-running-insecure-content']
     });
     const page = await browser.newPage();
@@ -68,7 +69,7 @@ async function printPDF(url) {
 router.post('/getprint', (req, res) => {
     //TODO: Chinh sua lai port dung voi thuc te
     const url = req.body.url
-    const uri = `${req.protocol}://${req.hostname}:80`
+    const uri = `https://${req.hostname}:80${url}`
     printPDF(uri).then(pdf => {
         res.set({ 'Content-Type': 'application/pdf', 'Content-Length': pdf.length })
         res.send(pdf)

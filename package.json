@@ -18,7 +18,7 @@
     "passport-google-oauth": "^2.0.0",
     "pug": "^2.0.4",
     "pug-loader": "^2.4.0",
-    "puppeteer": "4.0.0",
+    "puppeteer": "3.1.0",
     "winston": "^3.2.1"
   },
   "devDependencies": {
