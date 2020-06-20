@@ -22,7 +22,7 @@ module.exports = env => {
 		entry: {
 			login: ["@babel/polyfill", './Client/pages/login/index.js'],
 			register: ["@babel/polyfill", './Client/pages/register/index.js'],
-			portfolio: ["@babel/polyfill", './Client/pages/portfolio/index.js'],
+			resume: ["@babel/polyfill", './Client/pages/resume/index.js'],
 			home: ["@babel/polyfill", './Client/pages/home/index.js'],
 			blog: ["@babel/polyfill", './Client/pages/blog/index.js'],
 			admin: ['./Client/pages/admin/index.js'],

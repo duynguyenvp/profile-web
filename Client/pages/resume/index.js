@@ -1,7 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import Resume from './Resume'
-import ResumePrint from './ResumePrint'
 import StyleContext from 'isomorphic-style-loader/StyleContext'
 
 const insertCss = (...styles) => {
@@ -11,7 +10,7 @@ const insertCss = (...styles) => {
 
 ReactDOM.hydrate(
     <StyleContext.Provider value={{ insertCss }}>
-        {window.__PRINT__ ? <ResumePrint /> : <Resume />}
+        <Resume />
     </StyleContext.Provider>,
     document.getElementById('app')
 )

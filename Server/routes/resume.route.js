@@ -1,14 +1,15 @@
 import express from 'express'
 const router = express.Router()
-
-const template = require('../views/portfolio.pug')
+import request from 'request';
+const template = require('../views/resume.pug')
+const templatePrint = require('../views/resumePrint.pug')
 import logger from '../logger'
 import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 import StyleContext from 'isomorphic-style-loader/StyleContext'
 
-import Resume from '../../Client/pages/portfolio/Resume'
-import ResumePrint from '../../Client/pages/portfolio/ResumePrint'
+import Resume from '../../Client/pages/resume/Resume'
+import ResumePrint from '../../Client/pages/resume/ResumePrint'
 import puppeteer from 'puppeteer'
 import System from '../constants/System'
 
@@ -30,25 +31,42 @@ router.get('/view/:userId?', (req, res) => {
     }))
 });
 
-router.get('/print/:userId?', (req, res) => {
-    const css = new Set() // CSS for all rendered React components
-    const insertCss = (...styles) => styles.forEach(style => css.add(style._getCss()))
-    const markup = ReactDOMServer.renderToString(
-        <StyleContext.Provider value={{ insertCss }}>
-            <ResumePrint />
-        </StyleContext.Provider>
-    )
+router.get('/print/:username?', (req, res) => {
+    const { username } = req.params;
+    let options = {
+        url: `${System.API}/Portfolio/ForHomePage`,
+        method: 'GET'
+    };
+    if (username) {
+        options = {
+            form: {
+                Username: username
+            },
+            ...options
+        }
+    }
+    request(options, function (err, _res, body) {
+        body = JSON.parse(body || "{}")
+        console.log(options, body)
+        const css = new Set() // CSS for all rendered React components
+        const insertCss = (...styles) => styles.forEach(style => css.add(style._getCss()))
+        const markup = ReactDOMServer.renderToString(
+            <StyleContext.Provider value={{ insertCss }}>
+                <ResumePrint resume={(body && body.result && body.result.length && body.result[0]) || {}} />
+            </StyleContext.Provider>
+        )
 
-    res.send(template({
-        body: markup,
-        styles: [...css].join('') + 'html, body { height: unset !important;}',
-        title: `Resume`,
-        initPrint: true,
-        resource_version: System.RESOURCE_VERSION
-    }))
+        res.send(templatePrint({
+            body: markup,
+            styles: [...css].join('') + 'html, body { height: unset !important;}',
+            title: `Resume`,
+            resource_version: System.RESOURCE_VERSION
+        }))
+
+    });
 });
 
-async function printPDF(url) {
+async function printPDF(uri) {
     const browser = await puppeteer.launch({
         ignoreHTTPSErrors: true,
         headless: true,
@@ -56,7 +74,7 @@ async function printPDF(url) {
         args: ['--no-sandbox', '--headless', '--disable-gpu', '--disable-dev-shm-usage', '--allow-running-insecure-content']
     });
     const page = await browser.newPage();
-    await page.goto(url, { waitUntil: 'networkidle0' });
+    await page.goto(uri, { waitUntil: 'networkidle0' });
     const pdf = await page.pdf({
         format: "A4",
         printBackground: true,
@@ -69,7 +87,7 @@ async function printPDF(url) {
 router.post('/getprint', (req, res) => {
     //TODO: Chinh sua lai port dung voi thuc te
     const url = req.body.url
-    const uri = `https://${req.hostname}:80${url}`
+    const uri = `http://0.0.0.0:8080${url}`
     printPDF(uri).then(pdf => {
         res.set({ 'Content-Type': 'application/pdf', 'Content-Length': pdf.length })
         res.send(pdf)

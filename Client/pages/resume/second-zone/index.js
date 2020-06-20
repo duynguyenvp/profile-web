@@ -76,9 +76,9 @@ class SecondZone extends Component {
                     <div className="skills-box">
                         {
                             skills && skills.map((skill, index) => {
-                                return isPrint ? <div className="skill-for-print">{skill.skillName}</div>
+                                return isPrint ? <div className="skill-for-print" key={index}>{skill.skillName}</div>
                                     : (
-                                        <StaticProcessBar key={index} name={skill.skillName} value={skill.level} />
+                                        <StaticProcessBar name={skill.skillName} value={skill.level} />
                                     )
                             })
                         }

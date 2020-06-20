@@ -1,11 +1,11 @@
-FROM node:current-alpine as build-deps
+FROM node:12.18.1-alpine3.12 as build-deps
 WORKDIR /tmp
 COPY . .
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh
 RUN npm install && npm audit fix && npm run publish
 
-FROM node:current-alpine
+FROM node:12.18.1-alpine3.12
 ENV CHROME_BIN="/usr/bin/chromium-browser" \
     PUPPETEER_SKIP_CHROMIUM_DOWNLOAD="true"
 RUN set -x \
@@ -17,7 +17,9 @@ RUN set -x \
     chromium
 WORKDIR /app
 COPY --from=build-deps /tmp/package.json .
-COPY --from=build-deps /tmp/node_modules/ ./node_modules/
 COPY --from=build-deps /tmp/Published/Client .
+RUN apk update && apk upgrade && \
+    apk add --no-cache bash git openssh
+RUN npm install && npm audit fix
 EXPOSE 8080
 CMD ["node", "server.js"]
