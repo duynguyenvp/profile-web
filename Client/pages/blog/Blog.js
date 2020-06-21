@@ -140,7 +140,8 @@ class Blog extends RComponent {
         const path = `https://www.facebook.com/plugins/share_button.php?href=${urlEncoded}&layout=button&size=small&appId=${fbAppId}&width=76&height=20`
         return (
             <div className="box-social-controls">
-                <iframe src={path}
+                <iframe title="Facebook share pluggin"
+                    src={path}
                     width="76"
                     height="20"
                     style={{ border: "none", overflow: "hidden" }}
