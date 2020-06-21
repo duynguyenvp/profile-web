@@ -210,7 +210,7 @@ const PersonalInfoBlock = ({ portfolioId, personalInfo }) => {
                 </Col>
             </Col>
             <Col md={8} span={24}>
-                <div className="avatar" style={avatarStyle}>
+                <div className="personal-info-avatar" style={avatarStyle}>
                     <label htmlFor="input-avatar" className="input-avatar-button">
                         <EditOutlined />
                     </label>
