@@ -6,7 +6,7 @@ const BoxUserMenu = ({ user, isReady, sigout }) => {
     const [isOpen, setIsOpen] = useState(false)
     const ref = withClickOutside({
         handler: () => {
-            setIsOpen(!isOpen)
+            setIsOpen(false)
         }
     })
 
@@ -16,10 +16,15 @@ const BoxUserMenu = ({ user, isReady, sigout }) => {
         <span onClick={() => {
             setIsOpen(!isOpen)
         }} id="user-info-greeting">Chào <strong>{user.username || ""}</strong></span>
-        <ul className="user-info-menu" style={{display: isOpen ? "block" : "none"}}>
+        <ul className="user-info-menu" style={{ display: isOpen ? "block" : "none" }}>
             <li>
-                <a href="/quan-tri">
-                    <i className="material-icons">settings</i> Quản trị
+                <a href="/quan-tri/personal-info">
+                    <i className="material-icons">person</i> Thông tin cá nhân
+                    </a>
+            </li>
+            <li>
+                <a href="/quan-tri/post">
+                    <i className="material-icons">edit</i> Quản trị bài viết
                     </a>
             </li>
             <li>
