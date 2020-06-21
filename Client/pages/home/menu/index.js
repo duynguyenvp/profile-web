@@ -3,10 +3,10 @@ import { RComponent } from '../../../common/r-component'
 import s from './index.scss'
 import withClickOutside from '../../../common/high-order-components/with-onclick-outside'
 import { getState, subscribe, resetState } from '../../../services/userService'
-import IconSignout from '../../../common-resources/ic_signout'
 
 import getApiInstance from '../../../ajax/generic-api'
 import withStyles from 'isomorphic-style-loader/withStyles'
+import BoxUserMenu from './boxUser'
 
 class Menu extends RComponent {
     constructor(props) {
@@ -64,29 +64,8 @@ class Menu extends RComponent {
         })
     }
 
-    renderBoxUser = (user) => {
-        const isLogin = user && user.username
-        const { isReady } = this.state
-        if (!isReady) return null
-        return isLogin ? <div className="nav-user-info">
-            <a href="/quan-tri" className="btn-management" title="Quản lý">
-                <i className="material-icons">settings</i>
-            </a>
-            <span>Chào </span>
-            <span className="username">{user.username || ""}</span>
-            <button className="btn-logout" onClick={this.sigout} title="Đăng xuất">
-                <IconSignout />
-            </button>
-        </div>
-            : <div className="nav-user-info">
-                <a href='/account/login' className="btn-login">
-                    Đăng nhập
-                </a>
-            </div>
-    }
-
     render() {
-        const { isOpen, isMobile } = this.state
+        const { isOpen, isMobile, isReady } = this.state
         const { isShirk, active } = this.props
 
         const user = getState()
@@ -103,7 +82,7 @@ class Menu extends RComponent {
                             <span></span>
                         </div>
                         {
-                            isMobile && this.renderBoxUser(user)
+                            isMobile && <BoxUserMenu user={user} isReady={isReady} sigout={this.sigout} />
                         }
                     </div>
                     <div className={`nav-items  ${isMobile ? "mobile" : ""} ${isOpen ? "active" : ""}`}>
@@ -128,7 +107,7 @@ class Menu extends RComponent {
                             <span>Blog</span>
                         </a>
                         {
-                            !isMobile && this.renderBoxUser(user)
+                            !isMobile && <BoxUserMenu user={user} isReady={isReady} sigout={this.sigout} />
                         }
                     </div>
                 </div>
