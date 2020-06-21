@@ -17,4 +17,5 @@ html
     style !{styles}
   body
     div(id='app') !{message}
-    script(src="/dist/home.js?v=" + resource_version, async)
+    each s in scripts
+      script(src=s, async)

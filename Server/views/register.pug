@@ -7,4 +7,5 @@ html
     script window.signupError = !{context}
   body
     div(id='app') !{body}
-  script(src="/dist/register.js?v=" + resource_version, async)
+    each s in scripts
+      script(src=s, async)

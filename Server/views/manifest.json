@@ -1,0 +1,84 @@
+{
+  "admin.js": "12.461a871fa4ae25115663.js",
+  "avatar.jpg": "ad02c49011ac671013f438b7324413a1.jpg",
+  "bg-header.jpg": "978b835c06c1e5b6a81fc7e3ed551e4b.jpg",
+  "blog.js": "13.3a38faf23f6a0a1abd72.js",
+  "default-post-image.png": "1388c109f046300cc7407952859851a0.png",
+  "entryPoints": {
+    "login": {
+      "js": [
+        "runtime.js",
+        "1.f25e762685bae76d073a.js",
+        "2.c5a675fa1234c2a71a6b.js",
+        "15.9e6af60d9d12fd3b746b.js"
+      ]
+    },
+    "register": {
+      "js": [
+        "runtime.js",
+        "1.f25e762685bae76d073a.js",
+        "2.c5a675fa1234c2a71a6b.js",
+        "16.ca0c3a87ad378c836dd5.js"
+      ]
+    },
+    "resume": {
+      "js": [
+        "runtime.js",
+        "1.f25e762685bae76d073a.js",
+        "2.c5a675fa1234c2a71a6b.js",
+        "17.6d8d6952eb2f5217b918.js"
+      ]
+    },
+    "home": {
+      "js": [
+        "runtime.js",
+        "1.f25e762685bae76d073a.js",
+        "2.c5a675fa1234c2a71a6b.js",
+        "14.829e0946cfe27d2c0848.js"
+      ]
+    },
+    "blog": {
+      "js": [
+        "runtime.js",
+        "1.f25e762685bae76d073a.js",
+        "2.c5a675fa1234c2a71a6b.js",
+        "13.3a38faf23f6a0a1abd72.js"
+      ]
+    },
+    "admin": {
+      "js": [
+        "runtime.js",
+        "1.f25e762685bae76d073a.js",
+        "24.b973156b832ffb08362b.js",
+        "20.532784ebc236ae982afb.js",
+        "21.dfef969b38ddb607f9b8.js",
+        "22.887061a44ee1231055d6.js",
+        "19.1f135a669ea5ffcff542.js",
+        "23.f7b7c1f8f0697008b9bd.js",
+        "25.896cb78cbd2d90c52de8.js",
+        "18.f1451021b58952133c46.js",
+        "12.461a871fa4ae25115663.js"
+      ]
+    }
+  },
+  "firstZoneBg.jpg": "1da151b5567cdbdf80f35bdc1a0765dd.jpg",
+  "home.js": "14.829e0946cfe27d2c0848.js",
+  "imageDefault.jpg": "0456ae09d944207d165774a0a6fd7423.jpg",
+  "login-background.jpg": "c7cd8148722e2ad1be4032847432b79d.jpg",
+  "login.js": "15.9e6af60d9d12fd3b746b.js",
+  "logo.png": "342ff194038b495a82fa8a3de68a3da1.png",
+  "logo_small.png": "f8885436afcdf604c6c04b462c8c4a2c.png",
+  "register.js": "16.ca0c3a87ad378c836dd5.js",
+  "resume.js": "17.6d8d6952eb2f5217b918.js",
+  "runtime.js": "runtime.js",
+  "vendor~admin~1c3a2c3f.js": "18.f1451021b58952133c46.js",
+  "vendor~admin~1f20a385.js": "19.1f135a669ea5ffcff542.js",
+  "vendor~admin~2a42e354.js": "20.532784ebc236ae982afb.js",
+  "vendor~admin~323d67b2.js": "21.dfef969b38ddb607f9b8.js",
+  "vendor~admin~628502f6.js": "22.887061a44ee1231055d6.js",
+  "vendor~admin~678f84af.js": "23.f7b7c1f8f0697008b9bd.js",
+  "vendor~admin~6e8b5f81.js": "24.b973156b832ffb08362b.js",
+  "vendor~admin~blog~home~login~register~resume~d939e436.js": "1.f25e762685bae76d073a.js",
+  "vendor~admin~fd731fb0.js": "25.896cb78cbd2d90c52de8.js",
+  "vendor~blog~home~login~register~resume~253ae210.js": "2.c5a675fa1234c2a71a6b.js"
+}
