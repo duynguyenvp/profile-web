@@ -77,8 +77,10 @@ const BoxSearch = ({ changePost }) => {
         <div className="box-header">
             <div className="search-wrapper">
                 <input
+                    id="full-text-search"
                     className="input-search-text"
                     placeholder="Nhập từ khóa tìm kiếm ..."
+                    aria-label="Nhập từ khóa tìm kiếm"
                     value={keyword}
                     onChange={onChange}
                     onKeyUp={onKeyUp}

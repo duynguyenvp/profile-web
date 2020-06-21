@@ -53,18 +53,18 @@ class FourthZone extends Component {
     send = () => {
         const { email, message, isValidateEmail, isValidateMessage } = this.state
         if (isValidateEmail || isValidateMessage) {
-            addAlert({ type: 'warning', message: 'Lỗi Validate.'})
+            addAlert({ type: 'warning', message: 'Lỗi Validate.' })
             return;
         }
         if (!email || !message) {
-            addAlert({ type: 'warning', message: 'Thông tin chưa đầy đủ'})
+            addAlert({ type: 'warning', message: 'Thông tin chưa đầy đủ' })
             return;
         }
         getApiInstance().postWithForm({
             url: '/Home',
             data: { email, message }
         }
-            ).then(res => {
+        ).then(res => {
             if (res) {
                 addAlert({ message: 'Gửi phải hồi thành công. Cảm ơn bạn!!!', duration: 5000 })
                 this.setState({
@@ -74,7 +74,7 @@ class FourthZone extends Component {
                     isValidateMessage: ''
                 })
             } else {
-                addAlert({ type: 'warning', message: 'Đã xảy ra lỗi!'})
+                addAlert({ type: 'warning', message: 'Đã xảy ra lỗi!' })
             }
         }).catch(err => {
             console.error('Lỗi', err)
@@ -89,8 +89,9 @@ class FourthZone extends Component {
                     <div className="box-contact" data-aos="fade-right">
                         <h2>Liên hệ & góp ý</h2>
                         <div className="contact-item">
-                            <label className="title">Email:</label>
-                            <input type="text"
+                            <label className="title" htmlFor="feedback-input-email">Email:</label>
+                            <input id="feedback-input-email"
+                                type="text"
                                 className={isValidateEmail ? 'error' : ''}
                                 placeholder="Email ..."
                                 value={email}
@@ -98,8 +99,9 @@ class FourthZone extends Component {
                             {isValidateEmail && <label className="validate-error">{isValidateEmail}</label>}
                         </div>
                         <div className="contact-item">
-                            <label className="title">Tin nhắn:</label>
-                            <textarea style={{ width: '100%' }}
+                            <label className="title" htmlFor="feedback-input-content">Tin nhắn:</label>
+                            <textarea id="feedback-input-content"
+                                style={{ width: '100%' }}
                                 rows="10"
                                 className={isValidateMessage ? 'error' : ''}
                                 placeholder="Nhập nội dung ..."
@@ -112,7 +114,8 @@ class FourthZone extends Component {
                         </div>
                     </div>
                     <div className="box-social" data-aos="fade-left">
-                        <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fsomethingaboutme.info&tabs&width=340&height=196&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId=1052049204910473"
+                        <iframe title="Facebook page-pluggin"
+                            src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fsomethingaboutme.info&tabs&width=340&height=196&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId=1052049204910473"
                             width="340"
                             height="196"
                             style={{ border: 'none', overflow: 'hidden' }}

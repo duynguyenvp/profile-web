@@ -206,7 +206,7 @@ const EditorContent = ({ post, callback }) => {
                     <button className="ql-code-block"></button>
                 </span>
                 <button className={emojiPickerState ? 'ql-active' : ''}
-                onClick={handleClickEmojiButton}>
+                    onClick={handleClickEmojiButton}>
                     <i className="material-icons" style={{ fontSize: 18, float: "left" }}>mood</i>
                 </button>
                 {renderEmojiPicker()}
@@ -216,7 +216,16 @@ const EditorContent = ({ post, callback }) => {
             <ImageManager visible={flagOpenImageManager}
                 close={closeImageManager}
                 callback={(src) => {
-                    editor && editor.insertEmbed(range && range.index || 0, 'image', src)
+                    const Delta = Quill.import('delta');
+                    window.QuillEditor && window.QuillEditor.updateContents(
+                        new Delta()
+                            .retain((range && range.index) || 0)
+                            .insert({
+                                image: src
+                            },
+                                {
+                                    alt: src
+                                }));
                     setRange(null)
                 }} />
             <div className="editor-content" ref={refEditor}
