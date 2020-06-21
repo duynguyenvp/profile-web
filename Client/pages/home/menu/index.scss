@@ -1,5 +1,4 @@
 .topnav {
-  overflow: hidden;
   display: flex;
   justify-content: center;
   width: 100%;
@@ -21,14 +20,55 @@
       justify-content: flex-end;
       color: white;
       padding: 14px 32px;
+      position: relative;
 
-      .username {
-        font-weight: bold;
-        margin-right: 16px;
-        margin-left: 6px;
+      .user-info-menu {
+        position: absolute;
+        min-width: 200px;
+        top: 100%;
+        right: 40px;
+        list-style-type: none;
+        background: white;
+        margin: 0;
+        padding: 0;
+        z-index: 1000;
+        border-radius: 4px;
+        box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.55);
+
+        &::before {
+          content: "";
+          z-index: -1;
+          position: absolute;
+          width: 16px;
+          height: 16px;
+          background: white;
+          top: -6px;
+          left: 50%;
+          transform: translateX(-50%) rotate(45deg);
+        }
+
+        li {
+          border-radius: 4px;
+          &:hover, &:active {
+            background: #f1f1f1;
+          }
+        }
+
+        a {
+          justify-content: flex-start !important;
+          color: $primaryColor !important;
+
+          svg,
+          i {
+            color: $primaryColor !important;
+            fill: $primaryColor !important;
+            margin-right: 16px;
+          }
+        }
       }
 
-      .btn-logout, .btn-management {
+      .btn-logout,
+      .btn-management {
         border: none;
         background: unset;
         display: flex;
@@ -201,7 +241,8 @@
     transition: background 0.4s ease;
 
     .btn-login {
-      &:hover, &:active {
+      &:hover,
+      &:active {
         border-color: white !important;
       }
     }
