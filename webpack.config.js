@@ -182,7 +182,7 @@ module.exports = env => {
 			new UglifyJsPlugin({
 				sourceMap: false
 			}),
-			new BundleAnalyzerPlugin({ analyzerPort: 9999 }),
+			// new BundleAnalyzerPlugin({ analyzerPort: 9999 }),
 			new MiniCssExtractPlugin({
 				// Options similar to the same options in webpackOptions.output
 				// both options are optional
