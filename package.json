@@ -101,7 +101,7 @@
     "dev": "concurrently \"npm run client:build\" \"npm run server:build\"",
     "build": "concurrently \"npm run client:build\" \"npm run start:server\"",
     "build:prod": "concurrently \"npm run client:build:prod\" \"npm run start:server\"",
-    "publish": "concurrently \"npm run client:build:prod\" \"npm run server:build:prod\""
+    "publish": "npm run client:build:prod && npm run server:build:prod"
   },
   "author": "duy",
   "license": "ISC"

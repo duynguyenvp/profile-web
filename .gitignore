@@ -2,3 +2,4 @@
 /Published/*
 /upload/*
 /package-lock.json
+Server/views/manifest.json

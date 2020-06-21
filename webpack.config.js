@@ -103,7 +103,7 @@ module.exports = env => {
 						// can be used in chunks array of HtmlWebpackPlugin
 						test: /[\\/]node_modules[\\/]/,
 						chunks: "all",
-						maxSize: 500 * 1000,
+						maxSize: 300 * 1000,
 					},
 					common: {
 						test: /[\\/]src[\\/]components[\\/]/,
