@@ -8,7 +8,8 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
-// require("@babel/polyfill");
+const WorkboxPlugin = require('workbox-webpack-plugin');
+
 module.exports = env => {
 	const isDevBuild = !(env && env.prod);
 	const reStyle = /\.(css|less|styl|scss|sass|sss)$/;
@@ -70,6 +71,13 @@ module.exports = env => {
 					flatten: true,
 				}
 			]),
+			new WorkboxPlugin.GenerateSW({
+				// these options encourage the ServiceWorkers to get in there fast
+				// and not allow any straggling "old" SWs to hang around
+				clientsClaim: true,
+				skipWaiting: true,
+				maximumFileSizeToCacheInBytes: 5000000
+			}),
 		],
 		resolve: {
 			extensions: ['.js', '.jsx'],
