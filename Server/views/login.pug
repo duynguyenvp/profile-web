@@ -8,4 +8,5 @@ html
     style !{styles}
   body
     div(id='app') !{body}
-  script(src="/dist/login.js?v=" + resource_version, async)
+    each s in scripts
+      script(src=s, async)

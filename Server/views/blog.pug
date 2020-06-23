@@ -1,7 +1,8 @@
-html
+html(lang="vi")
   head
     title= title
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(name="Description" content="Some thing about me, some thing about you. You can write whatever you want here!")
     meta(http-equiv="Content-Type", content="text/html;charset=UTF-8")
     meta(property="og:title" content=ogTitle)
     meta(property="og:description" content=ogDescription)
@@ -16,4 +17,5 @@ html
     script window.__INITIAL__DATA__ = !{initdata}
   body
     div(id='app') !{main}
-    script(src="/dist/blog.js?v=" + resource_version, async)
+    each s in scripts
+      script(src=s, async)

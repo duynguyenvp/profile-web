@@ -128,96 +128,99 @@ const PersonalInfoBlock = ({ portfolioId, personalInfo }) => {
         className="ant-advanced-search-form"
         onFinish={onFinish}
     >
-        <Row gutter={24} justify="center" style={{ marginBottom: 16 }}>
-            <div className="avatar" style={avatarStyle}>
-                <label htmlFor="input-avatar" className="input-avatar-button">
-                    <EditOutlined />
-                </label>
-                <input type="file"
-                    id="input-avatar"
-                    ref={refIpAvatar}
-                    onChange={changeAvatar} />
-            </div>
-        </Row>
         <Row gutter={24}>
-            <Col md={12} span={24}>
-                <Form.Item
-                    name={`fullName`}
-                    label={`Tên đầy đủ`}
-                    initialValue={fullName}
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Vui lòng nhập tên!',
-                        },
-                    ]}
-                >
-                    <Input placeholder="Tên ..." />
-                </Form.Item>
+            <Col md={16} span={24}>
+                <Col md={24} span={24}>
+                    <Form.Item
+                        name={`fullName`}
+                        label={`Tên đầy đủ`}
+                        initialValue={fullName}
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Vui lòng nhập tên!',
+                            },
+                        ]}
+                    >
+                        <Input placeholder="Tên ..." />
+                    </Form.Item>
+                </Col>
+                <Col md={24} span={24}>
+                    <Form.Item
+                        name={`jobTitle`}
+                        label={`Nghề nghiệp`}
+                        initialValue={jobTitle}
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Vui lòng nhập nghề nghiệp!',
+                            },
+                        ]}
+                    >
+                        <Input placeholder="Nghề nghiệp ..." />
+                    </Form.Item>
+                </Col>
+                <Col md={24} span={24}>
+                    <Form.Item
+                        name={`email`}
+                        label={`Email`}
+                        initialValue={email}
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Vui lòng nhập email!',
+                            },
+                        ]}
+                    >
+                        <Input placeholder="Email ..." />
+                    </Form.Item>
+                </Col>
+                <Col md={24} span={24}>
+                    <Form.Item
+                        name={`mobile`}
+                        label={`Số điện thoại`}
+                        initialValue={mobile}
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Vui lòng nhập số điện thoại!',
+                            },
+                        ]}
+                    >
+                        <Input placeholder="Số điện thoại ..." />
+                    </Form.Item>
+                </Col>
+                <Col md={24} span={24}>
+                    <Form.Item
+                        name={`skype`}
+                        label={`Skype`}
+                        initialValue={skype}
+                    >
+                        <Input placeholder="Tên tỉnh hoặc thành phố ..." />
+                    </Form.Item>
+                </Col>
+                <Col md={24} span={24}>
+                    <Form.Item
+                        name={`address`}
+                        label={`Địa chỉ`}
+                        initialValue={address}
+                    >
+                        <Input placeholder="Địa chỉ ..." />
+                    </Form.Item>
+                </Col>
             </Col>
-            <Col md={12} span={24}>
-                <Form.Item
-                    name={`jobTitle`}
-                    label={`Nghề nghiệp`}
-                    initialValue={jobTitle}
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Vui lòng nhập nghề nghiệp!',
-                        },
-                    ]}
-                >
-                    <Input placeholder="Nghề nghiệp ..." />
-                </Form.Item>
+            <Col md={8} span={24}>
+                <div className="personal-info-avatar" style={avatarStyle}>
+                    <label htmlFor="input-avatar" className="input-avatar-button">
+                        <EditOutlined />
+                    </label>
+                    <input type="file"
+                        id="input-avatar"
+                        ref={refIpAvatar}
+                        onChange={changeAvatar} />
+                </div>
             </Col>
-            <Col md={12} span={24}>
-                <Form.Item
-                    name={`email`}
-                    label={`Email`}
-                    initialValue={email}
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Vui lòng nhập email!',
-                        },
-                    ]}
-                >
-                    <Input placeholder="Email ..." />
-                </Form.Item>
-            </Col>
-            <Col md={12} span={24}>
-                <Form.Item
-                    name={`mobile`}
-                    label={`Số điện thoại`}
-                    initialValue={mobile}
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Vui lòng nhập số điện thoại!',
-                        },
-                    ]}
-                >
-                    <Input placeholder="Số điện thoại ..." />
-                </Form.Item>
-            </Col>
-            <Col md={12} span={24}>
-                <Form.Item
-                    name={`skype`}
-                    label={`Skype`}
-                    initialValue={skype}
-                >
-                    <Input placeholder="Tên tỉnh hoặc thành phố ..." />
-                </Form.Item>
-            </Col>
-            <Col md={12} span={24}>
-                <Form.Item
-                    name={`address`}
-                    label={`Địa chỉ`}
-                    initialValue={address}
-                >
-                    <Input placeholder="Địa chỉ ..." />
-                </Form.Item>
-            </Col>
+
         </Row>
         <Row gutter={24}>
             <Col span={24}>

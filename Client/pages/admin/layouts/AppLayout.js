@@ -175,12 +175,11 @@ const AppLayout = ({ children }) => {
                     {...siderProps}
                 >
                     <div className="logo">
-                        <img src={collapsed ? LogoSmall : Logo}
-                            className="logo-image"
-                            alt="Something about me!"
-                            onClick={() => {
-                                window.location = "/"
-                            }} />
+                        <a href="/">
+                            <img src={collapsed ? LogoSmall : Logo}
+                                className="logo-image"
+                                alt="Something about me!" />
+                        </a>
                     </div>
                     <AppMenu />
                 </Sider>

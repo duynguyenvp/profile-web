@@ -12,6 +12,7 @@ import Resume from '../../Client/pages/resume/Resume'
 import ResumePrint from '../../Client/pages/resume/ResumePrint'
 import puppeteer from 'puppeteer'
 import System from '../constants/System'
+import manifest from '../views/manifest.json'
 
 router.get('/view/:userId?', (req, res) => {
     const css = new Set() // CSS for all rendered React components
@@ -27,7 +28,9 @@ router.get('/view/:userId?', (req, res) => {
         styles: [...css].join(''),
         title: `Resume`,
         initPrint: false,
-        resource_version: System.RESOURCE_VERSION
+        scripts: manifest.entryPoints.resume.js.map(item => {
+            return `/dist/${item}?v=${System.RESOURCE_VERSION}`
+        }),
     }))
 });
 

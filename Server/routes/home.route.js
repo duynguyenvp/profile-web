@@ -7,6 +7,8 @@ import ReactDOMServer from 'react-dom/server'
 import HomePage from '../components/Home'
 import StyleContext from 'isomorphic-style-loader/StyleContext'
 import System from '../constants/System'
+import manifest from '../views/manifest.json'
+
 router.get('/', (req, res) => {
     const css = new Set() // CSS for all rendered React components
     const insertCss = (...styles) => styles.forEach(style => css.add(style._getCss()))
@@ -19,6 +21,9 @@ router.get('/', (req, res) => {
         message: markup,
         styles: [...css].join(''),
         title: `Trang chủ`,
+        scripts: manifest.entryPoints.home.js.map(item => {
+            return `/dist/${item}?v=${System.RESOURCE_VERSION}`
+        }),
         resource_version: System.RESOURCE_VERSION
     }))
 });

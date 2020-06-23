@@ -9,25 +9,31 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
+const WebpackAssetsManifest = require('webpack-assets-manifest')
+const FileManagerPlugin = require('filemanager-webpack-plugin');
+const entries = {
+	login: ["@babel/polyfill", './Client/pages/login/index.js'],
+	register: ["@babel/polyfill", './Client/pages/register/index.js'],
+	resume: ["@babel/polyfill", './Client/pages/resume/index.js'],
+	home: ["@babel/polyfill", './Client/pages/home/index.js'],
+	blog: ["@babel/polyfill", './Client/pages/blog/index.js'],
+	admin: ['./Client/pages/admin/index.js'],
+}
 
 module.exports = env => {
 	const isDevBuild = !(env && env.prod);
 	const reStyle = /\.(css|less|styl|scss|sass|sss)$/;
 	const SharedConfig = () => ({
 		output: {
-			filename: '[name].js',
-			chunkFilename: '[name].[hash].js',
+			filename: (pathData) => {
+				if (Object.keys(entries).includes(pathData.chunk.name) || pathData.chunk.name.indexOf('runtime') != -1) return '[name].js'
+				return '[name].[contenthash].js';
+			},
+			chunkFilename: '[id].[contenthash].js',
 			path: path.resolve(__dirname, './Published/Client/dist/'),
 			publicPath: '/dist/',
 		},
-		entry: {
-			login: ["@babel/polyfill", './Client/pages/login/index.js'],
-			register: ["@babel/polyfill", './Client/pages/register/index.js'],
-			resume: ["@babel/polyfill", './Client/pages/resume/index.js'],
-			home: ["@babel/polyfill", './Client/pages/home/index.js'],
-			blog: ["@babel/polyfill", './Client/pages/blog/index.js'],
-			admin: ['./Client/pages/admin/index.js'],
-		},
+		entry: entries,
 		module: {
 			rules: [
 				{
@@ -63,6 +69,10 @@ module.exports = env => {
 				verbose: true,
 				dry: false
 			}),
+			new WebpackAssetsManifest({
+				entrypoints: true,
+				entrypointsKey: 'entryPoints',
+			}),
 			new CopyPlugin([
 				{
 					from: 'Client/common-resources/material-design-icons/*',
@@ -78,13 +88,39 @@ module.exports = env => {
 				skipWaiting: true,
 				maximumFileSizeToCacheInBytes: 5000000
 			}),
+			new FileManagerPlugin({
+				onEnd: {
+					copy: [
+						{ source: path.resolve(__dirname, 'Published/Client/dist/manifest.json'), destination: path.resolve(__dirname, 'Server/views/manifest.json') }
+					]
+				}
+			})
 		],
 		resolve: {
 			extensions: ['.js', '.jsx'],
 			alias: {
 				modules: path.join(__dirname, "node_modules"),
 			}
-		}
+		},
+		optimization: {
+			moduleIds: 'hashed',
+			runtimeChunk: 'single',
+			splitChunks: {
+				cacheGroups: {
+					vendor: {
+						// can be used in chunks array of HtmlWebpackPlugin
+						test: /[\\/]node_modules[\\/]/,
+						chunks: "all",
+						maxSize: 300 * 1000,
+					},
+					common: {
+						test: /[\\/]src[\\/]components[\\/]/,
+						chunks: "all",
+						minSize: 0,
+					},
+				},
+			}
+		},
 	});
 	const devConfig = () => ({
 		mode: 'development',
@@ -154,7 +190,7 @@ module.exports = env => {
 			new UglifyJsPlugin({
 				sourceMap: false
 			}),
-			//new BundleAnalyzerPlugin({ analyzerPort: 9999 }),
+			new BundleAnalyzerPlugin({ analyzerPort: 9999 }),
 			new MiniCssExtractPlugin({
 				// Options similar to the same options in webpackOptions.output
 				// both options are optional

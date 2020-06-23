@@ -3,7 +3,6 @@ import { RComponent } from '../../../common/r-component'
 import s from './index.scss'
 import withClickOutside from '../../../common/high-order-components/with-onclick-outside'
 import { getState, subscribe, resetState } from '../../../services/userService'
-import IconSignout from '../../../common-resources/ic_signout'
 
 import getApiInstance from '../../../ajax/generic-api'
 import withStyles from 'isomorphic-style-loader/withStyles'
@@ -63,32 +62,6 @@ class Menu extends RComponent {
         }).catch(err => {
             console.error(err)
         })
-    }
-
-    renderBoxUser = (user) => {
-        const isLogin = user && user.username
-        const { isReady } = this.state
-        if (!isReady) return null
-        return isLogin ? <div className="nav-user-info">
-            <span>Chào <strong>{user.username || ""}</strong></span>
-            <ul className="user-info-menu">
-                <li>
-                    <a href="/quan-tri">
-                        <i className="material-icons">settings</i> Quản trị
-                    </a>
-                </li>
-                <li>
-                    <a href="#" onClick={this.sigout}>
-                        <IconSignout /> Đăng xuất
-                    </a>
-                </li>
-            </ul>
-        </div>
-            : <div className="nav-user-info">
-                <a href='/account/login' className="btn-login">
-                    Đăng nhập
-                </a>
-            </div>
     }
 
     render() {

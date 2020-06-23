@@ -22,11 +22,16 @@
       padding: 14px 32px;
       position: relative;
 
+      #user-info-greeting {
+        user-select: none;
+        cursor: pointer;
+      }
+
       .user-info-menu {
         position: absolute;
         min-width: 200px;
         top: 100%;
-        right: 40px;
+        right: 30px;
         list-style-type: none;
         background: white;
         margin: 0;

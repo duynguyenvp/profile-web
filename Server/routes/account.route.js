@@ -15,6 +15,7 @@ import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 import Test from '../../Client/pages/login/form-login/index'
 import StyleContext from 'isomorphic-style-loader/StyleContext'
+import manifest from '../views/manifest.json'
 
 router.get('/auth/google', passport.authenticate('google', {
     scope: ['profile', 'email']
@@ -67,7 +68,10 @@ router.get('/login:returnUrl?', checkAuth, (req, res) => {
         resource_version: System.RESOURCE_VERSION,
         styles: [...css].join(''),
         body: markup,
-        context: JSON.stringify({ message: message })
+        context: JSON.stringify({ message: message }),
+        scripts: manifest.entryPoints.login.js.map(item => {
+            return `/dist/${item}?v=${System.RESOURCE_VERSION}`
+        }),
     }))
 });
 
@@ -77,7 +81,10 @@ router.get('/register:returnUrl?', checkAuth, (req, res) => {
     res.send(templateRegister({
         title: `Register`,
         resource_version: System.RESOURCE_VERSION,
-        context: JSON.stringify({ message: message })
+        context: JSON.stringify({ message: message }),
+        scripts: manifest.entryPoints.register.js.map(item => {
+            return `/dist/${item}?v=${System.RESOURCE_VERSION}`
+        }),
     }))
 });
 
