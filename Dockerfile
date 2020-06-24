@@ -17,7 +17,7 @@ RUN set -x \
     chromium
 WORKDIR /app
 COPY --from=build-deps /tmp/package.json .
-COPY --from=build-deps /tmp/Published/Client .
+COPY --from=build-deps /tmp/build .
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh
 RUN npm install && npm audit fix

@@ -9,7 +9,7 @@ import StyleContext from 'isomorphic-style-loader/StyleContext'
 
 import Blog from '../components/Blog'
 import { dateToStringFormatCultureVi } from '../../Client/utils/date-utils'
-import manifest from '../views/manifest.json'
+import assets from '../views/assets.json'
 import System from '../constants/System'
 
 router.get('/:postUrl?', (req, res) => {
@@ -86,7 +86,7 @@ router.get('/:postUrl?', (req, res) => {
             resource_version: System.RESOURCE_VERSION,
             main: markup,
             styles: [...css].join(''),
-            scripts: manifest.entryPoints.blog.js.map(item => {
+            scripts: assets.entryPoints.blog.js.map(item => {
                 return `/dist/${item}?v=${System.RESOURCE_VERSION}`
             }),
             title: pageTitle,

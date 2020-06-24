@@ -6,13 +6,13 @@ const template = require('../views/admin.pug')
 
 import { apiRequireAuth } from '../middlewares/auth.middleware'
 import { adminRequireAuth } from '../middlewares/admin.auth.middleware'
-import manifest from '../views/manifest.json'
+import assets from '../views/assets.json'
 
 router.get('/*', adminRequireAuth, (req, res) => {
     res.send(template({
         title: `Admin Page`,
         resource_version: System.RESOURCE_VERSION,
-        scripts: manifest.entryPoints.admin.js.map(item => {
+        scripts: assets.entryPoints.admin.js.map(item => {
             return `/dist/${item}?v=${System.RESOURCE_VERSION}`
         }),
     }))

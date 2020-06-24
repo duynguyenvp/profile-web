@@ -30,7 +30,7 @@ module.exports = env => {
 				return '[name].[contenthash].js';
 			},
 			chunkFilename: '[id].[contenthash].js',
-			path: path.resolve(__dirname, './Published/Client/dist/'),
+			path: path.resolve(__dirname, './build/dist/'),
 			publicPath: '/dist/',
 		},
 		entry: entries,
@@ -70,6 +70,7 @@ module.exports = env => {
 				dry: false
 			}),
 			new WebpackAssetsManifest({
+				output: 'assets.json',
 				entrypoints: true,
 				entrypointsKey: 'entryPoints',
 			}),
@@ -82,16 +83,42 @@ module.exports = env => {
 				}
 			]),
 			new WorkboxPlugin.GenerateSW({
-				// these options encourage the ServiceWorkers to get in there fast
-				// and not allow any straggling "old" SWs to hang around
+				swDest: '../sw.js',
 				clientsClaim: true,
 				skipWaiting: true,
-				maximumFileSizeToCacheInBytes: 5000000
+				maximumFileSizeToCacheInBytes: 5000000,
+				runtimeCaching: [
+					{
+						urlPattern: new RegExp('^https:\/\/(.*).fbcdn.net\/(.*)'),
+						handler: 'CacheFirst'
+					},
+					{
+						urlPattern: new RegExp('^https:\/\/fonts.(?:googleapis|gstatic).com\/(.*)'),
+						handler: 'CacheFirst'
+					},
+					{
+						urlPattern: new RegExp('^(http|https):\/\/(somethingaboutme.info|localhost)\/workbox(.*).js'),
+						handler: 'CacheFirst'
+					},
+					{
+						urlPattern: new RegExp('^(http|https):\/\/(somethingaboutme.info|localhost)\/\#(.*)'),
+						handler: 'NetworkFirst'
+					},
+					{
+						urlPattern: new RegExp('^(http|https):\/\/(somethingaboutme.info|localhost)(.*)'),
+						handler: 'NetworkFirst'
+					}
+				]
 			}),
 			new FileManagerPlugin({
+				onStart: {
+					delete: [
+						path.resolve(__dirname, 'build/workbox*')
+					]
+				},
 				onEnd: {
 					copy: [
-						{ source: path.resolve(__dirname, 'Published/Client/dist/manifest.json'), destination: path.resolve(__dirname, 'Server/views/manifest.json') }
+						{ source: path.resolve(__dirname, 'build/dist/assets.json'), destination: path.resolve(__dirname, 'Server/views/assets.json') }
 					]
 				}
 			})

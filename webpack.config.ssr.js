@@ -24,7 +24,7 @@ module.exports = env => {
             main: ["@babel/polyfill", __dirname + '/Server/index.js'],
         },
         output: {
-            path: path.join(__dirname, './Published/Client'),
+            path: path.join(__dirname, './build'),
             filename: 'server.js',
             publicPath: '/dist/',
         },
@@ -56,6 +56,11 @@ module.exports = env => {
                 {
                     from: '../Server/resources',
                     to: 'resources',
+                    toType: 'dir',
+                },
+                {
+                    from: '../publish',
+                    to: 'publish',
                     toType: 'dir',
                 },
             ]),

@@ -98,7 +98,7 @@
     "server:build": "node node_modules/webpack/bin/webpack.js --config ./webpack.config.ssr.js --watch",
     "server:build:prod": "node node_modules/webpack/bin/webpack.js --env.prod --config ./webpack.config.ssr.js",
     "babel:node": "./node_modules/.bin/babel-node --presets=@babel/env",
-    "start:server": "concurrently \"npm run server:build\" \"nodemon --watch ./Published/Client/ ./Published/Client/server.js\"",
+    "start:server": "concurrently \"npm run server:build\" \"nodemon --watch ./build/ ./build/server.js\"",
     "dev": "concurrently \"npm run client:build\" \"npm run server:build\"",
     "build": "concurrently \"npm run client:build\" \"npm run start:server\"",
     "build:prod": "concurrently \"npm run client:build:prod\" \"npm run start:server\"",
