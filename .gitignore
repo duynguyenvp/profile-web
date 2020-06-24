@@ -1,5 +1,5 @@
 /node_modules/*
-/Published/*
+/build/*
 /upload/*
 /package-lock.json
-Server/views/manifest.json
+Server/views/assets.json

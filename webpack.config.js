@@ -8,6 +8,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin');
 const WebpackAssetsManifest = require('webpack-assets-manifest')
 const FileManagerPlugin = require('filemanager-webpack-plugin');
 const entries = {
@@ -18,7 +19,7 @@ const entries = {
 	blog: ["@babel/polyfill", './Client/pages/blog/index.js'],
 	admin: ['./Client/pages/admin/index.js'],
 }
-// require("@babel/polyfill");
+
 module.exports = env => {
 	const isDevBuild = !(env && env.prod);
 	const reStyle = /\.(css|less|styl|scss|sass|sss)$/;
@@ -29,7 +30,7 @@ module.exports = env => {
 				return '[name].[contenthash].js';
 			},
 			chunkFilename: '[id].[contenthash].js',
-			path: path.resolve(__dirname, './Published/Client/dist/'),
+			path: path.resolve(__dirname, './build/dist/'),
 			publicPath: '/dist/',
 		},
 		entry: entries,
@@ -69,6 +70,7 @@ module.exports = env => {
 				dry: false
 			}),
 			new WebpackAssetsManifest({
+				output: 'assets.json',
 				entrypoints: true,
 				entrypointsKey: 'entryPoints',
 			}),
@@ -80,10 +82,43 @@ module.exports = env => {
 					flatten: true,
 				}
 			]),
+			new WorkboxPlugin.GenerateSW({
+				swDest: '../sw.js',
+				clientsClaim: true,
+				skipWaiting: true,
+				maximumFileSizeToCacheInBytes: 5000000,
+				runtimeCaching: [
+					{
+						urlPattern: new RegExp('^https:\/\/(.*).fbcdn.net\/(.*)'),
+						handler: 'CacheFirst'
+					},
+					{
+						urlPattern: new RegExp('^https:\/\/fonts.(?:googleapis|gstatic).com\/(.*)'),
+						handler: 'CacheFirst'
+					},
+					{
+						urlPattern: new RegExp('^(http|https):\/\/(somethingaboutme.info|localhost)\/workbox(.*).js'),
+						handler: 'CacheFirst'
+					},
+					{
+						urlPattern: new RegExp('^(http|https):\/\/(somethingaboutme.info|localhost)\/\#(.*)'),
+						handler: 'NetworkFirst'
+					},
+					{
+						urlPattern: new RegExp('^(http|https):\/\/(somethingaboutme.info|localhost)(.*)'),
+						handler: 'NetworkFirst'
+					}
+				]
+			}),
 			new FileManagerPlugin({
+				onStart: {
+					delete: [
+						path.resolve(__dirname, 'build/workbox*')
+					]
+				},
 				onEnd: {
 					copy: [
-						{ source: path.resolve(__dirname, 'Published/Client/dist/manifest.json'), destination: path.resolve(__dirname, 'Server/views/manifest.json') }
+						{ source: path.resolve(__dirname, 'build/dist/assets.json'), destination: path.resolve(__dirname, 'Server/views/assets.json') }
 					]
 				}
 			})
