@@ -118,7 +118,10 @@ module.exports = env => {
 				},
 				onEnd: {
 					copy: [
-						{ source: path.resolve(__dirname, 'build/dist/assets.json'), destination: path.resolve(__dirname, 'Server/views/assets.json') }
+						{ source: path.resolve(__dirname, 'Client/common-resources/images'), destination: path.resolve(__dirname, 'build/dist/images') },
+						{ source: path.resolve(__dirname, 'build/dist/assets.json'), destination: path.resolve(__dirname, 'Server/views/assets.json') },
+						{ source: path.resolve(__dirname, 'Client/common-resources/lazysizes.min.js'), destination: path.resolve(__dirname, 'build/dist/lazysizes.min.js') },
+						{ source: path.resolve(__dirname, 'Client/common-resources/ls.unveilhooks.min.js'), destination: path.resolve(__dirname, 'build/dist/ls.unveilhooks.min.js') }
 					]
 				}
 			})

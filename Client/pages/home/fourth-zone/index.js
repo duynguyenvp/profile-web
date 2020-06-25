@@ -84,7 +84,7 @@ class FourthZone extends Component {
     render() {
         const { email, message, isValidateEmail, isValidateMessage } = this.state
         return (
-            <div className="fourthZone" id="fourthZoneId">
+            <div id="fourthZoneId" className="lazyload" data-bg="dist/images/firstZoneBg.jpg">
                 <div className="fourthZoneContent">
                     <div className="box-contact" data-aos="fade-right">
                         <h2>Liên hệ & góp ý</h2>

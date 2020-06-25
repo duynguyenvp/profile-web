@@ -30,7 +30,7 @@ class FirstZone extends Component {
         const { isLoaded } = this.state
         return (
             <div className="firstZone" id="firstZoneId">
-                <div id="firstZoneBg">
+                <div id="firstZoneBg" className="lazyload" data-bg="dist/images/bg-header.jpg">
                 </div>
                 {
                     isLoaded && <Fragment>
