@@ -12,6 +12,7 @@ import Resume from '../../Client/pages/resume/Resume'
 import ResumePrint from '../../Client/pages/resume/ResumePrint'
 import puppeteer from 'puppeteer'
 import System from '../constants/System'
+import RESOURCE_VERSION from '../../version'
 import assets from '../views/assets.json'
 
 router.get('/view/:userId?', (req, res) => {
@@ -29,7 +30,7 @@ router.get('/view/:userId?', (req, res) => {
         title: `Resume`,
         initPrint: false,
         scripts: assets.entryPoints.resume.js.map(item => {
-            return `/dist/${item}?v=${System.RESOURCE_VERSION}`
+            return `/dist/${item}?v=${RESOURCE_VERSION}`
         }),
     }))
 });
@@ -63,7 +64,7 @@ router.get('/print/:username?', (req, res) => {
             body: markup,
             styles: [...css].join('') + 'html, body { height: unset !important;}',
             title: `Resume`,
-            resource_version: System.RESOURCE_VERSION
+            resource_version: RESOURCE_VERSION
         }))
 
     });

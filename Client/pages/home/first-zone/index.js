@@ -14,6 +14,10 @@ class FirstZone extends Component {
         this.setState({
             isLoaded: true
         })
+        let headerBg = document.getElementById('firstZoneBg');
+        if (!headerBg.style.backgroundImage) {
+            headerBg.style.backgroundImage = 'url("dist/images/bg-header.jpg")'
+        }
     }
 
     viewMore = () => {

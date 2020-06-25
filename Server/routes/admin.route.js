@@ -2,6 +2,7 @@ import express from 'express'
 const router = express.Router()
 import request from 'request'
 import System from '../constants/System'
+import RESOURCE_VERSION from '../../version'
 const template = require('../views/admin.pug')
 
 import { apiRequireAuth } from '../middlewares/auth.middleware'
@@ -11,9 +12,9 @@ import assets from '../views/assets.json'
 router.get('/*', adminRequireAuth, (req, res) => {
     res.send(template({
         title: `Admin Page`,
-        resource_version: System.RESOURCE_VERSION,
+        resource_version: RESOURCE_VERSION,
         scripts: assets.entryPoints.admin.js.map(item => {
-            return `/dist/${item}?v=${System.RESOURCE_VERSION}`
+            return `/dist/${item}?v=${RESOURCE_VERSION}`
         }),
     }))
 });

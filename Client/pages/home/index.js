@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
 import Home from './Home'
-
+import RESOURCE_VERSION from '../../../version'
 import ReactGA from 'react-ga';
 import { createBrowserHistory } from 'history';
 import StyleContext from 'isomorphic-style-loader/StyleContext'
@@ -34,7 +34,7 @@ ReactDOM.hydrate(
 
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').then(registration => {
+        navigator.serviceWorker.register('/sw.js?v=' + RESOURCE_VERSION).then(registration => {
             console.log('SW registered: ', registration);
         }).catch(registrationError => {
             console.log('SW registration failed: ', registrationError);
