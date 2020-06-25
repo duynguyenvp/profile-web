@@ -6,7 +6,7 @@ import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 import HomePage from '../components/Home'
 import StyleContext from 'isomorphic-style-loader/StyleContext'
-import System from '../constants/System'
+import RESOURCE_VERSION from '../../version'
 import assets from '../views/assets.json'
 
 router.get('/', (req, res) => {
@@ -22,9 +22,9 @@ router.get('/', (req, res) => {
         styles: [...css].join(''),
         title: `Trang chủ`,
         scripts: assets.entryPoints.home.js.map(item => {
-            return `/dist/${item}?v=${System.RESOURCE_VERSION}`
+            return `/dist/${item}?v=${RESOURCE_VERSION}`
         }),
-        resource_version: System.RESOURCE_VERSION
+        resource_version: RESOURCE_VERSION
     }))
 });
 
@@ -40,7 +40,7 @@ router.get('/home', (req, res) => {
         message: markup,
         styles: [...css].join(''),
         title: `Trang chủ`,
-        resource_version: System.RESOURCE_VERSION
+        resource_version: RESOURCE_VERSION
     }))
 });
 

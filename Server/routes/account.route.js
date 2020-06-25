@@ -4,6 +4,7 @@ import request from 'request'
 import passport from 'passport'
 import logger from '../logger'
 import System from '../constants/System'
+import RESOURCE_VERSION from '../../version'
 import { checkAuth } from '../middlewares/auth.middleware'
 import { isSafeUrl } from '../../Client/utils/string-utils'
 
@@ -65,12 +66,12 @@ router.get('/login:returnUrl?', checkAuth, (req, res) => {
 
     res.send(templateLogin({
         title: `Đăng nhập`,
-        resource_version: System.RESOURCE_VERSION,
+        resource_version: RESOURCE_VERSION,
         styles: [...css].join(''),
         body: markup,
         context: JSON.stringify({ message: message }),
         scripts: assets.entryPoints.login.js.map(item => {
-            return `/dist/${item}?v=${System.RESOURCE_VERSION}`
+            return `/dist/${item}?v=${RESOURCE_VERSION}`
         }),
     }))
 });
@@ -80,10 +81,10 @@ router.get('/register:returnUrl?', checkAuth, (req, res) => {
     req.app.locals.messages = null;
     res.send(templateRegister({
         title: `Register`,
-        resource_version: System.RESOURCE_VERSION,
+        resource_version: RESOURCE_VERSION,
         context: JSON.stringify({ message: message }),
         scripts: assets.entryPoints.register.js.map(item => {
-            return `/dist/${item}?v=${System.RESOURCE_VERSION}`
+            return `/dist/${item}?v=${RESOURCE_VERSION}`
         }),
     }))
 });
