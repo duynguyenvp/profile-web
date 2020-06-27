@@ -1,2 +1,2 @@
-const RESOURCE_VERSION = "1.0.7"
+const RESOURCE_VERSION = "1.0.8"
 export default RESOURCE_VERSION;
