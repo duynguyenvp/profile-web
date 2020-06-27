@@ -15,7 +15,7 @@ const BoxUserMenu = ({ user, isReady, sigout }) => {
     return isLogin ? <div className="nav-user-info" ref={ref}>
         <span onClick={() => {
             setIsOpen(!isOpen)
-        }} id="user-info-greeting">Chào <strong>{user.username || ""}</strong></span>
+        }} id="user-info-greeting">Chào <strong>{user.username || ""}</strong>!</span>
         <ul className="user-info-menu" style={{ display: isOpen ? "block" : "none" }}>
             <li>
                 <a href="/quan-tri/personal-info">

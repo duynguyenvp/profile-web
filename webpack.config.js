@@ -11,6 +11,8 @@ const CopyPlugin = require('copy-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 const WebpackAssetsManifest = require('webpack-assets-manifest')
 const FileManagerPlugin = require('filemanager-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
+
 const entries = {
 	login: ["@babel/polyfill", './Client/pages/login/index.js'],
 	register: ["@babel/polyfill", './Client/pages/register/index.js'],
@@ -133,8 +135,33 @@ module.exports = env => {
 			}
 		},
 		optimization: {
+			usedExports: true,
 			moduleIds: 'hashed',
 			runtimeChunk: 'single',
+			minimizer: [
+				new TerserPlugin({
+					terserOptions: {
+						parse: {
+							ecma: 8
+						},
+						compress: {
+							ecma: 5,
+							warnings: false,
+							inline: 2
+						},
+						mangle: {
+							safari10: true
+						},
+						output: {
+							ecma: 5,
+							comments: false,
+							ascii_only: false
+						}
+					},
+					parallel: true,
+					cache: true
+				})
+			],
 			splitChunks: {
 				cacheGroups: {
 					vendor: {

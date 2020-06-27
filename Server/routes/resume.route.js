@@ -14,6 +14,7 @@ import puppeteer from 'puppeteer'
 import System from '../constants/System'
 import RESOURCE_VERSION from '../../version'
 import assets from '../views/assets.json'
+import { dateToStringFormatCultureVi } from '../../Client/utils/date-utils'
 
 router.get('/view/:userId?', (req, res) => {
     const css = new Set() // CSS for all rendered React components
@@ -51,7 +52,6 @@ router.get('/print/:username?', (req, res) => {
     }
     request(options, function (err, _res, body) {
         body = JSON.parse(body || "{}")
-        console.log(options, body)
         const css = new Set() // CSS for all rendered React components
         const insertCss = (...styles) => styles.forEach(style => css.add(style._getCss()))
         const markup = ReactDOMServer.renderToString(
@@ -71,29 +71,51 @@ router.get('/print/:username?', (req, res) => {
 });
 
 async function printPDF(uri) {
-    const browser = await puppeteer.launch({
-        ignoreHTTPSErrors: true,
-        headless: true,
-        executablePath: process.env.CHROME_BIN || null,
-        args: ['--no-sandbox', '--headless', '--disable-gpu', '--disable-dev-shm-usage', '--allow-running-insecure-content']
-    });
-    const page = await browser.newPage();
-    await page.goto(uri, { waitUntil: 'networkidle0' });
-    const pdf = await page.pdf({
-        format: "A4",
-        printBackground: true,
-        margin: { left: '1.5cm', top: '1.5cm', right: '1.5cm', bottom: '1.5cm' }
-    });
-    await browser.close();
-    return pdf
+    try {
+        const browser = await puppeteer.launch({
+            ignoreHTTPSErrors: true,
+            headless: true,
+            executablePath: process.env.CHROME_BIN || null,
+            args: [
+                '--no-sandbox',
+                '--headless',
+                '--disable-gpu',
+                '--disable-dev-shm-usage',
+                '--allow-running-insecure-content'
+            ]
+        });
+        const page = await browser.newPage();
+        await page.goto(uri, { waitUntil: 'networkidle0' });
+        const pdf = await page.pdf({
+            format: "A4",
+            printBackground: true,
+            margin: { left: '1.5cm', top: '1.5cm', right: '1.5cm', bottom: '1.5cm' }
+        });
+        await browser.close();
+        return pdf
+    } catch (error) {
+        console.error(error)
+        throw error
+    }
+}
+
+function getUsernameFromPrintUrl(url) {
+    if (!url) return ""
+    const temp = url.split('print')[1]
+    return temp.substring(1)
 }
 
 router.post('/getprint', (req, res) => {
-    //TODO: Chinh sua lai port dung voi thuc te
     const url = req.body.url
     const uri = `http://0.0.0.0:8080${url}`
+    const username = getUsernameFromPrintUrl(url)
+    const filename = `${username ? username + '-' : ''}resume-${dateToStringFormatCultureVi(new Date())}.pdf`
     printPDF(uri).then(pdf => {
-        res.set({ 'Content-Type': 'application/pdf', 'Content-Length': pdf.length })
+        res.set({
+            'Content-Type': 'application/pdf',
+            'Content-Length': pdf.length,
+            'Content-Disposition': `attachment; filename="${filename}"`
+        })
         res.send(pdf)
     }).catch(error => {
         logger.error('print resume was failed:' + JSON.stringify(error))

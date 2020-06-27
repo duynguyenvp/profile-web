@@ -11,7 +11,6 @@ import { dateToStringFormatNoDayCultureVi, dateToStringFormatCultureVi } from '.
 import withStyles from 'isomorphic-style-loader/withStyles'
 import getApiInstance from '../../../ajax/generic-api'
 import PrintDisabled from '../../../common-resources/ic_print_disabled';
-import { addAlert } from '../../../services/alertService'
 
 class SecondZone extends Component {
     state = {
@@ -21,14 +20,14 @@ class SecondZone extends Component {
         if (this.state.isPrinting) return
         const user = getState()
         this.setState({ isPrinting: true })
-        addAlert({ type: 'warning', message: 'Đang chuẩn bị file pdf, Vui lòng chờ ...' })
         getApiInstance('/resume/getprint').getPrint({
             url: `/resume/print/${user.username || ''}`
         }, {
             responseType: 'arraybuffer',
             headers: {
                 'Accept': 'application/pdf'
-            }
+            },
+            timeout: 15 * 1000
         }).then(res => {
             const blob = new Blob([res], { type: 'application/pdf' })
             const link = document.createElement('a')
@@ -106,6 +105,7 @@ class SecondZone extends Component {
                         </Fragment> :
                         <Fragment>
                             <div className="box-controls">
+                                {isPrinting && <h6 className="control-mesage">Đang chuẩn bị file pdf, vui lòng chờ ...</h6>}
                                 <button className={`btn-control-item ${isPrinting ? "disabled" : ""}`} onClick={this.Print}>
                                     {isPrinting ? <PrintDisabled /> : <i className="material-icons">print</i>}
                                     {isPrinting ? <Fragment>

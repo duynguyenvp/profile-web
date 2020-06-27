@@ -60,6 +60,12 @@
     max-width: 1100px;
     display: flex;
     justify-content: flex-end;
+    align-items: center;
+    .control-mesage {
+      margin: 0;
+      padding: 6px 12px;
+      font-style: italic;
+    }
     .btn-control-item {
       background-color: white;
       border: 1px solid #c1c1c1;
