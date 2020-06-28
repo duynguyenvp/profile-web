@@ -44,7 +44,7 @@ router.get('/print/:username?', (req, res) => {
     };
     if (username) {
         options = {
-            form: {
+            qs: {
                 Username: username
             },
             ...options
