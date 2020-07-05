@@ -99,10 +99,9 @@
     "server:build": "node node_modules/webpack/bin/webpack.js --config ./webpack.config.ssr.js --watch",
     "server:build:prod": "node node_modules/webpack/bin/webpack.js --env.prod --config ./webpack.config.ssr.js",
     "babel:node": "./node_modules/.bin/babel-node --presets=@babel/env",
-    "start:server": "concurrently \"yarn server:build\" \"nodemon --watch ./build/ ./build/server.js\"",
-    "dev": "concurrently \"yarn client:build\" \"yarn server:build\"",
-    "build": "concurrently \"yarn client:build\" \"yarn start:server\"",
-    "build:prod": "concurrently \"yarn client:build:prod\" \"yarn start:server\"",
+    "build": "concurrently \"yarn client:build\" \"yarn server:build\"",
+    "build:prod": "concurrently \"yarn client:build:prod --watch\" \"yarn server:build:prod --watch\"",
+    "start": "nodemon --watch ./build/ ./build/server.js",
     "release": "yarn client:build:prod && yarn server:build:prod"
   },
   "author": "duy",
