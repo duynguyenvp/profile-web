@@ -3,7 +3,7 @@ WORKDIR /tmp
 COPY . .
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh
-RUN npm install && npm audit fix && npm run publish
+RUN yarn install && yarn publish
 
 FROM node:12.18.1-alpine3.12
 ENV CHROME_BIN="/usr/bin/chromium-browser" \
@@ -20,6 +20,6 @@ COPY --from=build-deps /tmp/package.json .
 COPY --from=build-deps /tmp/build .
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh
-RUN npm install && npm audit fix
+RUN yarn install
 EXPOSE 8080
 CMD ["node", "server.js"]
