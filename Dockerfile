@@ -3,7 +3,7 @@ WORKDIR /tmp
 COPY . .
 RUN apk update && apk upgrade && \
     apk add --no-cache bash git openssh
-RUN yarn install && yarn publish
+RUN yarn install && yarn release
 
 FROM node:12.18.1-alpine3.12
 ENV CHROME_BIN="/usr/bin/chromium-browser" \

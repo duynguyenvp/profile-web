@@ -7,7 +7,6 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
 	.BundleAnalyzerPlugin;
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const CopyPlugin = require('copy-webpack-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
 const WebpackAssetsManifest = require('webpack-assets-manifest')
 const FileManagerPlugin = require('filemanager-webpack-plugin');
@@ -76,14 +75,6 @@ module.exports = env => {
 				entrypoints: true,
 				entrypointsKey: 'entryPoints',
 			}),
-			new CopyPlugin([
-				{
-					from: 'Client/common-resources/material-design-icons/*',
-					to: '../material-design-icons/',
-					toType: 'dir',
-					flatten: true,
-				}
-			]),
 			new WorkboxPlugin.GenerateSW({
 				swDest: '../sw.js',
 				clientsClaim: true,
@@ -120,10 +111,26 @@ module.exports = env => {
 				},
 				onEnd: {
 					copy: [
-						{ source: path.resolve(__dirname, 'Client/common-resources/images'), destination: path.resolve(__dirname, 'build/dist/images') },
-						{ source: path.resolve(__dirname, 'build/dist/assets.json'), destination: path.resolve(__dirname, 'Server/views/assets.json') },
-						{ source: path.resolve(__dirname, 'Client/common-resources/lazysizes.min.js'), destination: path.resolve(__dirname, 'build/dist/lazysizes.min.js') },
-						{ source: path.resolve(__dirname, 'Client/common-resources/ls.unveilhooks.min.js'), destination: path.resolve(__dirname, 'build/dist/ls.unveilhooks.min.js') }
+						{
+							source: path.resolve(__dirname, 'Client/common-resources/material-design-icons/'),
+							destination: path.resolve(__dirname, 'build/material-design-icons/')
+						},
+						{
+							source: path.resolve(__dirname, 'Client/common-resources/images'),
+							destination: path.resolve(__dirname, 'build/dist/images')
+						},
+						{
+							source: path.resolve(__dirname, 'build/dist/assets.json'),
+							destination: path.resolve(__dirname, 'Server/views/assets.json')
+						},
+						{
+							source: path.resolve(__dirname, 'Client/common-resources/lazysizes.min.js'),
+							destination: path.resolve(__dirname, 'build/dist/lazysizes.min.js')
+						},
+						{
+							source: path.resolve(__dirname, 'Client/common-resources/ls.unveilhooks.min.js'),
+							destination: path.resolve(__dirname, 'build/dist/ls.unveilhooks.min.js')
+						}
 					]
 				}
 			})

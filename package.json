@@ -103,7 +103,7 @@
     "dev": "concurrently \"yarn client:build\" \"yarn server:build\"",
     "build": "concurrently \"yarn client:build\" \"yarn start:server\"",
     "build:prod": "concurrently \"yarn client:build:prod\" \"yarn start:server\"",
-    "publish": "yarn client:build:prod && yarn server:build:prod"
+    "release": "yarn client:build:prod && yarn server:build:prod"
   },
   "author": "duy",
   "license": "ISC"
