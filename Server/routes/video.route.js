@@ -8,7 +8,7 @@ var url = require("url");
 router.get('/:name?', (req, res) => {
 
     var uri = url.parse(req.url).pathname
-        , filename = path.join(process.cwd(), uri, 'public/videos/zonebg.mp4');
+        , filename = path.join(process.cwd(), uri, 'public/bg-header.mp4');
 
     // path.exists(filename, function (exists) {
     //     if (!exists) {
@@ -19,15 +19,16 @@ router.get('/:name?', (req, res) => {
     //     }
     // })
     const stat = fs.statSync(filename)
-    console.log(filename)
     const fileSize = stat.size
     const range = req.headers.range
     if (range) {
         const parts = range.replace(/bytes=/, "").split("-")
         const start = parseInt(parts[0], 10)
-        const end = parts[1]
+        let end = start + (100 * 1024) //100kb
+        let maxEnd = parts[1]
             ? parseInt(parts[1], 10)
             : fileSize - 1
+        end = Math.min(end, maxEnd)
         const chunksize = (end - start) + 1
         const file = fs.createReadStream(filename, { start, end })
         const head = {

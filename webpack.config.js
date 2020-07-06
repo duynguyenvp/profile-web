@@ -82,6 +82,10 @@ module.exports = env => {
 				maximumFileSizeToCacheInBytes: 5000000,
 				runtimeCaching: [
 					{
+						urlPattern: new RegExp('^(http|https):\/\/(somethingaboutme.info|localhost)\/video'),
+						handler: 'NetworkOnly'
+					},
+					{
 						urlPattern: new RegExp('^https:\/\/(.*).fbcdn.net\/(.*)'),
 						handler: 'CacheFirst'
 					},

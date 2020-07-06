@@ -16,6 +16,7 @@ import homeRoute from './routes/home.route'
 import apiRoute from './routes/api.route'
 import blogRoute from './routes/blog.route'
 import adminRoute from './routes/admin.route'
+import videoRoute from './routes/video.route'
 import errorRoute from './routes/error.route'
 
 require('./passport');
@@ -41,13 +42,14 @@ app.use(passport.session());
 
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
-app.use(compression())
+// app.use(compression())
 app.use(express.static(__dirname + '/'))
 
 app.use('/account', accountRoute)
 app.use('/error', errorRoute)
 app.use('/quan-tri', adminRoute)
 app.use('/resume', resumeRoute)
+app.use('/video', videoRoute)
 app.use('/bai-viet/:userName?', (req, res, next) => {
     console.log(req.params.userName)
     if (req.params.userName) {

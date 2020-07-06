@@ -58,8 +58,8 @@ module.exports = env => {
 							destination: path.resolve(__dirname, 'build/resources')
                         },
                         {
-							source: path.resolve(__dirname, 'publish'),
-							destination: path.resolve(__dirname, 'build/publish')
+							source: path.resolve(__dirname, 'public'),
+							destination: path.resolve(__dirname, 'build/public')
                         },
                     ]
                 }
