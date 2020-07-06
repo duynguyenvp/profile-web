@@ -1,7 +1,7 @@
 const path = require('path');
 const merge = require('webpack-merge');
 const nodeExternals = require('webpack-node-externals');
-const CopyPlugin = require('copy-webpack-plugin');
+const FileManagerPlugin = require('filemanager-webpack-plugin');
 
 module.exports = env => {
     const isDevBuild = !(env && env.prod);
@@ -42,28 +42,28 @@ module.exports = env => {
             whitelist: /\.(sa|sc|c)ss$/
         }),
         plugins: [
-            new CopyPlugin([
-                {
-                    from: '../package.json',
-                    to: 'package.json',
-                    toType: 'file',
-                },
-                {
-                    from: '../favicon.ico',
-                    to: 'favicon.ico',
-                    toType: 'file',
-                },
-                {
-                    from: '../Server/resources',
-                    to: 'resources',
-                    toType: 'dir',
-                },
-                {
-                    from: '../publish',
-                    to: 'publish',
-                    toType: 'dir',
-                },
-            ]),
+            new FileManagerPlugin({
+				onEnd: {
+                    copy: [
+						{
+							source: path.resolve(__dirname, 'package.json'),
+							destination: path.resolve(__dirname, 'build/package.json')
+                        },
+                        {
+							source: path.resolve(__dirname, 'favicon.ico'),
+							destination: path.resolve(__dirname, 'build/favicon.ico')
+                        },
+                        {
+							source: path.resolve(__dirname, 'Server/resources'),
+							destination: path.resolve(__dirname, 'build/resources')
+                        },
+                        {
+							source: path.resolve(__dirname, 'public'),
+							destination: path.resolve(__dirname, 'build/public')
+                        },
+                    ]
+                }
+            })
         ],
         module: {
             rules: [{
