@@ -26,6 +26,8 @@ class FirstZone extends Component {
     }
 
     hidePicture = () => {
+        const { isMobile } = this.state
+        if (isMobile) return
         setTimeout(() => {
             this.setState({ isShowPicture: false })
         }, 1500);
