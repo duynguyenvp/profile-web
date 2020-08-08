@@ -6,31 +6,18 @@ class FirstZone extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLoaded: false,
-            isMobile: true,
-            isShowPicture: true
+            isLoaded: false
         }
     }
 
     componentDidMount() {
-        let isMobile = true
-        if (window.matchMedia("(min-width: 900px)").matches) {
-            isMobile = false
-        }
         this.setState({
-            isLoaded: true,
-            isMobile
-        }, () => {
-            this.hidePicture()
+            isLoaded: true
         })
-    }
-
-    hidePicture = () => {
-        const { isMobile } = this.state
-        if (isMobile) return
-        setTimeout(() => {
-            this.setState({ isShowPicture: false })
-        }, 1500);
+        let headerBg = document.getElementById('firstZoneBg');
+        if (!headerBg.style.backgroundImage) {
+            headerBg.style.backgroundImage = 'url("dist/images/bg-header.jpg")'
+        }
     }
 
     viewMore = () => {
@@ -43,35 +30,12 @@ class FirstZone extends Component {
         });
     }
 
-    renderBackground = () => {
-        const { isLoaded, } = this.state
-        if (isLoaded && !isMobile)
-            return
-        <Fragment></Fragment>
-    }
-
     render() {
-        const { isLoaded, isMobile, isShowPicture } = this.state
+        const { isLoaded } = this.state
         return (
             <div className="firstZone" id="firstZoneId">
-                {
-                    isLoaded && !isMobile && <video id="firstZoneBg"
-                        controls
-                        autoPlay
-                        muted
-                        loop
-                        className="first-zone-video-background">
-                        <source src={'/video'} type="video/mp4" />
-                        Your browser does not support the video tag.
-                    </video>
-                }
-                {
-                    isShowPicture && <picture id="firstZoneBg">
-                        <source type="image/webp" srcSet="dist/images/bg-header.webp" />
-                        <source type="image/jpeg" srcSet="dist/images/bg-header.jpg" />
-                        <img src="dist/images/bg-header.jpg" alt="" />
-                    </picture>
-                }
+                <div id="firstZoneBg" className="lazyload" data-bg="dist/images/bg-header.jpg">
+                </div>
                 {
                     isLoaded && <Fragment>
                         <div className="value1" id="welcome-text-1">ĐÂY LÀ THẾ GIỚI RIÊNG CỦA BẠN</div>

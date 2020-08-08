@@ -66,7 +66,7 @@ class App extends Component {
             },
             y: 0,
             opacity: 1,
-            duration: 1
+            duration: .8
         })
         gsap.fromTo('#welcome-text-2', {
             y: 100,
@@ -77,7 +77,7 @@ class App extends Component {
             },
             y: 0,
             opacity: 1,
-            duration: 1
+            duration: .8
         })
 
         var secondZoneTimeline = gsap.timeline({
@@ -89,9 +89,9 @@ class App extends Component {
             }
         });
 
-        secondZoneTimeline.from(".secondZone p", { scale: 0.3, rotation: 45, autoAlpha: 0, ease: "power2", duration: 1.5 })
-        .from(".secondZone .secondZoneRightPanel", { scale: 0.3, rotation: 45, autoAlpha: 0, ease: "power2", duration: 1.2 }, "-=0.8")
-        .from(".secondZone .btn-try-now", { scale: 0.3, rotation: 45, autoAlpha: 0, ease: "power2", duration: 1.2 }, "-=1")
+        secondZoneTimeline.from(".secondZone p", { scale: 0.3, rotation: 45, autoAlpha: 0, ease: "power2", duration: .8 })
+        .from(".secondZone .secondZoneRightPanel", { scale: 0.3, rotation: 45, autoAlpha: 0, ease: "power2", duration: .4 }, "-=0.6")
+        .from(".secondZone .btn-try-now", { scale: 0.3, rotation: 45, autoAlpha: 0, ease: "power2", duration: .3 }, "-=.4")
         var thirdZoneTimeline = gsap.timeline({
             scrollTrigger: {
                 scroller: "#app",
@@ -101,9 +101,9 @@ class App extends Component {
             }
         });
         
-        thirdZoneTimeline.from(".thirdZone .thirdZoneRightPanel", { scale: 0.3, rotation: 45, autoAlpha: 0, ease: "power2", duration: 1.5 })
-        .from(".thirdZone p", { scale: 0.3, rotation: 45, autoAlpha: 0, ease: "power2", duration: 1.2 }, "-=0.8")
-        .from(".thirdZone .btn-try-now", { scale: 0.3, rotation: 45, autoAlpha: 0, ease: "power2", duration: 1.2 }, "-=1")
+        thirdZoneTimeline.from(".thirdZone .thirdZoneRightPanel", { scale: 0.3, rotation: 45, autoAlpha: 0, ease: "power2", duration: .8 })
+        .from(".thirdZone p", { scale: 0.3, rotation: 45, autoAlpha: 0, ease: "power2", duration: .4 }, "-=0.6")
+        .from(".thirdZone .btn-try-now", { scale: 0.3, rotation: 45, autoAlpha: 0, ease: "power2", duration: .3 }, "-=.4")
     }
 
     componentDidMount() {
