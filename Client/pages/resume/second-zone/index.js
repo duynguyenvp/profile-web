@@ -41,7 +41,7 @@ class SecondZone extends Component {
         const { portfolioSkills: skills, isPrint } = this.props
         const { fullName, jobTitle, email, mobile, skype, address, avatar } = portfolioUser || {}
         let avatarStyle = {
-            backgroundImage: `url("${avatar || require('../../../common-resources/images/avatar.jpg')}")`
+            backgroundImage: `url("${avatar || '/dist/images/avatar.jpg'}")`
         }
         const bindValue = (value) => {
             return value || "Chưa có thông tin"
