@@ -11,7 +11,6 @@ class BoxComment extends Component {
             <Fragment>
                 <h2>Bình luận</h2>
                 <InsertComment />
-                <hr />
                 <List />
             </Fragment>
         );

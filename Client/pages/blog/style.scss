@@ -761,7 +761,7 @@
         ul,
         #timelineUL {
           list-style-type: none;
-          .timeline-li {
+          .timeline-li:not(:last-child) {
             border-bottom: 1px solid #d9d9d9;
           }
         }

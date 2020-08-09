@@ -14,7 +14,7 @@ class List extends RComponent {
         this.onMount(() => {
             this.onUnmount(subscribeComment(() => this.forceUpdate()))
         })
-        
+
         this.onMount(() => {
             this.onUnmount(subscribePost(() => this.getData()))
         })
@@ -70,6 +70,7 @@ class List extends RComponent {
         const list = this.computeComment()
         return (
             <Fragment>
+                {!!list.length && <hr />}
                 {list}
             </Fragment>
         );

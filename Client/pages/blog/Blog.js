@@ -236,7 +236,7 @@ class Blog extends RComponent {
                                                         <a href={item.postUrl} onClick={e => { e.preventDefault(); this.changePost(item.id) }}><p>{item.title}</p></a>
                                                     </div>
                                                 </div>
-                                                {postRecently.length > i ? <hr /> : null}
+                                                {postRecently.length - 1 > i ? <hr /> : null}
                                             </React.Fragment>
                                         )
                                     })
