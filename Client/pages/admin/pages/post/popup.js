@@ -34,6 +34,7 @@ const PostForm = ({ onClose, callback, post, content }) => {
                 avatar: "string",
                 postTime: new Date(),
                 isDelete: false,
+                userName: user.userName,
                 userId: user.id,
                 categoryId: null //Thêm category
             }
