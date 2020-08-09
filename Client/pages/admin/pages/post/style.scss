@@ -1,9 +1,15 @@
 .custom-row {
+    .btn-preview {
+        margin-right: 8px;
+    }
+    .btn-preview,
     .btn-remove {
         display: none;
+        float: left;
     }
     &:hover {
         cursor: pointer;
+        .btn-preview,
         .btn-remove {
             display: block;
         }

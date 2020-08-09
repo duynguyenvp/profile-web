@@ -1,6 +1,6 @@
 import React, { useEffect, useState, Fragment } from 'react'
 import './style.scss'
-import { CloseOutlined } from '@ant-design/icons';
+import { CloseOutlined, EyeFilled } from '@ant-design/icons';
 import { Row, Col, Table, Input, Button, notification, Modal } from 'antd'
 const { Column } = Table
 const { confirm } = Modal;
@@ -90,7 +90,7 @@ const Post = props => {
         <Fragment>
             <Row>
                 <Col span={12}>
-                    <h1>QUẢN TRỊ TÀI KHOẢN</h1>
+                    <h1>QUẢN TRỊ BÀI VIẾT</h1>
                 </Col>
                 <Col span={12}>
                     <Row type="flex" style={{ flexDirection: "row" }}>
@@ -122,23 +122,37 @@ const Post = props => {
                     })}
                     style={{ width: '100%' }}
                 >
-                    <Column title="#" dataIndex="index" key="index" />
-                    <Column title="Tiêu đề" dataIndex="title" key="title" />
-                    <Column title="Tags" dataIndex="tag" key="tag" />
-                    <Column title="Ngày đăng" dataIndex="postTime" key="postTime" />
+                    <Column title="#" dataIndex="index" key="index" responsive={['xxl', 'xl', 'lg', 'md', 'sm',]} />
+                    <Column title="Tiêu đề" dataIndex="title" key="title" responsive={['xxl', 'xl', 'lg', 'md', 'sm', 'xs']} />
+                    <Column title="Tags" dataIndex="tag" key="tag" responsive={['xxl', 'xl', 'lg', 'md']} />
+                    <Column title="Ngày đăng" dataIndex="postTime" key="postTime" responsive={['xxl', 'xl', 'lg', 'md']} />
                     <Column
                         title=""
                         key="action"
-                        width={56}
+                        width={158}
+                        responsive={['xxl', 'xl', 'lg', 'md', 'sm', 'xs']}
                         render={(text, record) => (
-                            <Button className="btn-remove"
-                                size="small"
-                                type="danger"
-                                icon={<CloseOutlined />}
-                                onClick={e => {
-                                    e.stopPropagation()
-                                    remove(record)
-                                }}></Button>
+                            <>
+                                <a href={record.postUrl} target="_blank">
+                                    <Button className="btn-preview"
+                                        size="small"
+                                        type="info"
+                                        icon={<EyeFilled />}
+                                        onClick={e => {
+                                            e.stopPropagation()
+                                        }}>
+                                        Xem thử
+                                </Button>
+                                </a>
+                                <Button className="btn-remove"
+                                    size="small"
+                                    type="danger"
+                                    icon={<CloseOutlined />}
+                                    onClick={e => {
+                                        e.stopPropagation()
+                                        remove(record)
+                                    }}></Button>
+                            </>
                         )}
                     />
                 </Table>
@@ -148,7 +162,7 @@ const Post = props => {
                 post={selectedPost}
                 callback={() => {
                     setPosts({ ...state, page: 1 })
-                    loadData()
+                    loadData(auth)
                 }} />
         </Fragment>
     );

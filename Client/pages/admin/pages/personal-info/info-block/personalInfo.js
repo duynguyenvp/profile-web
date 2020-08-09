@@ -220,26 +220,29 @@ const PersonalInfoBlock = ({ portfolioId, personalInfo }) => {
                         onChange={changeAvatar} />
                 </div>
             </Col>
-
         </Row>
         <Row gutter={24}>
             <Col span={24}>
-                <span style={{ marginBottom: 16 }}>Giới thiệu bản thân</span>
-                <EditorComponent
-                    html={about}
-                    callback={content => {
-                        setUser({ ...user, about: content })
-                    }} />
+                <Col md={24} span={24}>
+                    <label style={{ marginBottom: 16 }}>Giới thiệu bản thân</label>
+                    <EditorComponent
+                        html={about}
+                        callback={content => {
+                            setUser({ ...user, about: content })
+                        }} />
+                </Col>
             </Col>
         </Row>
         <Row gutter={24}>
             <Col span={24} style={{ textAlign: 'right', marginTop: 16 }}>
-                <Space>
-                    <Button type="primary" htmlType="submit">Lưu</Button>
-                    <Button
-                        onClick={onReset}
-                    >Làm mới</Button>
-                </Space>
+                <Col md={24} span={24}>
+                    <Space>
+                        <Button type="primary" htmlType="submit">Lưu</Button>
+                        <Button
+                            onClick={onReset}
+                        >Làm mới</Button>
+                    </Space>
+                </Col>
             </Col>
         </Row>
     </Form>

@@ -45,7 +45,6 @@
     width: 300px;
     height: 300px;
     border-radius: 4px;
-    // background-image: url("../../../common-resources/images/avatar.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -53,18 +52,6 @@
     align-self: center;
     margin: 16px;
     display: flex;
-
-    &::after {
-        content: " ";
-        width: 100%;
-        position: absolute;
-        height: 100%;
-        top: 50%;
-        left: 50%;
-        border-radius: 50%;
-        border: 7px solid #0000001a;
-        transform: translate(-50%, -50%);
-    }
 
     .input-avatar-button {
         width: 100%;

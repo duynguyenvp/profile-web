@@ -7,12 +7,12 @@ import getApiInstance from '../../api/generic-api'
 
 import Quill from 'quill'
 import ImageResize from 'quill-image-resize-module'
-
 Quill.register('modules/imageResize', ImageResize)
 
 import 'modules/quill/dist/quill.core.css'
 import 'modules/quill/dist/quill.snow.css'
 import { getAuthentication } from '../../store/authStore'
+import './quill.scss'
 
 const openNotificationWithIcon = (type, content) => {
     notification[type]({
