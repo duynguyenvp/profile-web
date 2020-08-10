@@ -33,8 +33,6 @@ app.use(session({
     name: 'x-auth',
     saveUninitialized: true,
     resave: true,
-    secureProxy: true,
-    secure: true,
     sameSite: true,
     httpOnly: true,
     keys: ['aabbccddee', 'aabbccddee123'],
