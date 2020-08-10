@@ -33,6 +33,10 @@ app.use(session({
     name: 'x-auth',
     saveUninitialized: true,
     resave: true,
+    secureProxy: true,
+    secure: true,
+    sameSite: true,
+    httpOnly: true,
     keys: ['aabbccddee', 'aabbccddee123'],
     maxAge: 90 * 60 * 1000 //90 minutes
 }))
