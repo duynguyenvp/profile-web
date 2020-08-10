@@ -66,7 +66,7 @@ class App extends Component {
             },
             y: 0,
             opacity: 1,
-            duration: .8
+            duration: .5
         })
         gsap.fromTo('#welcome-text-2', {
             y: 100,
@@ -77,7 +77,7 @@ class App extends Component {
             },
             y: 0,
             opacity: 1,
-            duration: .8
+            duration: .5
         })
 
         var secondZoneTimeline = gsap.timeline({
