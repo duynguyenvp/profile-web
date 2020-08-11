@@ -11,15 +11,17 @@ import { dateToStringFormatNoDayCultureVi, dateToStringFormatCultureVi } from '.
 import withStyles from 'isomorphic-style-loader/withStyles'
 import getApiInstance from '../../../ajax/generic-api'
 import PrintDisabled from '../../../common-resources/ic_print_disabled';
+// import DownloadComplete from '../../../common-resources/images/download-complete.png'
 
-class SecondZone extends Component {
+class ResumeBody extends Component {
     state = {
-        isPrinting: false
+        isPrinting: false,
+        isComplete: false
     }
     Print = () => {
         if (this.state.isPrinting) return
         const user = getState()
-        this.setState({ isPrinting: true })
+        this.setState({ isPrinting: true, isComplete: false })
         getApiInstance('/resume/getprint').getPrint({
             url: `/resume/print/${user.username || ''}`
         }, {
@@ -34,8 +36,26 @@ class SecondZone extends Component {
             link.href = window.URL.createObjectURL(blob)
             link.download = `${user.username ? user.username + '-' : ''}resume-${dateToStringFormatCultureVi(new Date())}.pdf`
             link.click()
-            this.setState({ isPrinting: false })
+            setTimeout(() => {
+                this.setState({ isPrinting: false, isComplete: true })
+            }, 300);
         }).catch(err => { console.error(err); this.setState({ isPrinting: false }) })
+    }
+    // renderComplete = () => {
+    //     const { isComplete } = this.state
+    //     const { isPrint } = this.props
+    //     if (isPrint) return null
+    //     return isComplete && <div className="complete">
+    //         <span>Resume đã được tải xuống ở đây!</span>
+    //         <img src={DownloadComplete} alt="" />
+    //     </div>
+    // }
+    renderComplete = () => {
+        const { isComplete, isPrinting } = this.state
+        const { isPrint } = this.props
+        if (isPrint) return null
+        if (isComplete) return <h6 className="control-mesage">Tải xuống resume thành công!</h6>
+        return isPrinting && <h6 className="control-mesage">Đang chuẩn bị file pdf, vui lòng chờ ...</h6>
     }
     renderUserInfo = (portfolioUser, language) => {
         const { portfolioSkills: skills, isPrint } = this.props
@@ -96,7 +116,7 @@ class SecondZone extends Component {
         const language = getLanguage()
         const { isPrinting } = this.state
         return (
-            <div className={`secondZone ${isPrint ? "print" : ""}`} id="secondZoneId">
+            <div className={`resume-body ${isPrint ? "print" : ""}`}>
                 {
                     !portfolioUser && !experiences && !educations ?
                         <Fragment>
@@ -105,7 +125,7 @@ class SecondZone extends Component {
                         </Fragment> :
                         <Fragment>
                             <div className="box-controls">
-                                {isPrinting && <h6 className="control-mesage">Đang chuẩn bị file pdf, vui lòng chờ ...</h6>}
+                                {this.renderComplete()}
                                 <button className={`btn-control-item ${isPrinting ? "disabled" : ""}`} onClick={this.Print}>
                                     {isPrinting ? <PrintDisabled /> : <i className="material-icons">print</i>}
                                     {isPrinting ? <Fragment>
@@ -168,9 +188,10 @@ class SecondZone extends Component {
                             </div>
                         </Fragment>
                 }
+                {/* {this.renderComplete()} */}
             </div>
         );
     }
 }
 
-export default withStyles(s)(SecondZone);
+export default withStyles(s)(ResumeBody);

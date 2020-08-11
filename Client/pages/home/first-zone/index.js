@@ -14,10 +14,6 @@ class FirstZone extends Component {
         this.setState({
             isLoaded: true
         })
-        let headerBg = document.getElementById('firstZoneBg');
-        if (!headerBg.style.backgroundImage) {
-            headerBg.style.backgroundImage = 'url("dist/images/bg-header.jpg")'
-        }
     }
 
     viewMore = () => {
@@ -34,7 +30,7 @@ class FirstZone extends Component {
         const { isLoaded } = this.state
         return (
             <div className="firstZone" id="firstZoneId">
-                <div id="firstZoneBg" className="lazyload" data-bg="dist/images/bg-header.jpg">
+                <div id="firstZoneBg">
                 </div>
                 {
                     isLoaded && <Fragment>

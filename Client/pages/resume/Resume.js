@@ -1,4 +1,4 @@
-import SecondZone from './second-zone'
+import ResumeBody from './resume-body'
 import App from '../home/App'
 import getApiInstance from '../../ajax/generic-api'
 
@@ -41,7 +41,7 @@ const Home = () => {
         }
     }, [])
     return <App>
-        <SecondZone {...state} />
+        <ResumeBody {...state} />
     </App>
 }
 export default Home
