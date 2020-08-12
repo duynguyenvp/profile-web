@@ -1,11 +1,13 @@
-import ResumeBody from './resume-body'
+import React, { useEffect, useState } from 'react';
 import App from '../home/App'
 import getApiInstance from '../../ajax/generic-api'
 
-import React, { useEffect, useState } from 'react';
+import ResumeBody from './resume-body'
+import ResumeBodySkeleton from './resume-body/skeleton'
 
 const Home = () => {
     const [state, setState] = useState({})
+    const [isLoading, setIsLoading] = useState(true)
     const loadData = (Username) => {
         let options = {
             url: '/Portfolio/ForHomePage'
@@ -19,6 +21,7 @@ const Home = () => {
             }
         }
         getApiInstance().getWithQueryString(options).then(res => {
+            setIsLoading(false)
             const { successful, result } = res
             if (successful) {
                 if (result && result.length) {
@@ -26,6 +29,7 @@ const Home = () => {
                 }
             }
         }).catch(error => {
+            setIsLoading(false)
             console.error(error)
         })
     }
@@ -41,7 +45,10 @@ const Home = () => {
         }
     }, [])
     return <App>
-        <ResumeBody {...state} />
+        {
+            isLoading ? <ResumeBodySkeleton />
+                : <ResumeBody {...state} />
+        }
     </App>
 }
 export default Home

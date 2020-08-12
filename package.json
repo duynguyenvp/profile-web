@@ -21,6 +21,7 @@
     "puppeteer": "5.0.0",
     "react": "^16.10.2",
     "react-dom": "^16.10.2",
+    "react-loading-skeleton": "^2.1.1",
     "winston": "^3.2.1"
   },
   "devDependencies": {
