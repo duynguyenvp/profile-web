@@ -28,7 +28,9 @@ const BoxRecentPosts = ({ username, changePost }) => {
     }
 
     useEffect(() => {
-        getPostRecently(username)
+        if (username) {
+            getPostRecently(username)
+        }
     }, [username])
 
     const renderPosts = useMemo(() => {

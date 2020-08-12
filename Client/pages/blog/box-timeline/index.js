@@ -38,7 +38,9 @@ const BoxTimeline = ({ username, changePost }) => {
     }
 
     useEffect(() => {
-        getTimelineData(username)
+        if (username) {
+            getTimelineData(username)
+        }
     }, [username])
 
     const renderPosts = useMemo(() => {
