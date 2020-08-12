@@ -85,7 +85,7 @@ class Menu extends RComponent {
                             isMobile && <BoxUserMenu user={user} isReady={isReady} sigout={this.sigout} />
                         }
                     </div>
-                    <div className={`nav-items  ${isMobile ? "mobile" : ""} ${isOpen ? "active" : ""}`}>
+                    <div className={`nav-items ${isReady ? "ready" : ""} ${isMobile ? "mobile" : ""} ${isOpen ? "active" : ""}`}>
                         <a href="/#home" className={active == "home" ? "active" : ""}
                             onClick={() => { this.menuClick({ id: 'firstZoneId', active: 'home', route: 'home' }) }}>
                             <span>Trang chủ</span>
