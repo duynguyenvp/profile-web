@@ -8,11 +8,11 @@ import InsertComment from './InsertComment'
 class BoxComment extends Component {
     render() {
         return (
-            <Fragment>
+            <div className="box-comment">
                 <h2>Bình luận</h2>
                 <InsertComment />
                 <List />
-            </Fragment>
+            </div>
         );
     }
 }
