@@ -74,6 +74,7 @@
             background-color: transparent;
             height: 100% !important;
             .ql-editor {
+                max-width: 100%;
                 position: relative;
                 min-height: 100%;
                 width: 750px;
@@ -84,5 +85,40 @@
                 box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
             }
         }
+    }
+}
+
+.editor-postform-mobile-overlay {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    background-color: #00000080;
+}
+
+.editor-postform-mobile {
+    display: none;
+    position: absolute;
+    z-index: 1001;
+    padding: 24px;
+    width: 100%;
+    height: 260px;
+    bottom: -260px;
+    background-color: white;
+    transition: bottom .3s ease;
+
+    &.active {
+        bottom: 0;
+        display: block;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    #toolbar {
+        max-width: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
     }
 }

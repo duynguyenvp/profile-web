@@ -1,14 +1,14 @@
-import React, { useEffect, useRef, useState, Fragment } from 'react'
-import { addOrUpdatePost } from '../../store/postStore'
+import React, { useRef, useState, Fragment, useLayoutEffect } from 'react'
 import { Form, Drawer, Button, Input, notification, Layout } from 'antd'
 const { Header, Footer, Sider, Content } = Layout
 import ImageManager from '../../components/image-manager'
 import getApiInstance from '../../api/generic-api'
 
 import Quill from 'quill'
+import VideoBlot from './VideoBlot'
 import ImageResize from 'quill-image-resize-module'
 Quill.register('modules/imageResize', ImageResize)
-
+Quill.register(VideoBlot)
 import 'modules/quill/dist/quill.core.css'
 import 'modules/quill/dist/quill.snow.css'
 import { getAuthentication } from '../../store/authStore'
@@ -117,7 +117,7 @@ const EditorContent = ({ post, callback }) => {
     const closeImageManager = () => {
         setFlagOpenImageManager(false)
     }
-    useEffect(() => {
+    useLayoutEffect(() => {
         window.QuillEditor = new Quill(refEditor.current, {
             modules: {
                 toolbar: '#toolbar',
@@ -128,15 +128,13 @@ const EditorContent = ({ post, callback }) => {
         })
         setEditor(window.QuillEditor)
     }, [])
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (!editor) return
         // quill editor add image handler
         editor.getModule('toolbar').addHandler('image', () => {
             const range = editor.getSelection()
             setRange(range)
             setFlagOpenImageManager(true)
-            // push image url to rich editor.
-            // editor.insertEmbed(range && range.index || 0, 'image', src)
         })
         editor.on('text-change', function (range, oldRange, source) {
             callback(editor.root.innerHTML)
@@ -160,7 +158,7 @@ const EditorContent = ({ post, callback }) => {
             />
         </div>)
     }
-    useEffect(() => {
+    useLayoutEffect(() => {
         initEmojiBox()
     }, [])
 
@@ -202,6 +200,7 @@ const EditorContent = ({ post, callback }) => {
                 <button className="ql-script" value="super"></button>
                 <button className="ql-link"></button>
                 <button className="ql-image"></button>
+                <button className="ql-video"></button>
                 <span className="ql-formats">
                     <button className="ql-blockquote"></button>
                     <button className="ql-code-block"></button>
@@ -238,6 +237,24 @@ const EditorContent = ({ post, callback }) => {
 
 const PostPopup = ({ visible, onClose, post, callback }) => {
     const [content, setContent] = useState('')
+    const [isMobile, setIsMobile] = useState(false)
+    const [visiblePostForm, setVisiblePostForm] = useState(() => false)
+    useLayoutEffect(() => {
+        var x = window.matchMedia("(max-width: 768px)")
+        if (x.matches) {
+            setIsMobile(true)
+        } else {
+            setIsMobile(false)
+        }
+    })
+
+    const onClosePostForm = () => {
+        setVisiblePostForm(false)
+    }
+    const onOpenPostForm = () => {
+        setVisiblePostForm(true)
+    }
+
     return (
         <Drawer
             title={`${post && Object.keys(post) ? "Chỉnh sửa bài viết" : "Viết bài mới"}`}
@@ -250,16 +267,29 @@ const PostPopup = ({ visible, onClose, post, callback }) => {
             bodyStyle={{ padding: 0 }}
         >
             <Layout className="editor-layout">
-                <EditorContent post={post} callback={text => {
-                    setContent(text)
-                }} />
-                <Sider
+                <EditorContent
+                    post={post}
+                    callback={text => {
+                        setContent(text)
+                    }} />
+                {!isMobile && <Sider
                     width={350}
                     className="editor-right-side"
                 >
                     <PostForm onClose={onClose} post={post} content={content} callback={callback} />
-                </Sider>
+                </Sider>}
             </Layout>
+            {isMobile && <>
+                {visiblePostForm && <div className="editor-postform-mobile-overlay" onClick={onClosePostForm}></div>}
+                <div className={`editor-postform-mobile ${visiblePostForm ? "active" : ""}`}>
+                    <PostForm onClose={() => {
+                        onClosePostForm()
+                        onClose()
+                    }} post={post} content={content} callback={callback} />
+                </div>
+                <Button type='primary'
+                    onClick={onOpenPostForm}>Tiếp theo</Button>
+            </>}
         </Drawer>
     )
 }

@@ -114,6 +114,20 @@
         .post-content {
           padding: 16px;
 
+          .editor-iframe-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            height: 0;
+          }
+          .editor-iframe-container .editor-iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+          }
+
           p,
           ol,
           ul,
