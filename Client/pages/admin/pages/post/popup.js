@@ -1,4 +1,4 @@
-import React, { useRef, useState, Fragment, useLayoutEffect } from 'react'
+import React, { useRef, useState, Fragment, useLayoutEffect, useCallback } from 'react'
 import { Form, Drawer, Button, Input, notification, Layout } from 'antd'
 const { Header, Footer, Sider, Content } = Layout
 import ImageManager from '../../components/image-manager'
@@ -114,6 +114,13 @@ const EditorContent = ({ post, callback }) => {
     const [range, setRange] = useState(() => null)
     const [editor, setEditor] = useState(() => null)
     const refEditor = useRef()
+    const getEditorMaxWidth = useCallback(() => {
+        const editorDOM = document.querySelector('.ql-editor')
+        const computedStyle = window.getComputedStyle(editorDOM)
+        const padding = parseInt((computedStyle && computedStyle.paddingLeft) || '0px', 10) + parseInt((computedStyle && computedStyle.paddingRight) || '0px', 10)
+        const editorClientWidth = (editorDOM && editorDOM.clientWidth) || 0
+        window.EDITOR_CLIENT_WIDTH = editorClientWidth == 0 ? 0 : editorClientWidth - padding
+    }, [])
     const closeImageManager = () => {
         setFlagOpenImageManager(false)
     }
@@ -152,6 +159,7 @@ const EditorContent = ({ post, callback }) => {
                 delta: editor.getContents()
             })
         })
+        getEditorMaxWidth()
     }, [editor])
     const handleClickEmojiButton = e => {
         e.stopPropagation();
@@ -254,7 +262,7 @@ const PostPopup = ({ visible, onClose, post, callback }) => {
     const [isMobile, setIsMobile] = useState(false)
     const [visiblePostForm, setVisiblePostForm] = useState(() => false)
     useLayoutEffect(() => {
-        var x = window.matchMedia("(max-width: 768px)")
+        const x = window.matchMedia("(max-width: 768px)")
         if (x.matches) {
             setIsMobile(true)
         } else {
@@ -306,6 +314,7 @@ const PostPopup = ({ visible, onClose, post, callback }) => {
                         callback={callback} />
                 </div>
                 <Button type='primary'
+                    style={{ width: "100%" }}
                     onClick={onOpenPostForm}>Tiếp theo</Button>
             </>}
         </Drawer>

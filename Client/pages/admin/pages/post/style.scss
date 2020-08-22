@@ -106,12 +106,22 @@
     height: 260px;
     bottom: -260px;
     background-color: white;
-    transition: bottom .3s ease;
+    transition: bottom 0.3s ease;
 
     &.active {
         bottom: 0;
         display: block;
     }
+}
+
+.test {
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: red;
+    color: white;
+    z-index: 1;
+    cursor: pointer;
 }
 
 @media only screen and (max-width: 768px) {
@@ -120,5 +130,12 @@
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
+    }
+    .editor-layout {
+        height: calc(100vh - 90px);
+
+        .editor-main-content {
+            margin-bottom: 16px;
+        }
     }
 }
