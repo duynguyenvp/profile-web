@@ -20,11 +20,11 @@ const openNotificationWithIcon = (type, content) => {
         description: content,
     })
 }
-const PostForm = ({ onClose, callback, post, content }) => {
+const PostForm = ({ onClose, callback, post, content, delta }) => {
     const onFinish = values => {
         let data = { ...values }
         const user = getAuthentication()
-        data = { ...data, avatar: "", content }
+        data = { ...data, avatar: "", delta: JSON.stringify(delta), content }
 
         if (post && post.id) {
             data = { ...post, ...data }
@@ -108,11 +108,11 @@ const PostForm = ({ onClose, callback, post, content }) => {
 }
 
 const EditorContent = ({ post, callback }) => {
-    const [flagOpenImageManager, setFlagOpenImageManager] = useState(false)
-    const [emojiPicker, setEmojiPicker] = useState(null)
-    const [emojiPickerState, setEmojiPickerState] = useState(false)
-    const [range, setRange] = useState(null)
-    const [editor, setEditor] = useState(null)
+    const [flagOpenImageManager, setFlagOpenImageManager] = useState(() => false)
+    const [emojiPicker, setEmojiPicker] = useState(() => null)
+    const [emojiPickerState, setEmojiPickerState] = useState(() => false)
+    const [range, setRange] = useState(() => null)
+    const [editor, setEditor] = useState(() => null)
     const refEditor = useRef()
     const closeImageManager = () => {
         setFlagOpenImageManager(false)
@@ -126,6 +126,16 @@ const EditorContent = ({ post, callback }) => {
             placeholder: 'Nhập nội dung...',
             theme: 'snow'  // or 'bubble'
         })
+        if (post && post.delta) {
+            try {
+                const delta = JSON.parse(post.delta)
+                if (delta) {
+                    window.QuillEditor.setContents(delta)
+                }
+            } catch (error) {
+                console.error(error)
+            }
+        }
         setEditor(window.QuillEditor)
     }, [])
     useLayoutEffect(() => {
@@ -137,7 +147,10 @@ const EditorContent = ({ post, callback }) => {
             setFlagOpenImageManager(true)
         })
         editor.on('text-change', function (range, oldRange, source) {
-            callback(editor.root.innerHTML)
+            callback({
+                content: editor.root.innerHTML,
+                delta: editor.getContents()
+            })
         })
     }, [editor])
     const handleClickEmojiButton = e => {
@@ -236,7 +249,8 @@ const EditorContent = ({ post, callback }) => {
 }
 
 const PostPopup = ({ visible, onClose, post, callback }) => {
-    const [content, setContent] = useState('')
+    const [content, setContent] = useState(() => '')
+    const [delta, setDelta] = useState(() => null)
     const [isMobile, setIsMobile] = useState(false)
     const [visiblePostForm, setVisiblePostForm] = useState(() => false)
     useLayoutEffect(() => {
@@ -269,14 +283,15 @@ const PostPopup = ({ visible, onClose, post, callback }) => {
             <Layout className="editor-layout">
                 <EditorContent
                     post={post}
-                    callback={text => {
-                        setContent(text)
+                    callback={({ content, delta }) => {
+                        setContent(content)
+                        setDelta(delta)
                     }} />
                 {!isMobile && <Sider
                     width={350}
                     className="editor-right-side"
                 >
-                    <PostForm onClose={onClose} post={post} content={content} callback={callback} />
+                    <PostForm onClose={onClose} post={post} content={content} delta={delta} callback={callback} />
                 </Sider>}
             </Layout>
             {isMobile && <>
@@ -285,7 +300,10 @@ const PostPopup = ({ visible, onClose, post, callback }) => {
                     <PostForm onClose={() => {
                         onClosePostForm()
                         onClose()
-                    }} post={post} content={content} callback={callback} />
+                    }} post={post}
+                        content={content}
+                        delta={delta}
+                        callback={callback} />
                 </div>
                 <Button type='primary'
                     onClick={onOpenPostForm}>Tiếp theo</Button>

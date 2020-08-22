@@ -14,7 +14,6 @@ function createChildElement(isYoutubeVideo, url) {
     if (isYoutubeVideo) {
         let node = document.createElement('iframe');
         node.setAttribute('src', url);
-        // Set non-format related attributes with static values
         node.setAttribute('frameborder', '0');
         node.setAttribute('allowfullscreen', true);
         node.className = 'editor-iframe'
@@ -30,6 +29,7 @@ function createChildElement(isYoutubeVideo, url) {
 
 class VideoBlot extends BlockEmbed {
     static create(url) {
+        console.log(url)
         let node = super.create();
         node.className = 'editor-iframe-container'
         const isYoutubeVideo = getYoutubeEmbedId(url)
@@ -39,6 +39,7 @@ class VideoBlot extends BlockEmbed {
     }
 
     static formats(node) {
+        console.log(node)
         // We still need to report unregistered embed formats
         let format = {};
         if (node.hasAttribute('height')) {
@@ -54,10 +55,11 @@ class VideoBlot extends BlockEmbed {
     }
 
     static value(node) {
-        return node.getAttribute('src');
+        return node.firstChild.getAttribute('src');
     }
 
     format(name, value) {
+        console.log(name, value)
         // Handle unregistered embed formats
         if (name === 'height' || name === 'width' || name === 'class') {
             if (value) {
