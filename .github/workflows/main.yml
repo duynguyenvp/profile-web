@@ -1,0 +1,40 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  cd:
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: Login to Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_USER }} 
+             -p ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build Docker image
+        run: docker build -t ${{ secrets.DOCKER_USER }}/somethingaboutmeweb:latest -t ${{ secrets.DOCKER_USER }}/somethingaboutmeweb:${GITHUB_SHA::8} .
+      - name: Publish Docker image
+        run: docker push ${{ secrets.DOCKER_USER }}/somethingaboutmeweb:latest
+  deploy:
+    needs: cd
+    runs-on: self-hosted
+    steps:
+      - name: stop and remove all containers based on image name
+        run: docker rm $(docker stop $(docker ps -a -q --filter ancestor=${{ secrets.DOCKER_USER }}/somethingaboutmeweb:latest --format="{{.ID}}"))
+        continue-on-error: true
+      - name: pull image
+        run: docker pull ${{ secrets.DOCKER_USER }}/somethingaboutmeweb:latest
+      - name: docker run
+        run: docker run -it -d -p 8080:8080 --net="host" -v /$HOME/Data/web/upload:/app/upload -v /$HOME/Data/web/Logs:/app/Logs ${{ secrets.DOCKER_USER }}/somethingaboutmeweb:latest
+      - name: remove all untagged images
+        run: docker image prune -f
+

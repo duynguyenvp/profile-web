@@ -6,6 +6,9 @@ import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 import HomePage from '../components/Home'
 import StyleContext from 'isomorphic-style-loader/StyleContext'
+import RESOURCE_VERSION from '../../version'
+import assets from '../views/assets.json'
+
 router.get('/', (req, res) => {
     const css = new Set() // CSS for all rendered React components
     const insertCss = (...styles) => styles.forEach(style => css.add(style._getCss()))
@@ -14,7 +17,15 @@ router.get('/', (req, res) => {
             <HomePage />
         </StyleContext.Provider>
     )
-    res.send(template({ message: markup, styles: [...css].join(''), title: `Trang chủ` }))
+    res.send(template({
+        message: markup,
+        styles: [...css].join(''),
+        title: `Trang chủ`,
+        scripts: assets.entryPoints.home.js.map(item => {
+            return `/dist/${item}?v=${RESOURCE_VERSION}`
+        }),
+        resource_version: RESOURCE_VERSION
+    }))
 });
 
 router.get('/home', (req, res) => {
@@ -25,7 +36,12 @@ router.get('/home', (req, res) => {
             <HomePage />
         </StyleContext.Provider>
     )
-    res.send(template({ message: markup, styles: [...css].join(''), title: `Trang chủ` }))
+    res.send(template({
+        message: markup,
+        styles: [...css].join(''),
+        title: `Trang chủ`,
+        resource_version: RESOURCE_VERSION
+    }))
 });
 
 export default router

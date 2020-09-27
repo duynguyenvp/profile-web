@@ -1,3 +1,4 @@
+@import "../../../common-resources/root.scss";
 .bg-login {
   width: 100%;
   height: 100%;
@@ -6,21 +7,21 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  overflow: auto;
 
   .form-register {
-    width: 400px;
-    top: 50%;
-    left: 50%;
+    min-height: 100%;
+    top: 0;
+    right: 0;
+    width: 100%;
     position: absolute;
-    transform: translate(-50%, -50%);
     display: flex;
     flex-direction: column;
-    padding: 30px 25px;
+    padding: 60px 25px;
     align-items: center;
-    background-color: #000000a1;
+    background-color: #000000d4;
     text-align: center;
     color: white;
-    border-radius: 4%;
 
     .title {
       display: flex;
@@ -31,6 +32,7 @@
       width: 100%;
       text-transform: uppercase;
     }
+
     .error-message {
       flex: 1;
       width: 100%;
@@ -44,9 +46,10 @@
         font-style: italic;
       }
     }
+
     .field-zone {
       height: 50px;
-      margin-bottom: 12px;
+      margin-bottom: 24px;
       width: 100%;
       .custom-select {
         max-width: none;
@@ -57,7 +60,7 @@
     }
     .field-phone {
       width: 100%;
-      margin-bottom: 12px;
+      margin-bottom: 24px;
       flex-direction: column;
       display: flex;
       align-items: flex-start;
@@ -80,7 +83,7 @@
         font-size: 1.75em;
         padding: 0.25em 0.5em 0.3125em;
         color: rgba(255, 255, 255, 0.5);
-        border-radius: 0.25em;
+        border-radius: 0.15em;
         background: transparent;
         transition: all 0.1s;
 
@@ -127,15 +130,14 @@
         opacity: 0.5;
       }
     }
-
     .field-control {
       display: flex;
       align-items: center;
       justify-content: center;
-      padding-top: 30px;
-      
+
+      .btn-login,
       .btn-register {
-        width: 175px;
+        flex: 1;
         height: 55px;
         display: flex;
         align-items: center;
@@ -143,15 +145,98 @@
         font-size: 18px;
         font-weight: 600;
         cursor: pointer;
-        background-color: #ff0100;
-        border: none;
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+        background-color: transparent;
         color: white;
         border-radius: 4px;
-  
+
         &:active {
           opacity: 0.75;
         }
       }
+
+      .btn-register {
+        &:active,
+        &:hover {
+          opacity: 1;
+          border-color: #c23321;
+          background-color: #c23321;
+        }
+      }
+
+      .btn-return-to-login {
+        margin: 16px 0;
+        color: white;
+        cursor: pointer;
+        font-weight: 600;
+        text-decoration: underline;
+      }
+
+      .btn-login {
+        &:active,
+        &:hover {
+          opacity: 1;
+          background-color: #c23321;
+          border-color: #c23321;
+        }
+      }
+    }
+  }
+}
+.other-methods-title {
+  width: 100%;
+  margin: 60px 0 20px 0;
+}
+.btn-google {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.42857143;
+  touch-action: manipulation;
+  cursor: pointer;
+  user-select: none;
+  background-image: none;
+  border-radius: 4px;
+  position: relative;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+  background-color: transparent;
+
+  svg {
+    fill: white;
+    margin-right: 12px;
+  }
+
+  &:hover {
+    color: #fff;
+    background-color: #c23321;
+    border-color: #c23321;
+  }
+}
+
+@media only screen and (min-width: 900px) {
+  .bg-login {
+    .form-register {
+      width: 60%;
+    }
+  }
+}
+
+@media only screen and (min-width: 1100px) {
+  .bg-login {
+    .form-register {
+      width: 45%;
     }
   }
 }

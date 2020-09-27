@@ -9,8 +9,9 @@ import StyleContext from 'isomorphic-style-loader/StyleContext'
 
 import Blog from '../components/Blog'
 import { dateToStringFormatCultureVi } from '../../Client/utils/date-utils'
-
+import assets from '../views/assets.json'
 import System from '../constants/System'
+import RESOURCE_VERSION from '../../version'
 
 router.get('/:postUrl?', (req, res) => {
     console.log('blog', new Date())
@@ -83,8 +84,12 @@ router.get('/:postUrl?', (req, res) => {
         }
         res.send(template({
             initdata: JSON.stringify(initdata),
+            resource_version: RESOURCE_VERSION,
             main: markup,
             styles: [...css].join(''),
+            scripts: assets.entryPoints.blog.js.map(item => {
+                return `/dist/${item}?v=${RESOURCE_VERSION}`
+            }),
             title: pageTitle,
             ogTitle: pageTitle,
             ogDescription: pageTitle,

@@ -1,16 +1,22 @@
 import express from 'express'
 const router = express.Router()
-import request from 'request';
+import request from 'request'
 import System from '../constants/System'
-
+import RESOURCE_VERSION from '../../version'
 const template = require('../views/admin.pug')
 
 import { apiRequireAuth } from '../middlewares/auth.middleware'
-import { adminRequireAuth } from '../middlewares/admin.auth.middleware';
+import { adminRequireAuth } from '../middlewares/admin.auth.middleware'
+import assets from '../views/assets.json'
 
 router.get('/*', adminRequireAuth, (req, res) => {
-    console.log('admin', new Date())
-    res.send(template({ title: `Admin Page` }))
+    res.send(template({
+        title: `Admin Page`,
+        resource_version: RESOURCE_VERSION,
+        scripts: assets.entryPoints.admin.js.map(item => {
+            return `/dist/${item}?v=${RESOURCE_VERSION}`
+        }),
+    }))
 });
 
 router.get('/userInfo', apiRequireAuth, (req, res) => {

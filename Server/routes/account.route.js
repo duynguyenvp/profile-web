@@ -2,8 +2,9 @@ import express from 'express'
 const router = express.Router()
 import request from 'request'
 import passport from 'passport'
-
+import logger from '../logger'
 import System from '../constants/System'
+import RESOURCE_VERSION from '../../version'
 import { checkAuth } from '../middlewares/auth.middleware'
 import { isSafeUrl } from '../../Client/utils/string-utils'
 
@@ -15,6 +16,7 @@ import React from 'react'
 import ReactDOMServer from 'react-dom/server'
 import Test from '../../Client/pages/login/form-login/index'
 import StyleContext from 'isomorphic-style-loader/StyleContext'
+import assets from '../views/assets.json'
 
 router.get('/auth/google', passport.authenticate('google', {
     scope: ['profile', 'email']
@@ -63,10 +65,14 @@ router.get('/login:returnUrl?', checkAuth, (req, res) => {
     )
 
     res.send(templateLogin({
-        title: `Login`,
+        title: `Đăng nhập`,
+        resource_version: RESOURCE_VERSION,
         styles: [...css].join(''),
         body: markup,
-        context: JSON.stringify({ message: message })
+        context: JSON.stringify({ message: message }),
+        scripts: assets.entryPoints.login.js.map(item => {
+            return `/dist/${item}?v=${RESOURCE_VERSION}`
+        }),
     }))
 });
 
@@ -75,7 +81,11 @@ router.get('/register:returnUrl?', checkAuth, (req, res) => {
     req.app.locals.messages = null;
     res.send(templateRegister({
         title: `Register`,
-        context: JSON.stringify({ message: message })
+        resource_version: RESOURCE_VERSION,
+        context: JSON.stringify({ message: message }),
+        scripts: assets.entryPoints.register.js.map(item => {
+            return `/dist/${item}?v=${RESOURCE_VERSION}`
+        }),
     }))
 });
 
@@ -144,6 +154,7 @@ router.post('/signin', (req, res) => {
     request.post({ url: `${System.API}/User/Sigin`, formData: formData }, function optionalCallback(err, httpResponse, body) {
         if (err) {
             res.send(err);
+            logger.error('login failed:' + JSON.stringify(err))
             return console.error('login failed:', err);
         }
         body = JSON.parse(body);
@@ -156,6 +167,7 @@ router.post('/signin', (req, res) => {
             res.redirect(302, ReturnUrl)
         } else {
             if (body.errorCode >= 900) {
+                logger.error('login failed:' + JSON.stringify(body))
                 req.app.locals.signinMessage = body.errorMessage
                 res.redirect('/account/login')
             } else {

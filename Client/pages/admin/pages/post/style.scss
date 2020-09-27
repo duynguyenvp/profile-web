@@ -1,0 +1,141 @@
+.custom-row {
+    .btn-preview {
+        margin-right: 8px;
+    }
+    .btn-preview,
+    .btn-remove {
+        display: none;
+        float: left;
+    }
+    &:hover {
+        cursor: pointer;
+        .btn-preview,
+        .btn-remove {
+            display: block;
+        }
+    }
+}
+
+.editor-layout,
+.editor-right-side {
+    height: calc(100vh - 56px);
+    overflow: hidden;
+
+    .editor-main-header,
+    .editor-main-content {
+        background: #f4f4f4;
+        color: black;
+    }
+    .editor-right-side {
+        background: white;
+        box-shadow: 5px 5px 18px #000;
+        padding: 20px;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    }
+    .editor-main-header {
+        padding-left: 20px;
+        padding-right: 20px;
+        height: auto;
+        display: flex;
+        align-items: center;
+        padding-bottom: 16px;
+
+        #toolbar {
+            position: relative;
+            width: 750px;
+            margin: 0 auto;
+            display: flex;
+            background: white;
+            box-shadow: 0 0.1rem 1rem rgba(0, 0, 0, 0.15);
+            border: unset !important;
+
+            .ql-picker-label {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                svg {
+                    width: 18px;
+                }
+            }
+
+            .input-emojibox {
+                position: absolute;
+                top: 100%;
+                z-index: 1500;
+                right: 0;
+            }
+        }
+    }
+    .editor-main-content {
+        .editor-content {
+            width: 100%;
+            border: unset !important;
+            background-color: transparent;
+            height: 100% !important;
+            .ql-editor {
+                max-width: 100%;
+                position: relative;
+                min-height: 100%;
+                width: 750px;
+                margin: 0 auto;
+                padding: 16px;
+                background: white;
+                box-shadow: 6px 6px 11px #000;
+                box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            }
+        }
+    }
+}
+
+.editor-postform-mobile-overlay {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    background-color: #00000080;
+}
+
+.editor-postform-mobile {
+    display: none;
+    position: absolute;
+    z-index: 1001;
+    padding: 24px;
+    width: 100%;
+    height: 260px;
+    bottom: -260px;
+    background-color: white;
+    transition: bottom 0.3s ease;
+
+    &.active {
+        bottom: 0;
+        display: block;
+    }
+}
+
+.test {
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: red;
+    color: white;
+    z-index: 1;
+    cursor: pointer;
+}
+
+@media only screen and (max-width: 768px) {
+    #toolbar {
+        max-width: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    .editor-layout {
+        height: calc(100vh - 90px);
+
+        .editor-main-content {
+            margin-bottom: 16px;
+        }
+    }
+}
