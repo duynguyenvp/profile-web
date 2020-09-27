@@ -1,0 +1,75 @@
+{
+    "name": "Something about me, something about you",
+    "short_name": "Something about me, something about you",
+    "lang": "en-US",
+    "start_url": "/",
+    "display": "standalone",
+    "orientation": "any",
+    "theme_color": "#10356f",
+    "background_color": "#fff",
+    "icons": [
+        {
+            "src": "icon-148x148.png",
+            "sizes": "148x148",
+            "type": "image/png"
+        },
+        {
+            "src": "icon-330x330.png",
+            "sizes": "330x330",
+            "type": "image/png"
+        },
+        {
+            "src": "icon-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Blog",
+            "short_name": "Blog",
+            "description": "Write everything you want here",
+            "url": "/bai-viet",
+            "icons": [
+                {
+                    "src": "icon-148x148.png",
+                    "sizes": "148x148",
+                    "type": "image/png"
+                },
+                {
+                    "src": "icon-330x330.png",
+                    "sizes": "330x330",
+                    "type": "image/png"
+                },
+                {
+                    "src": "icon-512x512.png",
+                    "sizes": "512x512",
+                    "type": "image/png"
+                }
+            ]
+        },
+        {
+            "name": "Resume",
+            "short_name": "Resume",
+            "description": "Build your resume and you can download it for free",
+            "url": "/resume/view",
+            "icons": [
+                {
+                    "src": "icon-148x148.png",
+                    "sizes": "148x148",
+                    "type": "image/png"
+                },
+                {
+                    "src": "icon-330x330.png",
+                    "sizes": "330x330",
+                    "type": "image/png"
+                },
+                {
+                    "src": "icon-512x512.png",
+                    "sizes": "512x512",
+                    "type": "image/png"
+                }
+            ]
+        }
+    ]
+}

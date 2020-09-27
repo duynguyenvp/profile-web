@@ -1,0 +1,10 @@
+.custom-row {
+    .btn-remove {
+        display: none;
+    }
+    &:hover {
+        .btn-remove {
+            display: block;
+        }
+    }
+}

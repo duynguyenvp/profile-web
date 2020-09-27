@@ -3,6 +3,7 @@
 		[
 			"@babel/preset-env",
 			{
+				"modules": false,
 				"targets": {
 					"chrome": "58",
 					"ie": "11"
@@ -14,6 +15,7 @@
 	"plugins": [
 		"@babel/plugin-proposal-object-rest-spread",
 		"@babel/plugin-syntax-dynamic-import",
-		"@babel/plugin-proposal-class-properties"
+		"@babel/plugin-proposal-class-properties",
+		["import", { "libraryName": "antd", "libraryDirectory": "es", "style": "css" }]
 	]
 }

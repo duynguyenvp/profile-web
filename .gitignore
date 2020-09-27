@@ -1,3 +1,7 @@
 /node_modules/*
-/Published/*
+/build/*
 /upload/*
+/package-lock.json
+/yarn.lock
+/yarn-error.log
+Server/views/assets.json

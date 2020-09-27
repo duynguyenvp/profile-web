@@ -1,0 +1,568 @@
+.topnav {
+  position: unset !important;
+  background-color: $primaryColor !important;
+
+  .btn-login {
+    &:hover,
+    &:active {
+      border-color: white !important;
+    }
+  }
+}
+.btn-add-new {
+  text-decoration: none;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  background-color: $primaryColor;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  padding: 12px;
+
+  &:active {
+    opacity: 0.75;
+  }
+
+  i,
+  svg {
+    margin-right: 8px;
+    color: white;
+    fill: white;
+    font-size: 18px;
+  }
+}
+.resume-body {
+  height: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f1f1f1;
+  padding: 30px 0;
+  position: relative;
+
+  &.print {
+    padding: 0 !important;
+    background-color: #fff;
+
+    .box-controls {
+      display: none !important;
+    }
+  }
+
+  .complete {
+    position: fixed;
+    left: 50px;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    span {
+      font-size: 16px;
+      font-weight: bold;
+      width: 140px;
+      color: black;
+    }
+
+    img {
+      width: 50px;
+      margin: 16px 0 0 -16px;
+    }
+  }
+
+  .box-controls {
+    padding: 6px;
+    width: 100%;
+    max-width: 1100px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    .control-mesage {
+      margin: 0;
+      padding: 6px 12px;
+      font-style: italic;
+    }
+    .btn-control-item {
+      background-color: white;
+      border: 1px solid #c1c1c1;
+      border-radius: 4px;
+      width: 50px;
+      height: 36px;
+      cursor: pointer;
+      color: black;
+      transition: background-color 0.2s ease, color 0.2s ease;
+
+      &:focus {
+        outline: none;
+      }
+
+      &.disabled {
+        pointer-events: none;
+        position: relative;
+        overflow: hidden;
+
+        span {
+          position: absolute;
+          background: $primaryColor;
+
+          &:nth-child(2) {
+            width: 100%;
+            height: 3px;
+            top: 0;
+            left: -100%;
+            animation: animatation1 1s linear infinite;
+          }
+
+          &:nth-child(3) {
+            width: 100%;
+            height: 3px;
+            bottom: 0;
+            right: -100%;
+            animation: animatation2 1s linear infinite;
+          }
+
+          &:nth-child(4) {
+            width: 3px;
+            height: 100%;
+            right: 0;
+            top: -100%;
+            animation: animatation3 1s linear infinite;
+            animation-delay: 0.5s;
+          }
+          &:nth-child(5) {
+            width: 3px;
+            height: 100%;
+            left: 0;
+            bottom: -100%;
+            animation: animatation4 1s linear infinite;
+            animation-delay: 0.5s;
+          }
+        }
+      }
+
+      @keyframes animatation1 {
+        0% {
+          left: -100%;
+        }
+        100% {
+          left: 100%;
+        }
+      }
+      @keyframes animatation2 {
+        0% {
+          right: -100%;
+        }
+        100% {
+          right: 100%;
+        }
+      }
+      @keyframes animatation3 {
+        0% {
+          top: -100%;
+        }
+        100% {
+          top: 100%;
+        }
+      }
+
+      @keyframes animatation4 {
+        0% {
+          bottom: -100%;
+        }
+        100% {
+          bottom: 100%;
+        }
+      }
+
+      &:hover,
+      &:active {
+        background-color: $primaryColor;
+        color: white;
+      }
+    }
+  }
+
+  .btn-create {
+    background-color: $primaryColor;
+    border: 1px solid #c1c1c1;
+    border-radius: 4px;
+    padding: 10px 16px;
+    cursor: pointer;
+    color: white;
+    opacity: 0.8;
+
+    &:hover,
+    &:active {
+      opacity: 1;
+    }
+  }
+
+  .secondZoneContent {
+    width: 100%;
+    max-width: 1100px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    position: relative;
+
+    .card {
+      background-color: white;
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      transition: 0.3s;
+      width: 100%;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      padding-bottom: 10px;
+
+      .card-avatar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        padding: 16px 0;
+        .avatar {
+          // border-radius: 5px 5px 0 0;
+          width: 200px;
+          height: 200px;
+          border-radius: 50%;
+          // background-image: url("../../../common-resources/images/avatar.jpg");
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+          position: relative;
+
+          &::after {
+            content: " ";
+            width: 100%;
+            position: absolute;
+            height: 100%;
+            top: 50%;
+            left: 50%;
+            border-radius: 50%;
+            border: 7px solid #0000001a;
+            transform: translate(-50%, -50%);
+          }
+        }
+        h2 {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          padding-left: 10px;
+          padding-right: 10px;
+        }
+      }
+
+      &:hover {
+        box-shadow: 0 8px 10px 0 rgba(0, 0, 0, 0.2);
+      }
+      .container {
+        padding: 0px 10px;
+
+        .card-field-info {
+          display: flex;
+          align-items: center;
+
+          i,
+          svg {
+            color: $primaryColor;
+            margin-right: 10px;
+          }
+
+          svg {
+            width: 24px;
+            fill: $primaryColor;
+          }
+
+          &.field-title {
+            font-weight: bold;
+            font-size: 16px !important;
+          }
+
+          &.container-title {
+            padding: 10px 0;
+            margin: 8px 0;
+            font-weight: bold;
+            font-size: 20px !important;
+
+            i {
+              color: initial;
+              font-size: 30px;
+            }
+          }
+        }
+
+        hr {
+          border: 0;
+          border-top: 1px solid #eee;
+          margin: 16px 0;
+        }
+
+        .content {
+          padding: 0px 10px;
+
+          h5,
+          h6 {
+            margin: 8px 0;
+            padding: 0;
+            font-size: 16px;
+          }
+          h5 {
+            .PeriodTime {
+              float: right;
+            }
+          }
+          h6 {
+            font-size: 16px;
+            display: flex;
+            color: $primaryColor;
+
+            i {
+              margin-right: 14px;
+            }
+          }
+
+          p {
+            font-size: 13px;
+          }
+        }
+      }
+
+      .skills-box {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        .skill-for-print {
+          padding: 6px 12px;
+          border: 1px solid #c1c1c1;
+          border-radius: 50px;
+          margin: 3px;
+          box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+        }
+      }
+
+      &.print {
+        flex-direction: row;
+        display: flex;
+
+        .card-avatar {
+          display: flex;
+          align-items: flex-start;
+          .avatar {
+            width: 150px;
+            height: 150px;
+            margin: 20px;
+          }
+        }
+
+        .container {
+          flex: 1;
+
+          h2 {
+            font-size: 40px;
+            margin: 10px 0;
+          }
+
+          .card-field-info {
+            margin: 6px 0;
+            font-size: 14px;
+
+            i,
+            svg {
+              font-size: 20px;
+            }
+
+            svg {
+              width: 20px !important;
+            }
+          }
+        }
+
+        .skills-box {
+          flex-direction: row;
+          flex-wrap: wrap;
+        }
+      }
+    }
+
+    .secondZoneLeftPanel {
+      flex: 3;
+      display: flex;
+      margin-right: 0;
+    }
+
+    .secondZoneRightPanel {
+      flex: 7;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}
+
+@media only screen and (min-width: 800px) {
+  .resume-body {
+    padding: 50px 0;
+    .secondZoneContent {
+      width: 100%;
+      padding: 6px;
+      flex-direction: row;
+
+      .card {
+        .card-avatar {
+          padding: 0;
+          .avatar {
+            width: 100%;
+            border-radius: 5px 5px 0 0;
+
+            &::after {
+              display: none;
+            }
+          }
+        }
+        .container {
+          padding: 0 10px;
+
+          h2 {
+            font-size: 16px;
+            margin: 10px 0;
+          }
+
+          .card-field-info {
+            margin: 10px 0;
+            font-size: 12px;
+
+            i,
+            svg {
+              margin-right: 16px;
+            }
+
+            &.field-title {
+              i {
+                color: initial;
+              }
+              font-size: 16px !important;
+            }
+
+            &.container-title {
+              font-size: 20px !important;
+              padding: 10px 0;
+              margin: 8px 0px;
+
+              i {
+                color: initial;
+                font-size: 36px;
+              }
+            }
+          }
+
+          hr {
+            border: 0;
+            border-top: 1px solid #eee;
+            margin: 20px 0;
+          }
+
+          .content {
+            padding: 0 10px;
+
+            h5,
+            h6 {
+              margin: 10px 0;
+              padding: 0;
+              font-size: 16px;
+            }
+            h6 {
+              i {
+                font-size: 18px;
+              }
+            }
+
+            p {
+              font-size: 13px;
+            }
+          }
+        }
+      }
+
+      .secondZoneLeftPanel {
+        flex: 3;
+        margin-right: 6px;
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: 1100px) {
+  .resume-body {
+    padding: 60px 0;
+    .secondZoneContent {
+      width: 100%;
+      padding: 6px;
+      flex-direction: row;
+
+      .card {
+        .container {
+          padding: 2px 16px;
+
+          h2 {
+            font-size: 18px;
+            margin: 16px 0;
+          }
+
+          .card-field-info {
+            margin: 16px 0;
+            font-size: 14px;
+
+            i,
+            svg {
+              margin-right: 16px;
+            }
+
+            &.field-title {
+              font-size: 18px !important;
+            }
+
+            &.container-title {
+              font-size: 30px !important;
+              padding: 16px 0;
+              margin: 10px 0px;
+
+              i {
+                font-size: 36px;
+              }
+            }
+          }
+
+          .content {
+            padding: 2px 16px;
+
+            h5,
+            h6 {
+              font-size: 18px;
+            }
+            h6 {
+              i {
+                font-size: 18px;
+              }
+            }
+
+            p {
+              font-size: 14px;
+            }
+          }
+        }
+      }
+
+      .secondZoneLeftPanel {
+        flex: 3;
+        margin-right: 16px;
+      }
+    }
+  }
+}

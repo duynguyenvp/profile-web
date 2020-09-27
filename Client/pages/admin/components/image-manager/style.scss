@@ -1,0 +1,71 @@
+/* you can make up upload button and sample style by using stylesheets */
+.ant-upload-select-picture-card i {
+    color: #999;
+    font-size: 32px;
+}
+
+.ant-upload-select-picture-card .ant-upload-text {
+    margin-top: 8px;
+    color: #666;
+}
+
+.list-images {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-column-gap: 16px;
+    grid-row-gap: 16px;
+    margin: 0 16px;
+    width: 100%;
+    overflow-y: auto;
+    max-height: 400px;
+}
+
+.image-selected {
+    width: 100%;
+    min-height: 265px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    position: relative;
+    align-self: center;
+    display: flex;
+    border-radius: 4px;
+}
+
+#input-image {
+    display: none;
+}
+
+.input-button {
+    padding: 9px 15px;
+    position: relative;
+    background: #001529;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 0 16px 0;
+    color: white;
+    width: 100%;
+    border-radius: 4px;
+
+    span {
+        transition: opacity 0.25s ease;
+        margin-right: 12px;
+    }
+
+    &:hover,
+    &:active {
+        &::after,
+        span {
+            opacity: 1;
+        }
+    }
+}
+
+.input-from-url {
+    .ant-input-search-button {
+        background: #001529;
+        border-radius: 0 4px 4px 0;
+    }
+}
