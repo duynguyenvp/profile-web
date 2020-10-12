@@ -11,7 +11,6 @@ import { dateToStringFormatNoDayCultureVi, dateToStringFormatCultureVi } from '.
 import withStyles from 'isomorphic-style-loader/withStyles'
 import getApiInstance from '../../../ajax/generic-api'
 import PrintDisabled from '../../../common-resources/ic_print_disabled';
-// import DownloadComplete from '../../../common-resources/images/download-complete.png'
 
 class ResumeBody extends Component {
     state = {
@@ -41,15 +40,7 @@ class ResumeBody extends Component {
             }, 300);
         }).catch(err => { console.error(err); this.setState({ isPrinting: false }) })
     }
-    // renderComplete = () => {
-    //     const { isComplete } = this.state
-    //     const { isPrint } = this.props
-    //     if (isPrint) return null
-    //     return isComplete && <div className="complete">
-    //         <span>Resume đã được tải xuống ở đây!</span>
-    //         <img src={DownloadComplete} alt="" />
-    //     </div>
-    // }
+
     renderComplete = () => {
         const { isComplete, isPrinting } = this.state
         const { isPrint } = this.props
