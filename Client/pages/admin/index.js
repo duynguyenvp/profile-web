@@ -1,17 +1,19 @@
-import React, {useState} from 'react';
-import { render } from 'react-dom';
-import App from './App';
-import './style.css'
-import RESOURCE_VERSION from '../../../version'
+import React from "react";
+import { render } from "react-dom";
+import Admin from "./Admin";
+import RESOURCE_VERSION from "../../../version";
 
-const rootElement = document.getElementById('app');
-render(<App />, rootElement);
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js?v=' + RESOURCE_VERSION).then(registration => {
-            console.log('SW registered: ', registration);
-        }).catch(registrationError => {
-            console.log('SW registration failed: ', registrationError);
-        });
-    });
+const rootElement = document.getElementById("app");
+render(<Admin />, rootElement);
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("/sw.js?v=" + RESOURCE_VERSION)
+      .then((registration) => {
+        console.log("SW registered: ", registration);
+      })
+      .catch((registrationError) => {
+        console.log("SW registration failed: ", registrationError);
+      });
+  });
 }
