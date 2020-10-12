@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 
 import Quill from 'quill'
-import 'modules/quill/dist/quill.core.css'
-import 'modules/quill/dist/quill.snow.css'
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
 
 const toolbarOptions = [
     ['bold', 'italic', 'underline', 'strike'],            // custom button values

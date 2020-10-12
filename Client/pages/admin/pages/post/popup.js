@@ -9,8 +9,8 @@ import VideoBlot from './VideoBlot'
 import ImageResize from 'quill-image-resize-module'
 Quill.register('modules/imageResize', ImageResize)
 Quill.register(VideoBlot)
-import 'modules/quill/dist/quill.core.css'
-import 'modules/quill/dist/quill.snow.css'
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
 import { getAuthentication } from '../../store/authStore'
 import './quill.scss'
 

@@ -2,7 +2,6 @@ const path = require("path");
 const webpack = require("webpack");
 const merge = require("webpack-merge");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
   .BundleAnalyzerPlugin;
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -26,14 +25,7 @@ module.exports = (env) => {
   const reStyle = /\.(css|less|styl|scss|sass|sss)$/;
   const SharedConfig = () => ({
     output: {
-      filename: (pathData) => {
-        if (
-          Object.keys(entries).includes(pathData.chunk.name) ||
-          pathData.chunk.name.indexOf("runtime") != -1
-        )
-          return "[name].js";
-        return "[name].[contenthash].js";
-      },
+      filename: "[name].[contenthash].js",
       chunkFilename: "[id].[contenthash].js",
       path: path.resolve(__dirname, "./build/dist/"),
       publicPath: "/dist/",
@@ -205,15 +197,10 @@ module.exports = (env) => {
           parallel: true,
           cache: true,
         }),
+        new OptimizeCSSAssetsPlugin({}),
       ],
       splitChunks: {
         cacheGroups: {
-          styles: {
-            // name: "styles",
-            test: /\.(sa|sc|c)ss$/,
-            chunks: "all",
-            enforce: true,
-          },
           vendor: {
             // can be used in chunks array of HtmlWebpackPlugin
             test: /[\\/]node_modules[\\/]/,
@@ -231,49 +218,30 @@ module.exports = (env) => {
   });
   const devConfig = () => ({
     mode: "development",
-    optimization: {
-      minimizer: [new OptimizeCSSAssetsPlugin({})],
-    },
     devtool: "inline-source-map",
     watch: true,
     plugins: [
-      // new UglifyJsPlugin({
-      // 	sourceMap: true,
-      // 	cache: true,
-      // 	extractComments: false
-      // }),
       // new BundleAnalyzerPlugin({ analyzerPort: 9999 }),
       new MiniCssExtractPlugin({
-        // Options similar to the same options in webpackOptions.output
-        // both options are optional
-        filename: "[name].[hash].css",
-        chunkFilename: "[id].[hash].css",
+        filename: "[name].css",
+        chunkFilename: "[id].css",
       }),
-      // OccurrenceOrderPlugin is needed for webpack 1.x only
-      // new webpack.HotModuleReplacementPlugin(),
-      // Use NoErrorsPlugin for webpack 1.x
-      // new webpack.NoEmitOnErrorsPlugin()
     ],
     module: {
       rules: [
         {
           test: reStyle,
           rules: [
-            // Convert CSS into JS module
             {
               issuer: { not: [reStyle] },
               use: "isomorphic-style-loader",
+              sideEffects: true,
             },
             {
-              test: /\.(sa|sc|c)ss$/,
+              test: reStyle,
               use: [
                 MiniCssExtractPlugin.loader,
-                {
-                  loader: "css-loader",
-                  options: {
-                    modules: false,
-                  },
-                },
+                "css-loader",
                 "postcss-loader",
                 "sass-loader",
                 {
@@ -283,6 +251,7 @@ module.exports = (env) => {
                   },
                 },
               ],
+              sideEffects: true,
             },
           ],
         },
@@ -291,19 +260,10 @@ module.exports = (env) => {
   });
   const prodConfig = () => ({
     mode: "production",
-    optimization: {
-      minimizer: [new OptimizeCSSAssetsPlugin({})],
-    },
     plugins: [
-      new UglifyJsPlugin({
-        sourceMap: false,
-      }),
-      // new BundleAnalyzerPlugin({ analyzerPort: 9999 }),
       new MiniCssExtractPlugin({
-        // Options similar to the same options in webpackOptions.output
-        // both options are optional
-        filename: "[name].[hash].css",
-        chunkFilename: "[id].[hash].css",
+        filename: "[name].css",
+        chunkFilename: "[id].[contenthash].css",
       }),
     ],
     module: {
@@ -311,21 +271,16 @@ module.exports = (env) => {
         {
           test: reStyle,
           rules: [
-            // Convert CSS into JS module
             {
               issuer: { not: [reStyle] },
               use: "isomorphic-style-loader",
+              sideEffects: true,
             },
             {
-              test: /\.(sa|sc|c)ss$/,
+              test: reStyle,
               use: [
                 MiniCssExtractPlugin.loader,
-                {
-                  loader: "css-loader",
-                  options: {
-                    modules: false,
-                  },
-                },
+                "css-loader",
                 "postcss-loader",
                 "sass-loader",
                 {
@@ -335,6 +290,7 @@ module.exports = (env) => {
                   },
                 },
               ],
+              sideEffects: true,
             },
           ],
         },
