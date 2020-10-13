@@ -13,7 +13,6 @@ import System from "../constants/System";
 import { getResources } from "../helpers/index";
 
 router.get("/:postUrl?", (req, res) => {
-  console.log("blog", new Date());
   let data = null;
   let options = {
     url: `${System.API}/Post/GetLastPost`,

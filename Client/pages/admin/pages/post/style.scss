@@ -16,6 +16,10 @@
     }
 }
 
+.post-popup {
+  z-index: 9999;
+}
+
 .editor-layout,
 .editor-right-side {
     height: calc(100vh - 56px);
