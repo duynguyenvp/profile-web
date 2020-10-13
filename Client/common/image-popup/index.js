@@ -91,7 +91,6 @@ const ImagePopup = props => {
         getApiInstance().uploadBase64Image({
             base64image
         }).then(res => {
-            console.log(res)
             const { successful, src, error } = res || {}
             if (successful) {
                 setSelected(src)
@@ -167,7 +166,6 @@ const ImagePopup = props => {
                 getApiInstance().uploadImageFromUrl({
                     url
                 }).then(res => {
-                    console.log(res)
                     const { successful, src, error } = res || {}
                     if (successful) {
                         setSelected(src)

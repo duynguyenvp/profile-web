@@ -4,11 +4,7 @@ const nodeExternals = require("webpack-node-externals");
 const FileManagerPlugin = require("filemanager-webpack-plugin");
 
 module.exports = (env) => {
-  const isDevBuild = !(env && env.prod);
   const reStyle = /\.(css|less|styl|scss|sass|sss)$/;
-  console.log(
-    path.resolve(__dirname, "./Client/common-resources/variables.scss")
-  );
   const enviromentConfig = (isDevBuild) => {
     if (isDevBuild)
       return {

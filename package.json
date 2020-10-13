@@ -55,6 +55,7 @@
     "immutable": "^4.0.0-rc.12",
     "isomorphic-style-loader": "^5.1.0",
     "jspdf": "^1.5.3",
+    "localforage": "^1.9.0",
     "mime": "^2.4.4",
     "mini-css-extract-plugin": "0.9.0",
     "node-sass": "^4.13.1",
@@ -102,7 +103,7 @@
     "babel:node": "./node_modules/.bin/babel-node --presets=@babel/env",
     "build": "concurrently \"yarn client:build\" \"yarn server:build\"",
     "build:prod": "concurrently \"yarn client:build:prod --watch\" \"yarn server:build:prod --watch\"",
-    "start": "cross-env DOMAIN_API=\"http://0.0.0.0:8443/api\" nodemon --watch ./build/ ./build/server.js",
+    "start": "cross-env DOMAIN_API=\"'http://somethingaboutme.info:8443/api'\" nodemon --watch ./build/ ./build/server.js",
     "release": "yarn client:build:prod && yarn server:build:prod"
   },
   "sideEffects": false,

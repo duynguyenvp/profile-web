@@ -131,7 +131,6 @@ const App = ({ children }) => {
     }, [])
 
     useLayoutEffect(() => {
-        console.log(active, route)
         routeDerection({ active, route })
     }, [active, route])
 
