@@ -24,3 +24,5 @@ html
     div(id='app') !{body}
     each s in scripts
       script(src=s, async)
+    each c in css
+      link(rel="stylesheet" href=c, async)

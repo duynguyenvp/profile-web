@@ -44,7 +44,7 @@ const BoxRecentPosts = ({ username, changePost }) => {
                             <Skeleton width={250} count={2} />
                         </div>
                     </div>
-                    {4 - 1 > index ? <hr /> : null}
+                    {5 - 1 > index ? <hr /> : null}
                 </React.Fragment>
                 skeletons.push(post)
             }
