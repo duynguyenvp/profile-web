@@ -1,20 +1,34 @@
 #!/bin/sh
 if [ $(docker ps -f name=blue -q) ]; then
-  ENV="green"
+  NEW="green"
   OLD="blue"
 else
-  ENV="blue"
+  NEW="blue"
   OLD="green"
 fi
 
 echo "Pulling latest image"
-docker-compose --pull
+docker-compose pull
 
-echo "Starting "$ENV" container"
-docker-compose --project-name=$ENV up -d
+echo "Stopping "$OLD" container"
+docker-compose --project-name=$OLD stop
+
+echo "Starting "$NEW" container"
+docker-compose --project-name=$NEW up -d
 
 echo "Waiting..."
 sleep 5s
 
-echo "Stopping "$OLD" container"
-docker-compose --project-name=$OLD stop
+if [ $(docker ps -f name=black -q) ]; then
+  NODENEW="red"
+  NODEOLD="black"
+else
+  NODENEW="black"
+  NODEOLD="red"
+fi
+
+echo "Stopping "$NODEOLD" container"
+docker-compose --project-name=$NODEOLD -f docker-compose.node.yml stop
+
+echo "Starting "$NODENEW" container"
+docker-compose --project-name=$NODENEW -f docker-compose.node.yml up -d

@@ -4,14 +4,14 @@ services:
   somethingaboutmeweb:
     image: duynguyen26394/somethingaboutmeweb
     ports:
-      - "8111:8080"
+      - "8112:8080"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.somethingaboutmeweb.rule=Host(`localhost`)"
       - "traefik.http.routers.somethingaboutmeweb.entrypoints=web"
       - "traefik.backend.healthcheck.path=/health"
       - "traefik.backend.healthcheck.interval=1s"
-      - "traefik.port=8111"
+      - "traefik.port=8112"
     networks:
       - traefik
 networks:
