@@ -4,6 +4,17 @@ import getApiInstance from '../../../ajax/generic-api';
 import useStyles from 'isomorphic-style-loader/useStyles'
 import style from './style.scss'
 
+const getIndex = (year, month) => {
+  try {
+    let result = Number(year)
+    result *= 100
+    result += Number(month)
+    return result
+  } catch (error) {
+    return Number(year)
+  }
+}
+
 const BoxTimeline = ({ username, changePost }) => {
     useStyles(style);
     const [loading, setLoading] = useState(true)
@@ -27,7 +38,7 @@ const BoxTimeline = ({ username, changePost }) => {
                 const _timeline = res.result.map(item => {
                     let firstPart = item.id.slice(0, -4)
                     let secondPart = item.id.slice(-4);
-                    return { ...item, id: secondPart + firstPart, isOpen: false }
+                    return { ...item, id: secondPart + firstPart, isOpen: false, index: getIndex(secondPart, firstPart) }
                 })
                 setTimeline(_timeline)
             }
@@ -56,8 +67,8 @@ const BoxTimeline = ({ username, changePost }) => {
         }
         if (timeline && timeline.length) {
             return timeline.sort((a, b) => {
-                if (a.id > b.id) return -1
-                if (a.id < b.id) return 1
+                if (a.index > b.index) return -1
+                if (a.index < b.index) return 1
                 return 0
             }).map((item, index) => {
                 return <li key={index} className="timeline-li">
