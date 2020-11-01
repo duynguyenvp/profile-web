@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import Skeleton from "react-loading-skeleton";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import getApiInstance from "../../../../ajax/generic-api";
 import useStyles from "isomorphic-style-loader/useStyles";
 import style from "./style.scss";
@@ -45,8 +45,9 @@ const BoxRecentPosts = ({ username, changePost }) => {
           <React.Fragment key={index}>
             <div className="post">
               <div className="post__title">
-                <Skeleton count={1} />
-                <Skeleton count={1} />
+                <SkeletonTheme color="#a2a2a2" highlightColor="#adadad">
+                  <Skeleton count={2} />
+                </SkeletonTheme>
               </div>
             </div>
           </React.Fragment>

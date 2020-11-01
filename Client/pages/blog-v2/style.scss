@@ -20,6 +20,12 @@
     }
   }
 }
+.plane {
+  width: 30px;
+  height: 30px;
+  border-radius: unset;
+  right: 0;
+}
 .blog {
   height: 100%;
   width: 100%;
@@ -32,10 +38,13 @@
   }
 
   &__btnAsideToggle {
+    width: 30px;
+    height: 30px;
     position: absolute;
     left: 0;
-    top: 100px;
-    z-index: 999999;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 50;
     background: $primaryColor;
     color: $colorLight;
     border: none;
@@ -45,11 +54,14 @@
     justify-content: center;
 
     &--close {
+      width: 100%;
+      height: unset;
       position: sticky;
       background-color: $bgColor;
       border-bottom: 1px solid #3a3a3a;
       padding: 12px 0;
       top: 0;
+      transform: unset;
     }
   }
 
@@ -62,6 +74,7 @@
     left: -100%;
     z-index: 99;
     height: 100%;
+    padding-bottom: 70px;
     &--width {
       width: 100%;
     }
@@ -76,7 +89,7 @@
 
   &__body {
     flex: 1;
-    padding: 60px 30px;
+    padding: 30px 0 70px 15px;
     overflow-y: auto;
     .post-header {
       display: flex;
@@ -114,6 +127,7 @@
 
     .post-content {
       padding: 16px;
+      overflow: hidden;
       @include postContent();
       .editor-iframe-container {
         position: relative;
@@ -145,6 +159,9 @@
       }
     }
   }
+  .plane {
+    right: 12px;
+  }
 }
 @media only screen and (min-width: 1100px) {
   .blog {
@@ -157,6 +174,9 @@
     &__aside {
       left: 0;
       position: relative;
+    }
+    &__body {
+      padding: 60px 15px 70px 30px;
     }
   }
 }

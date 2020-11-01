@@ -115,12 +115,7 @@ const BoxSearch = ({ changePost }) => {
           searchResults.map((item, i) => {
             return (
               <React.Fragment key={i}>
-                <div
-                  className="searchItem"
-                  onClick={() => {
-                    this.changePost(item.id);
-                  }}
-                >
+                <div className="searchItem">
                   <div className="searchItem__title">
                     <a
                       href={item.postUrl}

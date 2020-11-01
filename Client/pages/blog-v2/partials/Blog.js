@@ -75,6 +75,7 @@ const Blog = (props) => {
   };
 
   const changePost = (postId) => {
+    setAsideOpen(false);
     getApiInstance()
       .postWithForm({
         url: "/post/GetPostById",
@@ -124,10 +125,13 @@ const Blog = (props) => {
   return (
     <section className={`blog ${menuFixed ? "blog--marginTop" : ""}`}>
       {!asideOpen && (
-        <button className="blog__btnAsideToggle" onClick={asideToggle}>
-          <i className="material-icons">
-            {asideOpen ? "chevron_left" : "chevron_right"}
-          </i>
+        <button
+          className="blog__btnAsideToggle"
+          onClick={() => {
+            setAsideOpen(true);
+          }}
+        >
+          <i className="material-icons">chevron_right</i>
         </button>
       )}
       <aside
@@ -137,7 +141,9 @@ const Blog = (props) => {
       >
         <button
           className="blog__btnAsideToggle blog__btnAsideToggle--close"
-          onClick={asideToggle}
+          onClick={() => {
+            setAsideOpen(false);
+          }}
         >
           <i className="material-icons">chevron_left</i> Đóng lại
         </button>
