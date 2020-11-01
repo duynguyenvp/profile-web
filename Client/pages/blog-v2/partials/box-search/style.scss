@@ -1,0 +1,106 @@
+.boxSearch {
+  width: 100%;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  padding: 16px;
+  box-sizing: border-box;
+
+  .searchKeywordWrapper {
+    position: relative;
+    display: flex;
+    flex: 1;
+
+    .searchKeywordWrapper__preIcon {
+      position: absolute;
+      left: 0px;
+      color: $colorLight;
+    }
+
+    .searchKeywordWrapper__btnClear {
+      position: absolute;
+      right: 0px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      top: 50%;
+      transform: translateY(-50%);
+      i {
+        color: $colorLight;
+        font-size: 20px;
+      }
+      &:hover,
+      &:active,
+      &:focus {
+        outline: 0px solid transparent;
+      }
+    }
+    .searchKeywordWrapper__input {
+      padding: 6px 24px;
+      font-size: 13px;
+      cursor: text;
+      flex: 1 1 auto;
+      word-break: break-all;
+      border: none;
+      background-color: transparent !important;
+      color: $colorLight;
+      border-bottom: 3px solid #6aaade;
+
+      &:focus {
+        outline: 0px solid transparent;
+      }
+    }
+  }
+
+  .searchResult {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    max-height: 500px;
+
+    .searchResult__status {
+      margin: 0;
+      margin-top: 12px;
+    }
+
+    .searchItem {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      border-radius: 4px;
+      align-items: center;
+      cursor: pointer;
+
+      .searchItem__title {
+        font-size: 14px;
+        padding-top: 12px;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        width: 100%;
+        color: $color;
+
+        a {
+          text-decoration: none;
+          color: inherit;
+        }
+
+        p {
+          padding: 0;
+          margin: 0;
+          overflow: hidden;
+        }
+        .searchItem__postTime {
+          text-transform: uppercase;
+          font-size: 0.8rem;
+        }
+        &:hover {
+          p {
+            font-weight: bold;
+            color: $colorLight;
+          }
+        }
+      }
+    }
+  }
+}
