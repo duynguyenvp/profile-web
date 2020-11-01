@@ -99,11 +99,10 @@
       padding: 16px;
 
       .post-title {
-        font-size: 1.7em;
+        font-size: 1.7rem;
         font-weight: bolder;
         text-overflow: ellipsis;
         overflow: hidden;
-        // white-space: nowrap;
       }
 
       .post-time {
@@ -176,7 +175,7 @@
       position: relative;
     }
     &__body {
-      padding: 60px 15px 70px 30px;
+      padding: 30px 15px 70px 30px;
     }
   }
 }
