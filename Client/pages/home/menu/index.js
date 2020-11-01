@@ -71,7 +71,7 @@ class Menu extends RComponent {
         const user = getState()
 
         return (
-            <div className={`topnav ${isShirk ? 'shrink' : ''}`} id="myTopnav">
+            <nav className={`topnav ${isShirk ? 'shrink' : ''}`} id="myTopnav">
                 <div className="nav-container">
                     <div id="nav-toggle" className={isOpen ? "active" : ""}>
                         <div className="btn-menu-toggle" onClick={() => {
@@ -111,7 +111,7 @@ class Menu extends RComponent {
                         }
                     </div>
                 </div>
-            </div>
+            </nav>
         );
     }
 }

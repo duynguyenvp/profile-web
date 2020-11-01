@@ -1,5 +1,5 @@
 import React, { useLayoutEffect, useState } from "react";
-import loadScript from "../../utils/loadScript";
+import loadScript from "../../../utils/loadScript";
 
 const fbAppId = "1052049204910473";
 const FbShareButton = ({ postUrl }) => {

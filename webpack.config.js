@@ -16,7 +16,7 @@ const entries = {
   register: ["@babel/polyfill", "./Client/pages/register/index.js"],
   resume: ["@babel/polyfill", "./Client/pages/resume/index.js"],
   home: ["@babel/polyfill", "./Client/pages/home/index.js"],
-  blog: ["@babel/polyfill", "./Client/pages/blog/index.js"],
+  blog: ["@babel/polyfill", "./Client/pages/blog-v2/index.js"],
   admin: ["./Client/pages/admin/index.js"],
 };
 
