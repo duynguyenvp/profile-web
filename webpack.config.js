@@ -14,9 +14,9 @@ const TerserPlugin = require("terser-webpack-plugin");
 const entries = {
   login: ["@babel/polyfill", "./Client/pages/login/index.js"],
   register: ["@babel/polyfill", "./Client/pages/register/index.js"],
-  resume: ["@babel/polyfill", "./Client/pages/resume/index.js"],
+  resume: ["@babel/polyfill", "./Client/pages/resume-v2/index.js"],
   home: ["@babel/polyfill", "./Client/pages/home/index.js"],
-  blog: ["@babel/polyfill", "./Client/pages/blog-v2/index.js"],
+  blog: ["@babel/polyfill", "./Client/pages/blog/index.js"],
   admin: ["./Client/pages/admin/index.js"],
 };
 

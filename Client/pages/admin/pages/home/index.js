@@ -21,6 +21,7 @@ import {
   insertNewExperience,
   removeExperience,
 } from "./queries";
+import "./style.scss";
 
 const openNotificationWithIcon = (type, content) => {
   notification[type]({

@@ -4,18 +4,24 @@
   flex-direction: column;
 
   .processBarContainer {
-    background-color: #f1f1f1;
     box-sizing: border-box;
     border-radius: 16px;
 
     .processBarValue {
       display: block;
       border-radius: 16px;
-      color: #fff !important;
-      background-color: $primaryColor !important;
       text-align: center;
       font-size: 12px;
       height: 12px;
+    }
+  }
+  &.defaultColors {
+    .processBarContainer {
+      background-color: #f1f1f1;
+      .processBarValue {
+        color: #fff !important;
+        background-color: $primaryColor !important;
+      }
     }
   }
 }

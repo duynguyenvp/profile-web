@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
-import { RightOutlined, DeleteFilled } from '@ant-design/icons'
+import { DeleteFilled } from '@ant-design/icons'
 import { Collapse, DatePicker, Row, Col, Form, Input, Button, Space } from 'antd'
 const { Panel } = Collapse
 const { RangePicker } = DatePicker;
-import './style.scss'
 import EditorComponent from '../../../components/editor';
 import moment from 'moment'
 
@@ -31,9 +30,8 @@ const PanelHeader = ({ title, description, remove, education }) => {
     </div>
 }
 
-const getTitle = (school, degree, city) => {
+const getTitle = (school, degree) => {
     let title = school && degree && `Học ${degree} tại ${school}` || 'Chưa có thông tin'
-    if (school && degree && city) title += `, ${city}`
     return title
 }
 const getDescription = (time) => {
@@ -45,14 +43,13 @@ const EducationInfoBlock = ({ portfolioId, education, handleRemoveEducation, han
         id,
         schoolName,
         specialized,
-        city,
         detail,
         startDate,
         endDate
     } = education || {}
     const [html, setHtml] = useState(detail || '')
     const [time, setTime] = useState([moment(new Date(startDate || Date.now()), dateFormat), moment(new Date(endDate || Date.now()), dateFormat)])
-    const [title, setTitle] = useState(getTitle(schoolName, specialized, city))
+    const [title, setTitle] = useState(getTitle(schoolName, specialized))
     const [description, setDescription] = useState(getDescription(time))
     const [editorKey, setEditorKey] = useState(1)
     const [form] = Form.useForm();
@@ -66,15 +63,14 @@ const EducationInfoBlock = ({ portfolioId, education, handleRemoveEducation, han
     };
     const onFinish = values => {
         const dateFormatMDY = "MM/DD/YYYY"
-        const { city, degree, school, time } = values
+        const { degree, school, time } = values
         handleSave({
             schoolName: school,
             specialized: degree,
             detail: html,
             startDate: time[0].format(dateFormatMDY),
             endDate: time[1].format(dateFormatMDY),
-            id,
-            city
+            id
         })
     };
 
@@ -97,8 +93,8 @@ const EducationInfoBlock = ({ portfolioId, education, handleRemoveEducation, han
                 name="advanced_search"
                 className="ant-advanced-search-form"
                 onValuesChange={(changedValues, allValues) => {
-                    const { school, degree, city, time } = allValues
-                    setTitle(getTitle(school, degree, city))
+                    const { school, degree, time } = allValues
+                    setTitle(getTitle(school, degree))
                     setDescription(getDescription(time))
                 }}
                 onFinish={onFinish}
@@ -144,21 +140,6 @@ const EducationInfoBlock = ({ portfolioId, education, handleRemoveEducation, han
                                 onChange={date => { setTime(date) }}
                                 style={{ width: "100%" }}
                                 format={dateFormat} />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item
-                            name={`city`}
-                            label={`Tỉnh/Thành phố`}
-                            initialValue={city}
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Trường của bạn ở đâu?',
-                                },
-                            ]}
-                        >
-                            <Input placeholder="Tên tỉnh hoặc thành phố ..." />
                         </Form.Item>
                     </Col>
                 </Row>

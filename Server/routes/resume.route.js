@@ -8,7 +8,7 @@ import React from "react";
 import ReactDOMServer from "react-dom/server";
 import StyleContext from "isomorphic-style-loader/StyleContext";
 
-import Resume from "../../Client/pages/resume/Resume";
+// import Resume from "../../Client/pages/resume-v2/partials/Resume";
 import ResumePrint from "../../Client/pages/resume/ResumePrint";
 import puppeteer from "puppeteer";
 import System from "../constants/System";
@@ -16,19 +16,9 @@ import { getResources } from "../helpers/index";
 import { dateToStringFormatCultureVi } from "../../Client/utils/date-utils";
 
 router.get("/view/:userId?", (req, res) => {
-  const css = new Set(); // CSS for all rendered React components
-  const insertCss = (...styles) =>
-    styles.forEach((style) => css.add(style._getCss()));
-  const markup = ReactDOMServer.renderToString(
-    <StyleContext.Provider value={{ insertCss }}>
-      <Resume />
-    </StyleContext.Provider>
-  );
   const resources = getResources("resume");
   res.send(
     template({
-      message: markup,
-      styles: [...css].join(""),
       title: `Resume`,
       initPrint: false,
       ...resources,

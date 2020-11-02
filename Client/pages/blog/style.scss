@@ -1,6 +1,18 @@
+@import "core";
+@import "quill.core.scss";
+
+#app {
+  overflow: hidden !important;
+  overflow-y: unset;
+  background-color: #9c9c9c;
+}
 .topnav {
   position: unset !important;
   background-color: $primaryColor !important;
+
+  &.shrink {
+    width: 100%;
+  }
 
   .btn-login {
     &:hover,
@@ -9,734 +21,167 @@
     }
   }
 }
+.plane {
+  width: 30px;
+  height: 30px;
+  border-radius: unset;
+  right: 0;
+}
 .blog {
-  height: auto;
+  height: 100%;
   width: 100%;
   display: flex;
   justify-content: center;
-  background-color: #f1f1f1;
+  background-color: white;
+  max-width: 1100px;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  overflow: hidden;
 
-  .btn-add-new {
-    text-decoration: none;
-    width: fit-content;
+  &--marginTop {
+    margin-top: 72px;
+  }
+
+  &__btnAsideToggle {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 50;
+    background: $primaryColor;
+    color: $colorLight;
+    border: none;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    background-color: $primaryColor;
-    border: none;
-    color: white;
-    border-radius: 4px;
-    padding: 12px;
 
-    &:active {
-      opacity: 0.75;
-    }
-
-    i,
-    svg {
-      margin-right: 8px;
-      color: white;
-      fill: white;
-      font-size: 18px;
+    &--close {
+      width: 100%;
+      height: unset;
+      position: sticky;
+      background-color: $bgColor;
+      border-bottom: 1px solid #3a3a3a;
+      padding: 12px 0;
+      top: 0;
+      transform: unset;
     }
   }
 
-  hr {
-    border: 0;
-    border-top: 1px solid #eee;
-    margin: 12px 0;
-  }
-
-  .blog-content {
-    width: 100%;
+  &__aside {
+    @include textColor();
+    background-color: $bgColor;
     display: flex;
     flex-direction: column;
-    padding: 10px;
-    margin: 30px 0;
-    justify-content: center;
-
-    .box-title {
-      margin: 10px 0 16px 0;
+    position: fixed;
+    left: -100%;
+    z-index: 99;
+    height: 100%;
+    padding-bottom: 70px;
+    &--width {
+      width: 100%;
     }
+    &--open {
+      left: 0;
+    }
+    max-height: calc(100vh - 60px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    transition: left 0.3s ease;
+  }
 
-    .left-side {
-      max-width: 900px;
-      flex: 7;
+  &__body {
+    flex: 1;
+    padding: 30px 0 70px 15px;
+    overflow-y: auto;
+    .post-header {
       display: flex;
-      margin-right: 0;
       flex-direction: column;
+      border-radius: 4px 0;
+      justify-content: flex-end;
+      padding: 16px;
 
-      .main-post {
-        background-color: white;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-        transition: 0.3s;
-        width: 100%;
-        margin-bottom: 10px;
-        border-radius: 5px;
+      .post-title {
+        font-size: 1.7rem;
+        font-weight: bolder;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
 
-        .post-header {
-          display: flex;
-          flex-direction: column;
-          border-radius: 4px 0;
-          justify-content: flex-end;
-          padding: 16px;
+      .post-time {
+        font-size: 13px;
+        font-style: italic;
+        margin-top: 16px;
 
-          .post-title {
-            font-size: 1.7em;
-            font-weight: bolder;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            // white-space: nowrap;
-          }
-
-          .post-time {
-            font-size: 13px;
-            font-style: italic;
-            margin-top: 16px;
-
-            &:first-child {
-              margin-right: 10px;
-            }
-          }
-          .post-author {
-            font-size: 13px;
-            font-style: italic;
-
-            &:first-child {
-              margin-right: 10px;
-            }
-          }
+        &:first-child {
+          margin-right: 10px;
         }
-
-        .post-content {
-          padding: 16px;
-
-          .editor-iframe-container {
-            position: relative;
-            width: 100%;
-            padding-bottom: 56.25%;
-            height: 0;
-          }
-          .editor-iframe-container .editor-iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-          }
-
-          p,
-          ol,
-          ul,
-          pre,
-          blockquote,
-          h1,
-          h2,
-          h3,
-          h4,
-          h5,
-          h6 {
-            margin: 8px 0;
-            padding: 0;
-            counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
-          }
-
-          ol,
-          ul {
-            padding-left: 1.5em;
-          }
-
-          ol > li {
-            list-style-type: none;
-          }
-
-          ul {
-            > li {
-              list-style-type: none;
-
-              &::before {
-                content: "\2022";
-              }
-            }
-
-            &[data-checked="true"],
-            &[data-checked="false"] {
-              pointer-events: none;
-            }
-
-            &[data-checked="true"] > li *,
-            &[data-checked="false"] > li * {
-              pointer-events: all;
-            }
-
-            &[data-checked="true"] > li::before,
-            &[data-checked="false"] > li::before {
-              color: #777;
-              cursor: pointer;
-              pointer-events: all;
-            }
-
-            &[data-checked="true"] > li::before {
-              content: "\2611";
-            }
-
-            &[data-checked="false"] > li::before {
-              content: "\2610";
-            }
-          }
-
-          li {
-            &::before {
-              display: inline-block;
-              white-space: nowrap;
-              width: 1.2em;
-            }
-
-            &:not(.ql-direction-rtl)::before {
-              margin-left: -1.5em;
-              margin-right: 0.3em;
-              text-align: right;
-            }
-
-            &.ql-direction-rtl::before {
-              margin-left: 0.3em;
-              margin-right: -1.5em;
-            }
-          }
-
-          ol li:not(.ql-direction-rtl),
-          ul li:not(.ql-direction-rtl) {
-            padding-left: 1.5em;
-          }
-
-          ol li.ql-direction-rtl,
-          ul li.ql-direction-rtl {
-            padding-right: 1.5em;
-          }
-
-          ol li {
-            counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
-            counter-increment: list-0;
-
-            &:before {
-              content: counter(list-0, decimal) ". ";
-            }
-
-            &.ql-indent-1 {
-              counter-increment: list-1;
-
-              &:before {
-                content: counter(list-1, lower-alpha) ". ";
-              }
-
-              counter-reset: list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
-            }
-
-            &.ql-indent-2 {
-              counter-increment: list-2;
-
-              &:before {
-                content: counter(list-2, lower-roman) ". ";
-              }
-
-              counter-reset: list-3 list-4 list-5 list-6 list-7 list-8 list-9;
-            }
-
-            &.ql-indent-3 {
-              counter-increment: list-3;
-
-              &:before {
-                content: counter(list-3, decimal) ". ";
-              }
-
-              counter-reset: list-4 list-5 list-6 list-7 list-8 list-9;
-            }
-
-            &.ql-indent-4 {
-              counter-increment: list-4;
-
-              &:before {
-                content: counter(list-4, lower-alpha) ". ";
-              }
-
-              counter-reset: list-5 list-6 list-7 list-8 list-9;
-            }
-
-            &.ql-indent-5 {
-              counter-increment: list-5;
-
-              &:before {
-                content: counter(list-5, lower-roman) ". ";
-              }
-
-              counter-reset: list-6 list-7 list-8 list-9;
-            }
-
-            &.ql-indent-6 {
-              counter-increment: list-6;
-
-              &:before {
-                content: counter(list-6, decimal) ". ";
-              }
-
-              counter-reset: list-7 list-8 list-9;
-            }
-
-            &.ql-indent-7 {
-              counter-increment: list-7;
-
-              &:before {
-                content: counter(list-7, lower-alpha) ". ";
-              }
-
-              counter-reset: list-8 list-9;
-            }
-
-            &.ql-indent-8 {
-              counter-increment: list-8;
-
-              &:before {
-                content: counter(list-8, lower-roman) ". ";
-              }
-
-              counter-reset: list-9;
-            }
-
-            &.ql-indent-9 {
-              counter-increment: list-9;
-
-              &:before {
-                content: counter(list-9, decimal) ". ";
-              }
-            }
-          }
-
-          .ql-indent-1:not(.ql-direction-rtl) {
-            padding-left: 3em;
-          }
-
-          li.ql-indent-1:not(.ql-direction-rtl) {
-            padding-left: 4.5em;
-          }
-
-          .ql-indent-1.ql-direction-rtl.ql-align-right {
-            padding-right: 3em;
-          }
-
-          li.ql-indent-1.ql-direction-rtl.ql-align-right {
-            padding-right: 4.5em;
-          }
-
-          .ql-indent-2:not(.ql-direction-rtl) {
-            padding-left: 6em;
-          }
-
-          li.ql-indent-2:not(.ql-direction-rtl) {
-            padding-left: 7.5em;
-          }
-
-          .ql-indent-2.ql-direction-rtl.ql-align-right {
-            padding-right: 6em;
-          }
-
-          li.ql-indent-2.ql-direction-rtl.ql-align-right {
-            padding-right: 7.5em;
-          }
-
-          .ql-indent-3:not(.ql-direction-rtl) {
-            padding-left: 9em;
-          }
-
-          li.ql-indent-3:not(.ql-direction-rtl) {
-            padding-left: 10.5em;
-          }
-
-          .ql-indent-3.ql-direction-rtl.ql-align-right {
-            padding-right: 9em;
-          }
-
-          li.ql-indent-3.ql-direction-rtl.ql-align-right {
-            padding-right: 10.5em;
-          }
-
-          .ql-indent-4:not(.ql-direction-rtl) {
-            padding-left: 12em;
-          }
-
-          li.ql-indent-4:not(.ql-direction-rtl) {
-            padding-left: 13.5em;
-          }
-
-          .ql-indent-4.ql-direction-rtl.ql-align-right {
-            padding-right: 12em;
-          }
-
-          li.ql-indent-4.ql-direction-rtl.ql-align-right {
-            padding-right: 13.5em;
-          }
-
-          .ql-indent-5:not(.ql-direction-rtl) {
-            padding-left: 15em;
-          }
-
-          li.ql-indent-5:not(.ql-direction-rtl) {
-            padding-left: 16.5em;
-          }
-
-          .ql-indent-5.ql-direction-rtl.ql-align-right {
-            padding-right: 15em;
-          }
-
-          li.ql-indent-5.ql-direction-rtl.ql-align-right {
-            padding-right: 16.5em;
-          }
-
-          .ql-indent-6:not(.ql-direction-rtl) {
-            padding-left: 18em;
-          }
-
-          li.ql-indent-6:not(.ql-direction-rtl) {
-            padding-left: 19.5em;
-          }
-
-          .ql-indent-6.ql-direction-rtl.ql-align-right {
-            padding-right: 18em;
-          }
-
-          li.ql-indent-6.ql-direction-rtl.ql-align-right {
-            padding-right: 19.5em;
-          }
-
-          .ql-indent-7:not(.ql-direction-rtl) {
-            padding-left: 21em;
-          }
-
-          li.ql-indent-7:not(.ql-direction-rtl) {
-            padding-left: 22.5em;
-          }
-
-          .ql-indent-7.ql-direction-rtl.ql-align-right {
-            padding-right: 21em;
-          }
-
-          li.ql-indent-7.ql-direction-rtl.ql-align-right {
-            padding-right: 22.5em;
-          }
-
-          .ql-indent-8:not(.ql-direction-rtl) {
-            padding-left: 24em;
-          }
-
-          li.ql-indent-8:not(.ql-direction-rtl) {
-            padding-left: 25.5em;
-          }
-
-          .ql-indent-8.ql-direction-rtl.ql-align-right {
-            padding-right: 24em;
-          }
-
-          li.ql-indent-8.ql-direction-rtl.ql-align-right {
-            padding-right: 25.5em;
-          }
-
-          .ql-indent-9:not(.ql-direction-rtl) {
-            padding-left: 27em;
-          }
-
-          li.ql-indent-9:not(.ql-direction-rtl) {
-            padding-left: 28.5em;
-          }
-
-          .ql-indent-9.ql-direction-rtl.ql-align-right {
-            padding-right: 27em;
-          }
-
-          li.ql-indent-9.ql-direction-rtl.ql-align-right {
-            padding-right: 28.5em;
-          }
-
-          .ql-video {
-            display: block;
-            max-width: 100%;
-
-            &.ql-align-center {
-              margin: 0 auto;
-            }
-
-            &.ql-align-right {
-              margin: 0 0 0 auto;
-            }
-          }
-
-          .ql-bg-black {
-            background-color: #000;
-          }
-
-          .ql-bg-red {
-            background-color: #e60000;
-          }
-
-          .ql-bg-orange {
-            background-color: #f90;
-          }
-
-          .ql-bg-yellow {
-            background-color: #ff0;
-          }
-
-          .ql-bg-green {
-            background-color: #008a00;
-          }
-
-          .ql-bg-blue {
-            background-color: #06c;
-          }
-
-          .ql-bg-purple {
-            background-color: #93f;
-          }
-
-          .ql-color-white {
-            color: #fff;
-          }
-
-          .ql-color-red {
-            color: #e60000;
-          }
-
-          .ql-color-orange {
-            color: #f90;
-          }
-
-          .ql-color-yellow {
-            color: #ff0;
-          }
-
-          .ql-color-green {
-            color: #008a00;
-          }
-
-          .ql-color-blue {
-            color: #06c;
-          }
-
-          .ql-color-purple {
-            color: #93f;
-          }
-
-          .ql-font-serif {
-            font-family: Georgia, Times New Roman, serif;
-          }
-
-          .ql-font-monospace {
-            font-family: Monaco, Courier New, monospace;
-          }
-
-          .ql-size-small {
-            font-size: 0.75em;
-          }
-
-          .ql-size-large {
-            font-size: 1.5em;
-          }
-
-          .ql-size-huge {
-            font-size: 2.5em;
-          }
-
-          .ql-direction-rtl {
-            direction: rtl;
-            text-align: inherit;
-          }
-
-          .ql-align-center {
-            text-align: center;
-          }
-
-          .ql-align-justify {
-            text-align: justify;
-          }
-
-          .ql-align-right {
-            text-align: right;
-          }
-
-          &.ql-blank::before {
-            color: rgba(0, 0, 0, 0.6);
-            content: attr(data-placeholder);
-            font-style: italic;
-            left: 15px;
-            pointer-events: none;
-            position: absolute;
-            right: 15px;
-          }
-
-          h1 {
-            font-size: 2em;
-          }
-
-          h2 {
-            font-size: 1.5em;
-          }
-
-          h3 {
-            font-size: 1.17em;
-          }
-
-          h4 {
-            font-size: 1em;
-          }
-
-          h5 {
-            font-size: 0.83em;
-          }
-
-          h6 {
-            font-size: 0.67em;
-          }
-
-          a {
-            text-decoration: underline;
-          }
-
-          blockquote {
-            border-left: 4px solid #ccc;
-            margin-bottom: 5px;
-            margin-top: 5px;
-            padding-left: 16px;
-          }
-
-          code {
-            background-color: #f0f0f0;
-            border-radius: 3px;
-          }
-
-          pre {
-            background-color: #f0f0f0;
-            border-radius: 3px;
-            white-space: pre-wrap;
-            margin-bottom: 5px;
-            margin-top: 5px;
-            padding: 5px 10px;
-          }
-
-          code {
-            font-size: 85%;
-            padding: 2px 4px;
-          }
-
-          pre.ql-syntax {
-            background-color: #23241f;
-            color: #f8f8f2;
-            overflow: visible;
-          }
-
-          img {
-            max-width: 100%;
-          }
-        }
-
-        .box-social-controls {
-          padding: 16px;
-          display: flex;
-          flex-direction: row;
-        }
-
-        .suggestion {
-          display: flex;
-          padding: 16px;
-          flex-direction: column;
-
-          h3 {
-            margin-top: 0;
-          }
-
-          .suggestion-body {
-            display: flex;
-
-            .suggestion-item {
-              width: 150px;
-              display: flex;
-              flex-direction: column;
-              border-radius: 4px;
-              background-color: white;
-              box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-              margin-right: 20px;
-              cursor: pointer;
-
-              .suggestion-item-avatar {
-                background-image: url("../../common-resources/images/default-post-image.png");
-                background-position: center;
-                background-repeat: no-repeat;
-                background-size: contain;
-                width: 100%;
-                height: 80px;
-                border-radius: 4px 4px 0 0;
-              }
-
-              .suggestion-item-title {
-                font-size: 12px;
-                padding: 10px;
-                text-overflow: ellipsis;
-                overflow: hidden;
-                white-space: pre-wrap;
-              }
-              &:hover {
-                box-shadow: 0 8px 10px 0 rgba(0, 0, 0, 0.2);
-              }
-            }
-          }
+      }
+      .post-author {
+        font-size: 13px;
+        font-style: italic;
+
+        &:first-child {
+          margin-right: 10px;
         }
       }
     }
 
-    .right-side {
-      max-width: 900px;
-      flex: 3;
-      display: flex;
-      flex-direction: column;
-
-      .box-recent-post {
-        background-color: white;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    .post-content {
+      padding: 16px;
+      overflow: hidden;
+      @include postContent();
+      .editor-iframe-container {
+        position: relative;
         width: 100%;
-        margin-bottom: 10px;
-        border-radius: 5px;
-        padding: 16px;
-        box-sizing: border-box;
+        padding-bottom: 56.25%;
+        height: 0;
       }
+      .editor-iframe-container .editor-iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    .box-social-controls {
+      padding: 16px;
+      display: flex;
+      flex-direction: row;
     }
   }
 }
-
-@media only screen and (min-width: 1100px) {
-  .blog-content {
-    flex-direction: row !important;
-    width: 100%;
-    max-width: 1100px;
-
-    .left-side {
-      max-width: 700px !important;
-      flex: 7 !important;
-      margin-right: 16px !important;
+@media only screen and (min-width: 768px) {
+  .blog {
+    &__aside {
+      &--width {
+        width: 360px;
+      }
     }
-
-    .right-side {
-      max-width: 350px !important;
-      flex-direction: column !important;
-
-      .recent {
-        flex: unset !important;
-        margin-right: unset !important;
-        margin-bottom: 16px !important;
-      }
-
-      .timeline {
-        flex: unset !important;
-      }
+  }
+  .plane {
+    right: 12px;
+  }
+}
+@media only screen and (min-width: 1100px) {
+  .blog {
+    &--marginTop {
+      margin-top: 60px;
+    }
+    &__btnAsideToggle {
+      display: none;
+    }
+    &__aside {
+      left: 0;
+      position: relative;
+    }
+    &__body {
+      padding: 30px 15px 70px 30px;
     }
   }
 }

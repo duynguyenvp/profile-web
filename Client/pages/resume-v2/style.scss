@@ -1,0 +1,110 @@
+@import "core";
+
+#app {
+  overflow: hidden !important;
+  overflow-y: unset;
+  background-color: #9c9c9c;
+}
+.topnav {
+  position: unset !important;
+  background-color: $primaryColor !important;
+
+  &.shrink {
+    width: 100%;
+  }
+
+  .btn-login {
+    &:hover,
+    &:active {
+      border-color: white !important;
+    }
+  }
+}
+.plane {
+  width: 30px;
+  height: 30px;
+  border-radius: unset;
+  right: 0;
+}
+.resume {
+  height: 100%;
+  width: 100%;
+  display: block;
+  justify-content: center;
+  background-color: white;
+  max-width: 1100px;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  overflow: auto;
+
+  &--marginTop {
+    margin-top: 72px;
+  }
+
+  .btn-control-item {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    z-index: 100;
+    @include btnPrint();
+  }
+
+  &__aside {
+    @include textColor();
+    background-color: $bgColor;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    left: 0;
+    z-index: 99;
+    padding: 32px 16px;
+    &--width {
+      width: 100%;
+    }
+    overflow-y: auto;
+    overflow-x: hidden;
+    transition: left 0.3s ease;
+  }
+
+  &__body {
+    flex: 1;
+    padding: 30px 0 70px 15px;
+    overflow-y: auto;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .resume {
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    &__aside {
+      padding: 32px 16px;
+      height: 100%;
+      max-height: calc(100vh - 60px);
+      &--width {
+        width: 360px;
+      }
+    }
+  }
+  .plane {
+    right: 12px;
+  }
+}
+@media only screen and (min-width: 1100px) {
+  .resume {
+    &--marginTop {
+      margin-top: 60px;
+    }
+    &__btnAsideToggle {
+      display: none;
+    }
+    &__aside {
+      left: 0;
+      position: relative;
+    }
+    &__body {
+      padding: 30px 15px 70px 30px;
+    }
+  }
+}

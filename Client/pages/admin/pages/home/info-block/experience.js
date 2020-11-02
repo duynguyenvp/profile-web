@@ -16,7 +16,6 @@ import {
 } from "antd";
 const { Panel } = Collapse;
 const { RangePicker } = DatePicker;
-import "./style.scss";
 import EditorComponent from "../../../components/editor";
 import moment from "moment";
 
@@ -45,11 +44,10 @@ const PanelHeader = ({ title, description, remove, experience }) => {
   );
 };
 
-const getTitle = (company, position, city) => {
+const getTitle = (company, position) => {
   let title =
     (company && position && `Làm ${position} tại ${company}`) ||
     "Chưa có thông tin";
-  if (company && position && city) title += `, ${city}`;
   return title;
 };
 const getDescription = (time) => {
@@ -66,14 +64,14 @@ const ExperienceInfoBlock = ({
   handleSaveExperience,
 }) => {
   const [experienceData, setExperienceData] = useState(experience);
-  const { id, company, position, city, detail, startDate, endDate } =
+  const { id, company, position, detail, startDate, endDate } =
     experienceData || {};
   const [html, setHtml] = useState(detail || "");
   const [time, setTime] = useState([
     moment(new Date(startDate || Date.now()), dateFormat),
     moment(new Date(endDate || Date.now()), dateFormat),
   ]);
-  const [title, setTitle] = useState(getTitle(company, position, city));
+  const [title, setTitle] = useState(getTitle(company, position));
   const [description, setDescription] = useState(getDescription(time));
   const [editorKey, setEditorKey] = useState(1);
   const [form] = Form.useForm();
@@ -87,7 +85,7 @@ const ExperienceInfoBlock = ({
   };
   const onFinish = (values) => {
     const dateFormatMDY = "MM/DD/YYYY";
-    const { city, position, company, time } = values;
+    const { position, company, time } = values;
     handleSaveExperience({
       company: company,
       position: position,
@@ -95,7 +93,6 @@ const ExperienceInfoBlock = ({
       startDate: time[0].format(dateFormatMDY),
       endDate: time[1].format(dateFormatMDY),
       id,
-      city,
     });
   };
 
@@ -107,7 +104,7 @@ const ExperienceInfoBlock = ({
     <Collapse
       bordered={false}
       defaultActiveKey={[]}
-      className="experience-collapse"
+      className="info-block-collapse"
     >
       {/* <div className="order-controls">
         <Button
@@ -152,8 +149,8 @@ const ExperienceInfoBlock = ({
           name="advanced_search"
           className="ant-advanced-search-form"
           onValuesChange={(changedValues, allValues) => {
-            const { company, position, city, time } = allValues;
-            setTitle(getTitle(company, position, city));
+            const { company, position, time } = allValues;
+            setTitle(getTitle(company, position));
             const description = getDescription(time);
             setDescription(description);
           }}
@@ -210,21 +207,6 @@ const ExperienceInfoBlock = ({
                   style={{ width: "100%" }}
                   format={dateFormat}
                 />
-              </Form.Item>
-            </Col>
-            <Col span={12}>
-              <Form.Item
-                name={`city`}
-                label={`Tỉnh/Thành phố`}
-                initialValue={city}
-                rules={[
-                  {
-                    required: true,
-                    message: "Trường của bạn ở đâu?",
-                  },
-                ]}
-              >
-                <Input placeholder="Tên tỉnh hoặc thành phố ..." />
               </Form.Item>
             </Col>
           </Row>
