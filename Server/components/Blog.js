@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import App from "../../Client/pages/home/App";
-import Blog from "../../Client/pages/blog-v2/partials/Blog";
+import Blog from "../../Client/pages/blog/partials/Blog";
 
 class BlogPage extends Component {
   render() {

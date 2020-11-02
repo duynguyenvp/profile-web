@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from '../home/App'
-import Blog from './Blog'
+import Blog from './partials/Blog'
 import StyleContext from 'isomorphic-style-loader/StyleContext'
 import RESOURCE_VERSION from '../../../version'
 import { setPostState } from '../../services/postService'

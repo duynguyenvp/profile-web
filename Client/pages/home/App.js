@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useEffect } from "react";
+import React, { useState, useLayoutEffect, useEffect, useMemo } from "react";
 import InitAlert from "../../common/alert";
 import { gsap } from "gsap/dist/gsap";
 let SmoothScroll = null;
@@ -22,6 +22,12 @@ const App = ({ children }) => {
   const [active, setActive] = useState(() => "home");
   const [route, setRoute] = useState(() => "");
   const [isDisplayPlane, setIsDisplayPlane] = useState(() => false);
+
+  const wrapperId = useMemo(() => {
+    if (route === "home") return "app";
+    if (route === "bai-viet") return "blog__body";
+    if (route === "resume") return "resume_body";
+  }, [route]);
 
   useLayoutEffect(() => {
     const memoGsap = async () => {
@@ -144,9 +150,7 @@ const App = ({ children }) => {
   }, [route]);
 
   const handleScroll = (e) => {
-    const wrapper = document.getElementById(
-      route === "home" ? "app" : "blog__body"
-    );
+    const wrapper = document.getElementById(wrapperId);
     let nextIsShirk, nextIsDisplayPlane;
     if (
       (wrapper && wrapper.scrollTop > 80) ||
@@ -249,9 +253,7 @@ const App = ({ children }) => {
 
   const gotoTop = () => {
     try {
-      const wrapper = document.getElementById(
-        route === "home" ? "app" : "blog__body"
-      );
+      const wrapper = document.getElementById(wrapperId);
       wrapper.scrollTo({
         top: 0,
         left: 0,

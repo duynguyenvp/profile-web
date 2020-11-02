@@ -1,0 +1,121 @@
+@mixin textColor {
+  color: $color;
+}
+
+@mixin box($boxClass) {
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 16px;
+  box-sizing: border-box;
+
+  .#{$boxClass}__title {
+    text-transform: uppercase;
+    font-weight: 600;
+    margin: 0;
+    font-size: 1.2rem;
+    color: $colorLight;
+  }
+}
+
+:root {
+  font-size: 14px;
+}
+
+@mixin btnPrint {
+  background-color: white;
+  border: 1px solid #c1c1c1;
+  border-radius: 4px;
+  width: 50px;
+  height: 36px;
+  cursor: pointer;
+  color: black;
+  transition: background-color 0.2s ease, color 0.2s ease;
+
+  &:focus {
+    outline: none;
+  }
+
+  &.disabled {
+    pointer-events: none;
+    position: absolute;
+    overflow: hidden;
+
+    span {
+      position: absolute;
+      background: $primaryColor;
+
+      &:nth-child(2) {
+        width: 100%;
+        height: 3px;
+        top: 0;
+        left: -100%;
+        animation: animatation1 1s linear infinite;
+      }
+
+      &:nth-child(3) {
+        width: 100%;
+        height: 3px;
+        bottom: 0;
+        right: -100%;
+        animation: animatation2 1s linear infinite;
+      }
+
+      &:nth-child(4) {
+        width: 3px;
+        height: 100%;
+        right: 0;
+        top: -100%;
+        animation: animatation3 1s linear infinite;
+        animation-delay: 0.5s;
+      }
+      &:nth-child(5) {
+        width: 3px;
+        height: 100%;
+        left: 0;
+        bottom: -100%;
+        animation: animatation4 1s linear infinite;
+        animation-delay: 0.5s;
+      }
+    }
+  }
+
+  @keyframes animatation1 {
+    0% {
+      left: -100%;
+    }
+    100% {
+      left: 100%;
+    }
+  }
+  @keyframes animatation2 {
+    0% {
+      right: -100%;
+    }
+    100% {
+      right: 100%;
+    }
+  }
+  @keyframes animatation3 {
+    0% {
+      top: -100%;
+    }
+    100% {
+      top: 100%;
+    }
+  }
+
+  @keyframes animatation4 {
+    0% {
+      bottom: -100%;
+    }
+    100% {
+      bottom: 100%;
+    }
+  }
+
+  &:hover,
+  &:active {
+    background-color: $primaryColor;
+    color: white;
+  }
+}
