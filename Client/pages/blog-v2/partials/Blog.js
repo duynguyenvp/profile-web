@@ -61,6 +61,23 @@ const Blog = (props) => {
     };
   }, []);
 
+  useLayoutEffect(() => {
+    function handleWindowResize() {
+      console.log(1);
+      const blog = document.getElementById("blog__body");
+      const plane = document.querySelector(".plane");
+      if (!blog || !plane) return;
+      const { right } = blog.getBoundingClientRect() || {};
+      const planeRight = window.innerWidth - (right || 0);
+      plane.style.right = `${planeRight > 0 ? planeRight : 0}px`;
+    }
+    handleWindowResize();
+    window.addEventListener("resize", handleWindowResize, true);
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
+
   const initData = () => {
     const { postData, ...restOfProps } = props;
     const { title, content, postTime } = postData || {};
@@ -123,7 +140,7 @@ const Blog = (props) => {
   const { content, title, postTime, userName } = postData;
 
   return (
-    <section className={`blog ${menuFixed ? "blog--marginTop" : ""}`}>
+    <section id="blog" className={`blog ${menuFixed ? "blog--marginTop" : ""}`}>
       {!asideOpen && (
         <button
           className="blog__btnAsideToggle"
