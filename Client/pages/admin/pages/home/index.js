@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
-import { Card, Button, notification, Result } from "antd";
+import { Card, Button, Result } from "antd";
 import { PlusCircleFilled, LoadingOutlined } from "@ant-design/icons";
 
 import PersonalInfoBlock from "./info-block/personalInfo";
@@ -9,32 +9,32 @@ import SkillInfoBlock from "./info-block/skill";
 
 import getApiInstance from "../../api/generic-api";
 import { getAuthentication } from "../../store/authStore";
+import "./style.scss";
+import {
+  insertNewSkill,
+  removeSkill,
+  reorderSkill,
+  saveSkill,
+} from "./queries/skill";
 import {
   insertEducation,
-  insertNewSkill,
-  loadData,
   removeEducation,
-  removeSkill,
-  saveSkill,
+  reorderEducation,
   saveEducation,
-  saveExperience,
+} from "./queries/education";
+import {
   insertNewExperience,
   removeExperience,
-} from "./queries";
-import "./style.scss";
-
-const openNotificationWithIcon = (type, content) => {
-  notification[type]({
-    message: "Thông báo",
-    description: content,
-  });
-};
+  reorderExperience,
+  saveExperience,
+} from "./queries/experience";
+import { loadData, openNotificationWithIcon } from "./queries/queries";
 
 const cardAttribute = {
   bordered: false,
   headStyle: { textTransform: "uppercase", fontWeight: "bold" },
 };
-const Home = (props) => {
+const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isEmpty, setIsEmpty] = useState(false);
   const [error, setError] = useState("");
@@ -43,7 +43,6 @@ const Home = (props) => {
   const [experiences, setExperiences] = useState(null);
   const [skills, setSkills] = useState(null);
   const [personalInfo, setPersonalInfo] = useState(null);
-  const auth = getAuthentication();
 
   useEffect(() => {
     if (portfolioId) return;
@@ -77,20 +76,24 @@ const Home = (props) => {
   }, [portfolioId]);
 
   const handleInsertNewSkill = () => {
-    insertNewSkill(portfolioId).then((result) => {
-      setSkills([...skills, ...result]);
+    insertNewSkill(portfolioId, skills).then((res) => {
+      setSkills(res);
     });
   };
 
+  const handleReorderSkill = (skill) => {
+    reorderSkill(portfolioId, skills, skill).then((res) => {
+      setSkills(res);
+    });
+  };
   const handleSaveSkill = (skill) => {
     saveSkill(portfolioId, skills, skill).then((res) => {
       setSkills(res);
     });
   };
   const handleRemoveSkill = (item) => {
-    removeSkill(portfolioId, item).then(() => {
-      let newSkills = skills.filter((f) => f.id != item.id);
-      setSkills(newSkills);
+    removeSkill(portfolioId, skills, item).then((res) => {
+      setSkills(res);
     });
   };
 
@@ -109,6 +112,11 @@ const Home = (props) => {
       setEducations(res);
     });
   };
+  const handleReorderEducation = (education) => {
+    reorderEducation(portfolioId, educations, education).then((res) => {
+      setEducations(res);
+    });
+  };
 
   const handleInsertNewExperience = () => {
     insertNewExperience(portfolioId, experiences).then((res) => {
@@ -122,6 +130,11 @@ const Home = (props) => {
   };
   const handleSaveExperience = (experience) => {
     saveExperience(portfolioId, experiences, experience).then((res) => {
+      setExperiences(res);
+    });
+  };
+  const handleReorderExperience = (experience) => {
+    reorderExperience(portfolioId, experiences, experience).then((res) => {
       setExperiences(res);
     });
   };
@@ -185,15 +198,23 @@ const Home = (props) => {
       </Card>
       <Card title="Quá trình học tập" {...cardAttribute}>
         {educations &&
-          educations.map((item, index) => (
-            <EducationInfoBlock
-              key={index}
-              education={item}
-              portfolioId={portfolioId}
-              handleRemoveEducation={handleRemoveEducation}
-              handleSave={handleSaveEducation}
-            />
-          ))}
+          educations
+            .sort((a, b) => {
+              if ((a.ordinalNumber || 0) < (b.ordinalNumber || 0)) return -1;
+              if ((a.ordinalNumber || 0) > (b.ordinalNumber || 0)) return 1;
+              return 0;
+            })
+            .map((item) => (
+              <EducationInfoBlock
+                key={item.id}
+                education={item}
+                total={educations.length}
+                portfolioId={portfolioId}
+                handleRemoveEducation={handleRemoveEducation}
+                handleSave={handleSaveEducation}
+                handleReorderEducation={handleReorderEducation}
+              />
+            ))}
         <Button
           type="primary"
           shape="round"
@@ -206,15 +227,23 @@ const Home = (props) => {
       </Card>
       <Card title="Kinh nghiệm làm việc" {...cardAttribute}>
         {experiences &&
-          experiences.map((item, index) => (
-            <ExperienceInfoBlock
-              key={index}
-              experience={item}
-              portfolioId={portfolioId}
-              handleRemoveExperience={handleRemoveExperience}
-              handleSaveExperience={handleSaveExperience}
-            />
-          ))}
+          experiences
+            .sort((a, b) => {
+              if ((a.ordinalNumber || 0) < (b.ordinalNumber || 0)) return -1;
+              if ((a.ordinalNumber || 0) > (b.ordinalNumber || 0)) return 1;
+              return 0;
+            })
+            .map((item) => (
+              <ExperienceInfoBlock
+                key={item.id}
+                experience={item}
+                portfolioId={portfolioId}
+                total={experiences.length}
+                handleReorderExperience={handleReorderExperience}
+                handleRemoveExperience={handleRemoveExperience}
+                handleSaveExperience={handleSaveExperience}
+              />
+            ))}
         <Button
           type="primary"
           shape="round"
@@ -227,15 +256,23 @@ const Home = (props) => {
       </Card>
       <Card title="Kỹ năng" {...cardAttribute}>
         {skills &&
-          skills.map((item, index) => (
-            <SkillInfoBlock
-              key={index}
-              handleSaveSkill={handleSaveSkill}
-              handleRemoveSkill={handleRemoveSkill}
-              skill={item}
-              portfolioId={portfolioId}
-            />
-          ))}
+          skills
+            .sort((a, b) => {
+              if ((a.ordinalNumber || 0) < (b.ordinalNumber || 0)) return -1;
+              if ((a.ordinalNumber || 0) > (b.ordinalNumber || 0)) return 1;
+              return 0;
+            })
+            .map((item) => (
+              <SkillInfoBlock
+                key={item.id}
+                total={skills.length}
+                handleReorderSkill={handleReorderSkill}
+                handleSaveSkill={handleSaveSkill}
+                handleRemoveSkill={handleRemoveSkill}
+                skill={item}
+                portfolioId={portfolioId}
+              />
+            ))}
         <Button
           type="primary"
           shape="round"

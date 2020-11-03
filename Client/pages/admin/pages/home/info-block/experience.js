@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   DeleteFilled,
   CaretUpOutlined,
@@ -58,14 +58,14 @@ const getDescription = (time) => {
 };
 const dateFormat = "DD/MM/YYYY";
 const ExperienceInfoBlock = ({
-  portfolioId,
   experience,
+  total,
+  handleReorderExperience,
   handleRemoveExperience,
   handleSaveExperience,
 }) => {
-  const [experienceData, setExperienceData] = useState(experience);
   const { id, company, position, detail, startDate, endDate } =
-    experienceData || {};
+    experience || {};
   const [html, setHtml] = useState(detail || "");
   const [time, setTime] = useState([
     moment(new Date(startDate || Date.now()), dateFormat),
@@ -93,12 +93,29 @@ const ExperienceInfoBlock = ({
       startDate: time[0].format(dateFormatMDY),
       endDate: time[1].format(dateFormatMDY),
       id,
+      ordinalNumber: experience.ordinalNumber,
     });
   };
 
   useEffect(() => {
-    setExperienceData(experience);
+    const { company, position, detail, startDate, endDate } = experience || {};
+    setHtml(detail || "");
+    setTime([
+      moment(new Date(startDate || Date.now()), dateFormat),
+      moment(new Date(endDate || Date.now()), dateFormat),
+    ]);
+    setTitle(getTitle(company, position));
+    setDescription(getDescription(time));
+    setEditorKey(editorKey + 1);
   }, [experience]);
+
+  const isDisabledDown = useMemo(() => (experience.ordinalNumber || 0) === 0, [
+    experience,
+  ]);
+  const isDisabledUp = useMemo(
+    () => (experience.ordinalNumber || 0) >= total - 1,
+    [experience, total]
+  );
 
   return (
     <Collapse
@@ -106,41 +123,54 @@ const ExperienceInfoBlock = ({
       defaultActiveKey={[]}
       className="info-block-collapse"
     >
-      {/* <div className="order-controls">
+      <div className="order-controls">
         <Button
           size="small"
+          disabled={isDisabledDown}
           className="btnOrder"
           icon={<CaretUpOutlined />}
           onClick={(e) => {
             e.stopPropagation();
-            // if (typeof remove === "function") {
-            //   remove(experience);
-            // }
+            if (typeof handleReorderExperience === "function") {
+              let nextOrdinalNumber = (experience.ordinalNumber || 0) - 1;
+              nextOrdinalNumber = nextOrdinalNumber < 0 ? 0 : nextOrdinalNumber;
+              handleReorderExperience({
+                ...experience,
+                ordinalNumber: nextOrdinalNumber,
+              });
+            }
           }}
         ></Button>
         <Button
+          disabled={isDisabledUp}
           size="small"
           className="btnOrder"
           icon={<CaretDownOutlined />}
           onClick={(e) => {
             e.stopPropagation();
-            // if (typeof remove === "function") {
-            //   remove(experience);
-            // }
+            if (typeof handleReorderExperience === "function") {
+              let nextOrdinalNumber = (experience.ordinalNumber || 0) + 1;
+              nextOrdinalNumber =
+                nextOrdinalNumber > total ? total : nextOrdinalNumber;
+              handleReorderExperience({
+                ...experience,
+                ordinalNumber: nextOrdinalNumber,
+              });
+            }
           }}
         ></Button>
-      </div> */}
+      </div>
       <Panel
         showArrow={true}
         header={
           <PanelHeader
-            experience={experienceData}
+            experience={experience}
             remove={handleRemoveExperience}
             title={title}
             description={description}
           />
         }
-        key="1"
+        forceRender
         className="info-block-panel"
       >
         <Form

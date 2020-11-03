@@ -44,16 +44,22 @@ const BoxInfomation = ({ portfolioSkills, portfolioUser }) => {
         </p>
         <div className="boxInfo__container__skills">
           {portfolioSkills &&
-            portfolioSkills.map((skill, index) => {
-              return (
-                <StaticProcessBar
-                  key={index}
-                  name={skill.skillName}
-                  className="skillItem"
-                  value={skill.level}
-                />
-              );
-            })}
+            portfolioSkills
+              .sort((a, b) => {
+                if ((a.ordinalNumber || 0) < (b.ordinalNumber || 0)) return -1;
+                if ((a.ordinalNumber || 0) > (b.ordinalNumber || 0)) return 1;
+                return 0;
+              })
+              .map((skill, index) => {
+                return (
+                  <StaticProcessBar
+                    key={index}
+                    name={skill.skillName}
+                    className="skillItem"
+                    value={skill.level}
+                  />
+                );
+              })}
         </div>
       </div>
     </div>

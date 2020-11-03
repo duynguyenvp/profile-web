@@ -15,27 +15,33 @@ const BoxExperiences = ({ portfolioExperiences }) => {
           {language.sectionExperiences}
         </h2>
         {portfolioExperiences &&
-          portfolioExperiences.map((item, index) => {
-            return (
-              <div className="boxExperience__container__content" key={index}>
-                <h5 className="boxExperience__container__content__name">
-                  <b>
-                    {item.position} / {item.company}
-                  </b>
-                </h5>
-                <h6 className="boxExperience__container__content__desc">
-                  <i className="material-icons">date_range</i>
-                  {dateToStringFormatNoDayCultureVi(item.startDate)} -{" "}
-                  {dateToStringFormatNoDayCultureVi(item.endDate)}
-                </h6>
-                <p
-                  dangerouslySetInnerHTML={{
-                    __html: item.detail,
-                  }}
-                ></p>
-              </div>
-            );
-          })}
+          portfolioExperiences
+            .sort((a, b) => {
+              if ((a.ordinalNumber || 0) < (b.ordinalNumber || 0)) return -1;
+              if ((a.ordinalNumber || 0) > (b.ordinalNumber || 0)) return 1;
+              return 0;
+            })
+            .map((item, index) => {
+              return (
+                <div className="boxExperience__container__content" key={index}>
+                  <h5 className="boxExperience__container__content__name">
+                    <b>
+                      {item.position} / {item.company}
+                    </b>
+                  </h5>
+                  <h6 className="boxExperience__container__content__desc">
+                    <i className="material-icons">date_range</i>
+                    {dateToStringFormatNoDayCultureVi(item.startDate)} -{" "}
+                    {dateToStringFormatNoDayCultureVi(item.endDate)}
+                  </h6>
+                  <p
+                    dangerouslySetInnerHTML={{
+                      __html: item.detail,
+                    }}
+                  ></p>
+                </div>
+              );
+            })}
       </div>
     </div>
   );
