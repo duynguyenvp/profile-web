@@ -170,7 +170,6 @@ const EducationInfoBlock = ({
             description={description}
           />
         }
-        key="1"
         className="info-block-panel"
       >
         <Form

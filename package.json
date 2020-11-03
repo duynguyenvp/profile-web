@@ -103,7 +103,7 @@
     "babel:node": "./node_modules/.bin/babel-node --presets=@babel/env",
     "build": "concurrently \"yarn client:build\" \"yarn server:build\"",
     "build:prod": "concurrently \"yarn client:build:prod --watch\" \"yarn server:build:prod --watch\"",
-    "start": "cross-env DOMAIN_API=\"'http://0.0.0.0:8443/api'\" nodemon --watch ./build/ ./build/server.js",
+    "start": "cross-env DOMAIN_API=\"'http://somethingaboutme.info:8443/api'\" nodemon --watch ./build/ ./build/server.js",
     "release": "yarn client:build:prod && yarn server:build:prod"
   },
   "sideEffects": false,

@@ -33,7 +33,7 @@ class EditorComponent extends Component {
         const { callback } = this.props
         const { html } = this.state
         const self = this
-        this.removeAllToolbars()
+        // this.removeAllToolbars()
         self.editor = new Quill(this.refEditor, {
             modules: {
                 toolbar: toolbarOptions

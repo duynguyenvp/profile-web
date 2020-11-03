@@ -170,7 +170,6 @@ const ExperienceInfoBlock = ({
             description={description}
           />
         }
-        forceRender
         className="info-block-panel"
       >
         <Form
