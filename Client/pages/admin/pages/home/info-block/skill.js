@@ -1,5 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { DeleteFilled } from "@ant-design/icons";
+import React, { useState, useEffect, useMemo } from "react";
+import {
+  CaretDownOutlined,
+  CaretUpOutlined,
+  DeleteFilled,
+} from "@ant-design/icons";
 import { Collapse, Row, Col, Form, Input, Button, Space, Slider } from "antd";
 const { Panel } = Collapse;
 
@@ -26,7 +30,13 @@ const PanelHeader = ({ title, remove, skill }) => {
     </div>
   );
 };
-const SkillInfoBlock = ({ skill, handleSaveSkill, handleRemoveSkill }) => {
+const SkillInfoBlock = ({
+  skill,
+  total,
+  handleReorderSkill,
+  handleSaveSkill,
+  handleRemoveSkill,
+}) => {
   const [skillData, setSkillData] = useState(skill);
   const { id, skillName, level: _level } = skillData || {};
   const [title, setTitle] = useState(
@@ -41,12 +51,28 @@ const SkillInfoBlock = ({ skill, handleSaveSkill, handleRemoveSkill }) => {
     form.resetFields();
   };
   const onFinish = (values) => {
-    handleSaveSkill({ ...values, level, id });
+    handleSaveSkill({
+      ...values,
+      level,
+      id,
+      ordinalNumber: skill.ordinalNumber,
+    });
   };
 
   useEffect(() => {
     setSkillData(skill);
+    const { id, skillName, level: _level } = skill || {};
+    setTitle((skillName && skillName) || "Chưa có thông tin");
+    setLevel(_level || 50);
   }, [skill]);
+
+  const isDisabledDown = useMemo(() => (skill.ordinalNumber || 0) === 0, [
+    skill,
+  ]);
+  const isDisabledUp = useMemo(() => (skill.ordinalNumber || 0) >= total - 1, [
+    skill,
+    total,
+  ]);
 
   return (
     <Collapse
@@ -54,6 +80,41 @@ const SkillInfoBlock = ({ skill, handleSaveSkill, handleRemoveSkill }) => {
       defaultActiveKey={[]}
       className="info-block-collapse"
     >
+      <div className="order-controls">
+        <Button
+          size="small"
+          disabled={isDisabledDown}
+          icon={<CaretUpOutlined />}
+          onClick={(e) => {
+            e.stopPropagation();
+            if (typeof handleReorderSkill === "function") {
+              let nextOrdinalNumber = (skill.ordinalNumber || 0) - 1;
+              nextOrdinalNumber = nextOrdinalNumber < 0 ? 0 : nextOrdinalNumber;
+              handleReorderSkill({
+                ...skill,
+                ordinalNumber: nextOrdinalNumber,
+              });
+            }
+          }}
+        ></Button>
+        <Button
+          disabled={isDisabledUp}
+          size="small"
+          icon={<CaretDownOutlined />}
+          onClick={(e) => {
+            e.stopPropagation();
+            if (typeof handleReorderSkill === "function") {
+              let nextOrdinalNumber = (skill.ordinalNumber || 0) + 1;
+              nextOrdinalNumber =
+                nextOrdinalNumber > total ? total : nextOrdinalNumber;
+              handleReorderSkill({
+                ...skill,
+                ordinalNumber: nextOrdinalNumber,
+              });
+            }
+          }}
+        ></Button>
+      </div>
       <Panel
         showArrow={true}
         header={

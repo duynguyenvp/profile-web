@@ -15,20 +15,26 @@ const BoxEducations = ({ portfolioEducations }) => {
           {language.sectionEducations}
         </h2>
         {portfolioEducations &&
-          portfolioEducations.map((education, index) => {
-            return (
-              <div className="boxEducation__container__content" key={index}>
-                <h5 className="boxEducation__container__content__name">
-                  <b>{education.schoolName}</b>
-                  <b className="boxEducation__container__content__name--right">
-                    {dateToStringFormatNoDayCultureVi(education.startDate)} -{" "}
-                    {dateToStringFormatNoDayCultureVi(education.endDate)}
-                  </b>
-                </h5>
-                <p>{education.specialized}</p>
-              </div>
-            );
-          })}
+          portfolioEducations
+            .sort((a, b) => {
+              if ((a.ordinalNumber || 0) < (b.ordinalNumber || 0)) return -1;
+              if ((a.ordinalNumber || 0) > (b.ordinalNumber || 0)) return 1;
+              return 0;
+            })
+            .map((education, index) => {
+              return (
+                <div className="boxEducation__container__content" key={index}>
+                  <h5 className="boxEducation__container__content__name">
+                    <b>{education.schoolName}</b>
+                    <b className="boxEducation__container__content__name--right">
+                      {dateToStringFormatNoDayCultureVi(education.startDate)} -{" "}
+                      {dateToStringFormatNoDayCultureVi(education.endDate)}
+                    </b>
+                  </h5>
+                  <p>{education.specialized}</p>
+                </div>
+              );
+            })}
       </div>
     </div>
   );

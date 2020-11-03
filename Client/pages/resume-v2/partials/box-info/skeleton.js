@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import Skeleton from "react-loading-skeleton";
 import useStyles from "isomorphic-style-loader/useStyles";
 import style from "./style.scss";
@@ -43,12 +43,12 @@ const BoxInfomationSkeleton = () => {
         </p>
         <div className="boxInfo__container__skills">
           {skills &&
-            skills.map(() => {
+            skills.map((skill, index) => {
               return (
-                <>
+                <Fragment key={index}>
                   <Skeleton width={100} />
                   <Skeleton width={250} />
-                </>
+                </Fragment>
               );
             })}
         </div>
