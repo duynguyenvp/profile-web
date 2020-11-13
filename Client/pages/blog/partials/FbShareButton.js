@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect } from "react";
 import loadScript from "../../../utils/loadScript";
 
 const fbAppId = "1052049204910473";
@@ -8,11 +8,11 @@ const FbShareButton = ({ postUrl }) => {
       "https://connect.facebook.net/en_US/sdk.js",
       () => {
         window.fbAsyncInit = function () {
-          FB.init({
+          window.FB.init({
             appId: fbAppId,
             autoLogAppEvents: true,
             xfbml: true,
-            version: "v8.0",
+            version: "v8.0"
           });
         };
       },
@@ -32,7 +32,12 @@ const FbShareButton = ({ postUrl }) => {
         data-lazy="true"
         data-size="small"
       >
-        <a target="_blank" href={path} className="fb-xfbml-parse-ignore">
+        <a
+          target="_blank"
+          href={path}
+          className="fb-xfbml-parse-ignore"
+          rel="noreferrer"
+        >
           Chia sẻ
         </a>
       </div>

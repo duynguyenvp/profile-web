@@ -1,11 +1,11 @@
 .custom-row {
+  .btn-remove {
+    display: none;
+  }
+  &:hover {
+    cursor: pointer;
     .btn-remove {
-        display: none;
+      display: block;
     }
-    &:hover {
-        cursor: pointer;
-        .btn-remove {
-            display: block;
-        }
-    }
+  }
 }

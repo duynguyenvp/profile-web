@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import s from "./style.scss";
 import withStyles from "isomorphic-style-loader/withStyles";
+import s from "./style.scss";
 
 import getApiInstance from "../../../ajax/generic-api";
 import { validateEmail } from "../../../utils/validate";
@@ -15,7 +15,7 @@ class FourthZone extends Component {
       email: "",
       message: "",
       isValidateEmail: "",
-      isValidateMessage: "",
+      isValidateMessage: ""
     };
   }
 
@@ -25,12 +25,12 @@ class FourthZone extends Component {
         if (validateEmail(value)) {
           this.setState({
             email: value,
-            isValidateEmail: "",
+            isValidateEmail: ""
           });
         } else {
           this.setState({
             email: value,
-            isValidateEmail: "Email không hợp lệ.",
+            isValidateEmail: "Email không hợp lệ."
           });
         }
         break;
@@ -39,20 +39,23 @@ class FourthZone extends Component {
         if (value) {
           this.setState({
             message: value,
-            isValidateMessage: "",
+            isValidateMessage: ""
           });
         } else {
           this.setState({
             message: value,
-            isValidateMessage: "Tin nhắn đang trống.",
+            isValidateMessage: "Tin nhắn đang trống."
           });
         }
         break;
+      default:
     }
   };
 
   send = () => {
-    const { email, message, isValidateEmail, isValidateMessage } = this.state;
+    const {
+      email, message, isValidateEmail, isValidateMessage
+    } = this.state;
     if (isValidateEmail || isValidateMessage) {
       addAlert({ type: "warning", message: "Lỗi Validate." });
       return;
@@ -64,19 +67,19 @@ class FourthZone extends Component {
     getApiInstance()
       .postWithForm({
         url: "/Home",
-        data: { email, message },
+        data: { email, message }
       })
       .then((res) => {
         if (res) {
           addAlert({
             message: "Gửi phải hồi thành công. Cảm ơn bạn!!!",
-            duration: 5000,
+            duration: 5000
           });
           this.setState({
             email: "",
             message: "",
             isValidateEmail: "",
-            isValidateMessage: "",
+            isValidateMessage: ""
           });
         } else {
           addAlert({ type: "warning", message: "Đã xảy ra lỗi!" });
@@ -88,7 +91,9 @@ class FourthZone extends Component {
   };
 
   render() {
-    const { email, message, isValidateEmail, isValidateMessage } = this.state;
+    const {
+      email, message, isValidateEmail, isValidateMessage
+    } = this.state;
     return (
       <div
         id="fourthZoneId"
@@ -130,7 +135,7 @@ class FourthZone extends Component {
                 onChange={(e) => {
                   this.onChange("message", e.target.value);
                 }}
-              ></textarea>
+              />
               {isValidateMessage && (
                 <label className="validate-error">{isValidateMessage}</label>
               )}

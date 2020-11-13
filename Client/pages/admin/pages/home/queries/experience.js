@@ -1,4 +1,3 @@
-import React from "react";
 import getApiInstance from "../../../api/generic-api";
 import { getAuthentication } from "../../../store/authStore";
 import { openNotificationWithIcon } from "./queries";
@@ -18,105 +17,103 @@ export const insertNewExperience = (portfolioId, experiences) => {
         detail: "",
         image: "",
         url: "",
-        ordinalNumber: experiences.length,
-      },
-    ],
+        ordinalNumber: experiences.length
+      }
+    ]
   };
-  return new Promise((resolve, reject) => {
+  return new Promise(resolve => {
     getApiInstance()
       .postWithBodyAuth({
         url: "/Portfolio/UpdateExperiences",
-        data,
+        data
       })
-      .then((res) => {
+      .then(res => {
         const { successful, errorMessage, result } = res;
         if (successful) {
           resolve([...experiences, ...result]);
         } else {
           openNotificationWithIcon(
             "error",
-            "Lỗi: " + (errorMessage || "Không xác định") + "."
+            `Lỗi: ${errorMessage || "Không xác định"}.`
           );
         }
       })
-      .catch((error) => {
-        openNotificationWithIcon("error", "Đã xảy ra lỗi. " + error);
+      .catch(error => {
+        openNotificationWithIcon("error", `Đã xảy ra lỗi. ${error}`);
         console.error(error);
       });
   });
 };
-export const removeExperience = (portfolioId, experiences, item) => {
-  return new Promise((resolve, reject) => {
-    getApiInstance()
-      .deleteWithFormAuth({
-        url: "/Portfolio/DeleteExperience",
-        data: {
-          Id: portfolioId,
-          ObjectId: item.id,
-        },
-      })
-      .then((res) => {
-        const { successful, errorMessage, result } = res;
-        if (successful) {
-          openNotificationWithIcon("success", "Xóa thành công!!!");
-          let index = 0;
-          let newExperiences = experiences
-            .filter((f) => f.id != item.id)
-            .sort((a, b) => {
-              if ((a.ordinalNumber || 0) < (b.ordinalNumber || 0)) return -1;
-              if ((a.ordinalNumber || 0) > (b.ordinalNumber || 0)) return 1;
-              return 0;
-            })
-            .map((item) => ({ ...item, ordinalNumber: index++ }));
-          resolve(newExperiences);
-        } else {
-          openNotificationWithIcon(
-            "error",
-            "Lỗi: " + (errorMessage || "Không xác định") + "."
-          );
-        }
-      })
-      .catch((error) => {
-        openNotificationWithIcon("error", "Đã xảy ra lỗi. " + error);
-        console.error(error);
-      });
-  });
-};
+export const removeExperience = (portfolioId, experiences, item) => new Promise(resolve => {
+  getApiInstance()
+    .deleteWithFormAuth({
+      url: "/Portfolio/DeleteExperience",
+      data: {
+        Id: portfolioId,
+        ObjectId: item.id
+      }
+    })
+    .then(res => {
+      const { successful, errorMessage } = res;
+      if (successful) {
+        openNotificationWithIcon("success", "Xóa thành công!!!");
+        let index = 0;
+        const newExperiences = experiences
+          .filter(f => f.id !== item.id)
+          .sort((a, b) => {
+            if ((a.ordinalNumber || 0) < (b.ordinalNumber || 0)) return -1;
+            if ((a.ordinalNumber || 0) > (b.ordinalNumber || 0)) return 1;
+            return 0;
+          })
+          .map(item => ({ ...item, ordinalNumber: (index += 1) }));
+        resolve(newExperiences);
+      } else {
+        openNotificationWithIcon(
+          "error",
+          `Lỗi: ${errorMessage || "Không xác định"}.`
+        );
+      }
+    })
+    .catch(error => {
+      openNotificationWithIcon("error", `Đã xảy ra lỗi. ${error}`);
+      console.error(error);
+    });
+});
 
 const updateExperiences = (portfolioId, nextExperiences, showAlert = true) => {
   const auth = getAuthentication();
   const data = {
     id: portfolioId,
     userId: auth.id,
-    portfolioExperiences: nextExperiences || [],
+    portfolioExperiences: nextExperiences || []
   };
-  return new Promise((resolve, reject) => {
+  return new Promise(resolve => {
     getApiInstance()
       .postWithBodyAuth({
         url: "/Portfolio/UpdateExperiences",
-        data,
+        data
       })
-      .then((res) => {
-        const { successful, errorMessage, result } = res;
+      .then(res => {
+        const { successful, errorMessage } = res;
         if (successful) {
-          showAlert && openNotificationWithIcon("success", "Lưu thành công!!!");
+          if (showAlert) openNotificationWithIcon("success", "Lưu thành công!!!");
           resolve(nextExperiences);
         } else {
           openNotificationWithIcon(
             "error",
-            "Lỗi: " + (errorMessage || "Không xác định") + "."
+            `Lỗi: ${errorMessage || "Không xác định"}.`
           );
         }
       })
-      .catch((error) => {
-        openNotificationWithIcon("error", "Đã xảy ra lỗi. " + error);
+      .catch(error => {
+        openNotificationWithIcon("error", `Đã xảy ra lỗi. ${error}`);
         console.error(error);
       });
   });
 };
 
 export const saveExperience = (portfolioId, experiences, experience) => {
-  let nextExperiences = experiences.map((item) => {
+  const nextExperiences = experiences.map(item => {
     if (item.id === experience.id) {
       return experience;
     }
@@ -128,7 +125,7 @@ export const saveExperience = (portfolioId, experiences, experience) => {
 export const reorderExperience = (portfolioId, experiences, experience) => {
   let isExisted = false;
   let experienceSwapper = null;
-  let nextExperiences = experiences.map((item) => {
+  let nextExperiences = experiences.map(item => {
     if (item.id === experience.id) {
       isExisted = true;
       experienceSwapper = item;
@@ -137,10 +134,10 @@ export const reorderExperience = (portfolioId, experiences, experience) => {
     return item;
   });
   if (experienceSwapper) {
-    nextExperiences = nextExperiences.map((item) => {
+    nextExperiences = nextExperiences.map(item => {
       if (
-        item.id !== experience.id &&
-        (item.ordinalNumber || 0) === (experience.ordinalNumber || 0)
+        item.id !== experience.id
+        && (item.ordinalNumber || 0) === (experience.ordinalNumber || 0)
       ) {
         return { ...item, ordinalNumber: experienceSwapper.ordinalNumber };
       }

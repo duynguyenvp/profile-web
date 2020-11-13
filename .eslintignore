@@ -1,0 +1,9 @@
+**/webpack/*
+node_modules
+build
+Server
+webpack
+public
+**/public/*
+**/bin/*
+Client/assets

@@ -1,5 +1,7 @@
 import React from "react";
-import { Form, Button, Input, notification, Layout } from "antd";
+import {
+  Form, Button, Input, notification
+} from "antd";
 import getApiInstance from "../../../api/generic-api";
 import { removeObject } from "../../../utils/localForage";
 import { getAuthentication } from "../../../store/authStore";
@@ -7,14 +9,21 @@ import { getAuthentication } from "../../../store/authStore";
 const openNotificationWithIcon = (type, content) => {
   notification[type]({
     message: "Thông báo",
-    description: content,
+    description: content
   });
 };
-const PostForm = ({ onClose, callback, post, content, delta }) => {
-  const onFinish = (values) => {
+const PostForm = ({
+  onClose, callback, post, content, delta
+}) => {
+  const onFinish = values => {
     let data = { ...values };
     const user = getAuthentication();
-    data = { ...data, avatar: "", delta: JSON.stringify(delta), content };
+    data = {
+      ...data,
+      avatar: "",
+      delta: JSON.stringify(delta),
+      content
+    };
 
     if (post && post.id) {
       data = { ...post, ...data };
@@ -26,22 +35,22 @@ const PostForm = ({ onClose, callback, post, content, delta }) => {
         isDelete: false,
         userName: user.userName,
         userId: user.id,
-        categoryId: null, //Thêm category
+        categoryId: null // Thêm category
       };
     }
-    for (const key in data) {
-      if (data.hasOwnProperty(key)) {
-        if (typeof data[key] != "boolean" && !data[key]) {
+    Object.keys(data).forEach(key => {
+      if (Object.prototype.hasOwnProperty.call(data, key)) {
+        if (typeof data[key] !== "boolean" && !data[key]) {
           delete data[key];
         }
       }
-    }
+    });
     getApiInstance()
       .postWithFormAuth({
         url: "/Post/InsertOrUpdate",
-        data,
+        data
       })
-      .then((res) => {
+      .then(res => {
         if (res.successful) {
           removeObject("post-content");
           openNotificationWithIcon("success", "Thành công!!!");
@@ -50,17 +59,17 @@ const PostForm = ({ onClose, callback, post, content, delta }) => {
         } else {
           openNotificationWithIcon(
             "error",
-            "Đã xảy ra lỗi: " + (res.errorMessage || "Không xác định")
+            `Đã xảy ra lỗi: ${res.errorMessage || "Không xác định"}`
           );
         }
       })
-      .catch((error) => {
+      .catch(error => {
         console.error(error);
         openNotificationWithIcon("error", error);
       });
   };
 
-  const { id, tag, title } = post || {};
+  const { tag, title } = post || {};
 
   return (
     <Form
@@ -77,8 +86,8 @@ const PostForm = ({ onClose, callback, post, content, delta }) => {
         rules={[
           {
             required: true,
-            message: "Vui lòng nhập đề!",
-          },
+            message: "Vui lòng nhập đề!"
+          }
         ]}
       >
         <Input placeholder="Nhập tiêu đề ..." />
@@ -91,8 +100,8 @@ const PostForm = ({ onClose, callback, post, content, delta }) => {
         rules={[
           {
             required: true,
-            message: "Vui lòng nhập tags!",
-          },
+            message: "Vui lòng nhập tags!"
+          }
         ]}
       >
         <Input placeholder="Nhập họ tags ..." />

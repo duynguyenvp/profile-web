@@ -1,45 +1,34 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useMemo } from "react";
 import Comment from "./Comment";
-import { RComponent } from "../../../../common/r-component";
 
-import { getState, subscribe } from "../../../../services/userService";
-import { getPostState, subscribePost } from "../../../../services/postService";
+import { getState } from "../../../../services/userService";
+import { usePostService } from "../../../../services/postService";
 import {
-  getCommentState,
-  setCommentState,
-  subscribeComment,
+  useCommentService,
+  setCommentState
 } from "../../../../services/commentService";
 
 import getApiInstance from "../../../../ajax/generic-api";
 
-class List extends RComponent {
-  constructor(props) {
-    super(props);
-    this.onMount(() => {
-      this.onUnmount(subscribeComment(() => this.forceUpdate()));
-    });
+const List = () => {
+  const { commentLikeDislikeStat } = useCommentService();
+  const { postData } = usePostService();
+  const user = getState();
 
-    this.onMount(() => {
-      this.onUnmount(subscribePost(() => this.getData()));
-    });
+  useEffect(() => {
+    getData();
+  }, [user, postData]);
 
-    this.onMount(() => {
-      this.onUnmount(subscribe(() => this.getData()));
-    });
-  }
-
-  getData = () => {
-    const user = getState();
-    const { postData } = getPostState();
+  const getData = () => {
     if (!postData.id) return;
-    let data = {
+    const data = {
       postId: postData.id,
-      userId: user.id,
+      userId: user.id
     };
     getApiInstance()
       .postWithForm({
         url: "/Post/PostStatLikeDislike",
-        data,
+        data
       })
       .then((res) => {
         if (res.successful && res.result) {
@@ -51,36 +40,32 @@ class List extends RComponent {
       });
   };
 
-  computeComment = () => {
-    const { commentLikeDislikeStat } = getCommentState();
+  const computeComment = useMemo(() => {
     let list = [...commentLikeDislikeStat];
-    let listChild = list.filter((f) => f.commentParentId !== 0);
+    const listChild = list.filter(f => f.commentParentId !== 0);
     list = list
-      .filter((f) => f.commentParentId == 0)
+      .filter(f => f.commentParentId === 0)
       .sort((a, b) => {
         if (a.time < b.time) return -1;
         if (a.time > b.time) return 1;
         return 0;
       });
-    let listCommentComponent = [];
-    for (let i = 0; i < list.length; i++) {
-      let comment = list[i];
-      let listChildOfComment = listChild.filter(
-        (f) => f.commentParentId === comment.commentId
+    const listCommentComponent = [];
+    for (let i = 0; i < list.length; i += 1) {
+      const comment = list[i];
+      const listChildOfComment = listChild.filter(
+        f => f.commentParentId === comment.commentId
       );
-      let props = {
+      const props = {
         ...comment,
-        list: listChildOfComment,
+        list: listChildOfComment
       };
       listCommentComponent.push(<Comment key={i} {...props} />);
     }
     return listCommentComponent;
-  };
+  }, [commentLikeDislikeStat]);
 
-  render() {
-    const list = this.computeComment();
-    return <Fragment>{list}</Fragment>;
-  }
-}
+  return <Fragment>{computeComment}</Fragment>;
+};
 
 export default List;

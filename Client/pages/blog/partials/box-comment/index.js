@@ -1,20 +1,19 @@
-import React, { Component, Fragment } from "react";
+import React from "react";
+import useStyles from "isomorphic-style-loader/useStyles";
 import s from "./comment.scss";
-import withStyles from "isomorphic-style-loader/withStyles";
 
 import List from "./List";
 import InsertComment from "./InsertComment";
 
-class BoxComment extends Component {
-  render() {
-    return (
-      <div className="box-comment">
-        <h3>Bình luận</h3>
-        <InsertComment />
-        <List />
-      </div>
-    );
-  }
-}
+const BoxComment = () => {
+  useStyles(s);
+  return (
+    <div className="box-comment">
+      <h3>Bình luận</h3>
+      <InsertComment />
+      <List />
+    </div>
+  );
+};
 
-export default withStyles(s)(BoxComment);
+export default BoxComment;

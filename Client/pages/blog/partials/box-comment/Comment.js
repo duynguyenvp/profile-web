@@ -1,179 +1,189 @@
-import React, { Component } from 'react';
-import { RComponent } from '../../../../common/r-component'
+import React, { useCallback, useState } from "react";
 
-import InsertComment from './InsertComment'
-import IconLike from '../../../../common-resources/ic_like'
-import IconDislike from '../../../../common-resources/ic_dislike'
+import InsertComment from "./InsertComment";
+import IconLike from "../../../../assets/ic_like";
+import IconDislike from "../../../../assets/ic_dislike";
 
-import { getState, subscribe } from '../../../../services/userService'
-import { getCommentState, setCommentState, subscribeComment } from '../../../../services/commentService'
+import { useUserService } from "../../../../services/userService";
+import {
+  getCommentState,
+  setCommentState
+} from "../../../../services/commentService";
 
-import getApiInstance from '../../../../ajax/generic-api'
+import getApiInstance from "../../../../ajax/generic-api";
 
-import { datetimeToStringFormatCultureVi } from '../../../../utils/date-utils'
+import { datetimeToStringFormatCultureVi } from "../../../../utils/date-utils";
 
-class Comment extends RComponent {
-    constructor(props) {
-        super(props);
+const Comment = ({
+  comment,
+  commentId,
+  commentParentId,
+  dislike,
+  isDislikeReact,
+  isLikeReact,
+  like,
+  time,
+  userName,
+  list
+}) => {
+  const [isReplyOn, setIsReplyOn] = useState(false);
+  const user = useUserService();
+  const renderChilds = useCallback(list => {
+    const listSorted = list.sort((a, b) => {
+      if (a.time < b.time) return -1;
+      if (a.time > b.time) return 1;
+      return 0;
+    });
+    const result = [];
+    for (let i = 0; i < listSorted.length; i += 1) {
+      const cmt = listSorted[i];
+      result.push(<Comment key={i} {...cmt} />);
+    }
+    return result;
+  }, []);
 
-        this.onMount(() => {
-            this.onUnmount(subscribe(() => this.forceUpdate()))
-        })
+  const likeAction = () => {
+    const { commentLikeDislikeStat, ...other } = getCommentState();
+    const item = commentLikeDislikeStat.find(f => f.commentId === commentId);
 
-        this.state = {
-            isReplyOn: false
+    const newCommentLikeDislikeStat = [
+      ...commentLikeDislikeStat.filter(f => f.commentId !== commentId),
+      {
+        ...item,
+        ...{
+          like: isLikeReact ? like - 1 : like + 1,
+          dislike: isDislikeReact ? dislike - 1 : dislike,
+          isLikeReact: !isLikeReact,
+          isDislikeReact: false
         }
-    }
-
-    renderChilds = (list) => {
-        list = list.sort((a, b) => {
-            if (a.time < b.time) return -1
-            if (a.time > b.time) return 1
-            return 0
-        })
-        let result = []
-        for (let i = 0; i < list.length; i++) {
-            const cmt = list[i];
-            result.push(<Comment key={i} {...cmt} />)
+      }
+    ];
+    // Gọi api
+    getApiInstance()
+      .postWithFormAuth({
+        url: "/Post/LikeComment",
+        data: {
+          UserId: user.id,
+          Id: commentId
         }
-        return result
-    }
+      })
+      .then(res => {
+        if (!res.successful) {
+          likeAction();
+        } else {
+          console.error(res);
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
+    setCommentState({
+      ...other,
+      commentLikeDislikeStat: newCommentLikeDislikeStat
+    });
+  };
 
-    likeAction = () => {
-        const user = getState()
-        const { commentId, dislike, isDislikeReact, isLikeReact, like } = this.props
-        const { commentLikeDislikeStat, ...other } = getCommentState()
-        let item = commentLikeDislikeStat.find(f => f.commentId == commentId)
+  const dislikeAction = () => {
+    const { commentLikeDislikeStat, ...other } = getCommentState();
+    const item = commentLikeDislikeStat.find(f => f.commentId === commentId);
 
-        let newCommentLikeDislikeStat = [...commentLikeDislikeStat.filter(f => f.commentId != commentId), {
-            ...item, ...{
-                like: isLikeReact ? like - 1 : like + 1,
-                dislike: isDislikeReact ? dislike - 1 : dislike,
-                isLikeReact: !isLikeReact,
-                isDislikeReact: false
-            }
-        }]
-        //Gọi api
-        getApiInstance().postWithFormAuth({
-            url: '/Post/LikeComment',
-            data: {
-                UserId: user.id,
-                Id: commentId
-            }
-        }).then(res => {
-            if (!res.successful) {
-                this.likeAction()
-            } else {
-                console.log(res)
-            }
-        }).catch(err => {
-            console.error(err)
-            this.likeAction()
-        })
-        setCommentState({
-            ...other,
-            commentLikeDislikeStat: newCommentLikeDislikeStat
-        })
-    }
+    const newCommentLikeDislikeStat = [
+      ...commentLikeDislikeStat.filter(f => f.commentId !== commentId),
+      {
+        ...item,
+        ...{
+          dislike: isDislikeReact ? dislike - 1 : dislike + 1,
+          like: isLikeReact ? like - 1 : like,
+          isDislikeReact: !isDislikeReact,
+          isLikeReact: false
+        }
+      }
+    ];
+    // Gọi api
+    getApiInstance()
+      .postWithFormAuth({
+        url: "/Post/DislikeComment",
+        data: {
+          UserId: user.id,
+          Id: commentId
+        }
+      })
+      .then(res => {
+        if (!res.successful) {
+          dislikeAction();
+        } else {
+          console.error(res);
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
+    setCommentState({
+      ...other,
+      commentLikeDislikeStat: newCommentLikeDislikeStat
+    });
+  };
 
-    dislikeAction = () => {
-        const user = getState()
-        const { commentId, dislike, isDislikeReact, isLikeReact, like } = this.props
-        const { commentLikeDislikeStat, ...other } = getCommentState()
-        let item = commentLikeDislikeStat.find(f => f.commentId == commentId)
+  const isLogin = user != null && user.username !== null;
 
-        let newCommentLikeDislikeStat = [...commentLikeDislikeStat.filter(f => f.commentId != commentId), {
-            ...item, ...{
-                dislike: isDislikeReact ? dislike - 1 : dislike + 1,
-                like: isLikeReact ? like - 1 : like,
-                isDislikeReact: !isDislikeReact,
-                isLikeReact: false
-            }
-        }]
-        //Gọi api
-        getApiInstance().postWithFormAuth({
-            url: '/Post/DislikeComment',
-            data: {
-                UserId: user.id,
-                Id: commentId
-            }
-        }).then(res => {
-            if (!res.successful) {
-                this.dislikeAction()
-            } else {
-                console.log(res)
-            }
-        }).catch(err => {
-            console.error(err)
-            this.dislikeAction()
-        })
-        setCommentState({
-            ...other,
-            commentLikeDislikeStat: newCommentLikeDislikeStat
-        })
-    }
-
-    render() {
-        const {
-            comment,
-            commentId,
-            commentParentId,
-            dislike,
-            isDislikeReact,
-            isLikeReact,
-            like,
-            postId,
-            time,
-            userName,
-            list
-        } = this.props
-        const user = getState()
-        const isLogin = user != null && user.username != null
-        const { isReplyOn } = this.state
-        return (
-            <div className="comment-item">
-                <i className="material-icons">account_circle</i>
-                <div className="comment-item-main">
-                    <div className="container">
-                        <div className="comment-info">
-                            <span className="username">{userName}</span>
-                            <span className="time">{datetimeToStringFormatCultureVi(time)}</span>
-                        </div>
-                        <div className="content" dangerouslySetInnerHTML={{ __html: comment }}>
-                        </div>
-                        <div className="comment-actions">
-                            <button className={`comment-like ${isLikeReact ? "active" : ""}`} onClick={() => {
-                                if (isLogin) {
-                                    this.likeAction()
-                                }
-                            }}>
-                                <IconLike />
-                                <span>{like}</span>
-                            </button>
-                            <button className={`comment-dislike ${isDislikeReact ? "active" : ""}`} onClick={() => {
-                                if (isLogin) {
-                                    this.dislikeAction()
-                                }
-                            }}>
-                                <IconDislike />
-                                <span>{dislike}</span>
-                            </button>
-                            {
-                                commentParentId == 0 && <button className="comment-reply"
-                                    onClick={() => { this.setState({ isReplyOn: true }) }}>Trả lời</button>
-                            }
-                        </div>
-                    </div>
-                    {
-                        commentParentId == 0 && (isReplyOn || list.length > 0) && <div className="comment-box-reply">
-                            {isLogin && <InsertComment parentId={commentId} />}
-                            {this.renderChilds(list)}
-                        </div>
-                    }
-                </div>
-            </div>
-        );
-    }
-}
-
+  return (
+    <div className="comment-item">
+      <i className="material-icons">account_circle</i>
+      <div className="comment-item-main">
+        <div className="container">
+          <div className="comment-info">
+            <span className="username">{userName}</span>
+            <span className="time">
+              {datetimeToStringFormatCultureVi(time)}
+            </span>
+          </div>
+          <div
+            className="content"
+            dangerouslySetInnerHTML={{ __html: comment }}
+          />
+          <div className="comment-actions">
+            <button
+              className={`comment-like ${isLikeReact ? "active" : ""}`}
+              onClick={() => {
+                if (isLogin) {
+                  likeAction();
+                }
+              }}
+            >
+              <IconLike />
+              <span>{like}</span>
+            </button>
+            <button
+              className={`comment-dislike ${isDislikeReact ? "active" : ""}`}
+              onClick={() => {
+                if (isLogin) {
+                  dislikeAction();
+                }
+              }}
+            >
+              <IconDislike />
+              <span>{dislike}</span>
+            </button>
+            {commentParentId === 0 && (
+              <button
+                className="comment-reply"
+                onClick={() => {
+                  setIsReplyOn(true);
+                }}
+              >
+                Trả lời
+              </button>
+            )}
+          </div>
+        </div>
+        {commentParentId === 0 && (isReplyOn || list.length > 0) && (
+          <div className="comment-box-reply">
+            {isLogin && <InsertComment parentId={commentId} />}
+            {renderChilds(list)}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
 export default Comment;

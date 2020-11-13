@@ -4,13 +4,13 @@ import React, {
   useEffect,
   useLayoutEffect,
   useMemo,
-  useState,
+  useState
 } from "react";
 import PropTypes from "prop-types";
+import useStyles from "isomorphic-style-loader/useStyles";
 import getApiInstance from "../../../ajax/generic-api";
 import { dateToStringFormatCultureVi } from "../../../utils/date-utils";
 import { setPostState, usePostService } from "../../../services/postService";
-import useStyles from "isomorphic-style-loader/useStyles";
 import style from "../style.scss";
 
 import BoxComment from "./box-comment";
@@ -19,23 +19,22 @@ import BoxRecentPosts from "./box-recent-post";
 import BoxTimeline from "./box-timeline";
 import FbShareButton from "./FbShareButton";
 
-const Blog = (props) => {
+const Blog = props => {
   useStyles(style);
-  const [timeline, setTimeline] = useState([]);
   const [menuFixed, setMenuFixed] = useState(false);
   const [asideOpen, setAsideOpen] = useState(false);
   const [username, setUsername] = useState();
   const postFromService = usePostService();
   const post = useMemo(() => ({ ...props, ...postFromService }), [
     postFromService,
-    props,
+    props
   ]);
 
   useEffect(() => {
-    let pathname = window.location.pathname;
+    let { pathname } = window.location;
     pathname = pathname.split(/\//);
     let username = "";
-    if (pathname && pathname.length && pathname[2] != "bai-viet") {
+    if (pathname && pathname.length && pathname[2] !== "bai-viet") {
       username = pathname[2];
     }
     username = username && username.length > 0 ? username : "duynguyen";
@@ -45,7 +44,7 @@ const Blog = (props) => {
     initData();
   }, []);
 
-  const handleScroll = (e) => {
+  const handleScroll = () => {
     const app = document.getElementById("blog__body");
     if (app.scrollTop > 80 || document.documentElement.scrollTop > 80) {
       setMenuFixed(true);
@@ -63,7 +62,6 @@ const Blog = (props) => {
 
   useLayoutEffect(() => {
     function handleWindowResize() {
-      console.log(1);
       const blog = document.getElementById("blog__body");
       const plane = document.querySelector(".plane");
       if (!blog || !plane) return;
@@ -83,24 +81,24 @@ const Blog = (props) => {
     const { title, content, postTime } = postData || {};
     const newPostData = {
       ...postData,
-      title: title == "{title}" ? "" : title,
-      content: content == "{content}" ? "" : content,
-      postTime: postTime == "{postTime}" ? "" : postTime,
+      title: title === "{title}" ? "" : title,
+      content: content === "{content}" ? "" : content,
+      postTime: postTime === "{postTime}" ? "" : postTime
     };
     setPostState({ postData: newPostData, ...restOfProps });
     delete window.__INITIAL__DATA__;
   };
 
-  const changePost = (postId) => {
+  const changePost = postId => {
     setAsideOpen(false);
     getApiInstance()
       .postWithForm({
         url: "/post/GetPostById",
         data: {
-          id: postId,
-        },
+          id: postId
+        }
       })
-      .then((res) => {
+      .then(res => {
         if (res.successful && res.result) {
           const { postData } = res.result || {};
           const { title } = postData || {};
@@ -112,11 +110,11 @@ const Blog = (props) => {
           app.scrollTo({
             top: 0,
             left: 0,
-            behavior: "smooth",
+            behavior: "smooth"
           });
         }
       })
-      .catch((err) => {
+      .catch(err => {
         console.error(err);
       });
   };
@@ -132,12 +130,10 @@ const Blog = (props) => {
     );
   }, [post]);
 
-  const asideToggle = () => {
-    setAsideOpen(!asideOpen);
-  };
-
   const { postData } = post;
-  const { content, title, postTime, userName } = postData;
+  const {
+    content, title, postTime, userName
+  } = postData;
 
   return (
     <section id="blog" className={`blog ${menuFixed ? "blog--marginTop" : ""}`}>
@@ -162,7 +158,9 @@ const Blog = (props) => {
             setAsideOpen(false);
           }}
         >
-          <i className="material-icons">chevron_left</i> Đóng lại
+          <i className="material-icons">chevron_left</i>
+          {" "}
+          Đóng lại
         </button>
         <BoxSearch changePost={changePost} />
         <BoxRecentPosts username={username} changePost={changePost} />
@@ -184,7 +182,7 @@ const Blog = (props) => {
                 <span className="post-time">
                   <span>Ngày đăng: &nbsp;</span>
                   <span>
-                    {postTime != "{postTime}"
+                    {postTime !== "{postTime}"
                       ? dateToStringFormatCultureVi(postTime)
                       : postTime}
                   </span>
@@ -197,7 +195,7 @@ const Blog = (props) => {
               <div
                 className="post-content"
                 dangerouslySetInnerHTML={{ __html: content }}
-              ></div>
+              />
               {renderFacebookControls()}
             </Fragment>
           )}
@@ -212,7 +210,7 @@ const Blog = (props) => {
 
 Blog.propTypes = {
   postData: PropTypes.object,
-  suggestions: PropTypes.array,
+  suggestions: PropTypes.array
 };
 
 Blog.defaultProps = {
@@ -221,9 +219,9 @@ Blog.defaultProps = {
     id: null,
     postTime: "{postTime}",
     tag: "",
-    title: "{title}",
+    title: "{title}"
   },
-  suggestions: [],
+  suggestions: []
 };
 
 export default Blog;

@@ -2,9 +2,12 @@ import React, { useState, useLayoutEffect } from "react";
 import { Drawer, Button, Layout } from "antd";
 import PostForm from "./editor/PostForm";
 import EditorContent from "./editor/EditorContent";
+
 const { Sider } = Layout;
 
-const PostPopup = ({ visible, onClose, post, callback }) => {
+const PostPopup = ({
+  visible, onClose, post, callback
+}) => {
   const [content, setContent] = useState(() => "");
   const [delta, setDelta] = useState(() => null);
   const [isMobile, setIsMobile] = useState(false);
@@ -31,11 +34,11 @@ const PostPopup = ({ visible, onClose, post, callback }) => {
         post && Object.keys(post) ? "Chỉnh sửa bài viết" : "Viết bài mới"
       }`}
       className="post-popup"
-      closable={true}
+      closable
       width="100%"
       onClose={onClose}
       visible={visible}
-      destroyOnClose={true}
+      destroyOnClose
       keyboard={false}
       bodyStyle={{ padding: 0 }}
     >
@@ -65,7 +68,7 @@ const PostPopup = ({ visible, onClose, post, callback }) => {
             <div
               className="editor-postform-mobile-overlay"
               onClick={onClosePostForm}
-            ></div>
+            />
           )}
           <div
             className={`editor-postform-mobile ${

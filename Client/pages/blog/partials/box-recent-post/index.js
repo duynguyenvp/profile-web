@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
-import getApiInstance from "../../../../ajax/generic-api";
 import useStyles from "isomorphic-style-loader/useStyles";
+import getApiInstance from "../../../../ajax/generic-api";
 import style from "./style.scss";
 import { dateToStringFormatCultureVi } from "../../../../utils/date-utils";
 
@@ -10,22 +10,22 @@ const BoxRecentPosts = ({ username, changePost }) => {
   const [loading, setLoading] = useState(true);
   const [postRecently, setPostRecently] = useState([]);
 
-  const getPostRecently = (_username) => {
+  const getPostRecently = user => {
     setLoading(true);
     getApiInstance()
       .postWithForm({
         url: "/Post/GetPostRecently",
         data: {
-          Username: _username,
-        },
+          Username: user
+        }
       })
-      .then((res) => {
+      .then(res => {
         setLoading(false);
         if (res.successful) {
           setPostRecently(res.result);
         }
       })
-      .catch((err) => {
+      .catch(err => {
         setLoading(false);
         console.error(err);
       });
@@ -39,8 +39,8 @@ const BoxRecentPosts = ({ username, changePost }) => {
 
   const renderPosts = useMemo(() => {
     if (loading) {
-      let skeletons = [];
-      for (let index = 0; index < 5; index++) {
+      const skeletons = [];
+      for (let index = 0; index < 5; index += 1) {
         const post = (
           <React.Fragment key={index}>
             <div className="post">
@@ -63,33 +63,26 @@ const BoxRecentPosts = ({ username, changePost }) => {
           if (a.postTime < b.postTime) return 1;
           return 0;
         })
-        .map((item, i) => {
-          return (
-            <React.Fragment key={i}>
-              <div
-                className="post"
-                onClick={() => {
-                  changePost(item.id);
-                }}
-              >
-                <div className="post__title">
-                  <a
-                    href={item.postUrl}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      changePost(item.id);
-                    }}
-                  >
-                    <p className="post__postTime">
-                      {dateToStringFormatCultureVi(item.postTime)}
-                    </p>
-                    <p>{item.title}</p>
-                  </a>
-                </div>
+        .map((item, i) => (
+          <React.Fragment key={i}>
+            <div className="post">
+              <div className="post__title">
+                <a
+                  href={item.postUrl}
+                  onClick={e => {
+                    e.preventDefault();
+                    changePost(item.id);
+                  }}
+                >
+                  <p className="post__postTime">
+                    {dateToStringFormatCultureVi(item.postTime)}
+                  </p>
+                  <p>{item.title}</p>
+                </a>
               </div>
-            </React.Fragment>
-          );
-        });
+            </div>
+          </React.Fragment>
+        ));
     }
     return <h4>Không có dữ liệu</h4>;
   }, [loading, postRecently]);

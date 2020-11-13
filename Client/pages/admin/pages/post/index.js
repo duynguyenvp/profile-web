@@ -1,56 +1,58 @@
 import React, { useEffect, useState, Fragment } from "react";
 import "./style.scss";
 import { CloseOutlined, EyeFilled, LoadingOutlined } from "@ant-design/icons";
-import { Row, Col, Table, Input, Button, notification, Modal } from "antd";
-const { Column } = Table;
-const { confirm } = Modal;
+import {
+  Row, Col, Table, Input, Button, notification, Modal
+} from "antd";
 import getApiInstance from "../../api/generic-api";
 import { usePostStore, removePost, setPosts } from "../../store/postStore";
 import PostPopup from "./popup";
 import { getAuthentication } from "../../store/authStore";
 
+const { Column } = Table;
+const { confirm } = Modal;
+
 const openNotificationWithIcon = (type, content) => {
   notification[type]({
     message: "Thông báo",
-    description: content,
+    description: content
   });
 };
 
-const Post = (props) => {
+const Post = () => {
   const [popupVisible, setPopupVisible] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [selectedPost, setSelectedPost] = useState(null);
   const [filterText, setFilterText] = useState(null);
   const auth = getAuthentication();
   const state = usePostStore();
-  const { take, page, total, data } = state;
+  const { take, page, data } = state;
   useEffect(() => {
     loadData(auth);
   }, [auth && auth.id]);
 
-  const loadData = (auth) => {
-    auth &&
-      auth.id &&
-      getApiInstance()
-        .postWithForm({
-          url: "/Post/GetAll",
-          data: {
-            Take: take,
-            Skip: (page - 1) * take,
-            UserId: auth.id,
-          },
-        })
-        .then((res) => {
-          const { successful, result } = res;
-          if (successful) {
-            if (!result) return;
-            const { total, data } = result;
-            setPosts({ ...state, total, data });
-          }
-        })
-        .catch((err) => {
-          console.error(err);
-        });
+  const loadData = auth => {
+    if (!auth || !auth.id) return;
+    getApiInstance()
+      .postWithForm({
+        url: "/Post/GetAll",
+        data: {
+          Take: take,
+          Skip: (page - 1) * take,
+          UserId: auth.id
+        }
+      })
+      .then(res => {
+        const { successful, result } = res;
+        if (successful) {
+          if (!result) return;
+          const { total, data } = result;
+          setPosts({ ...state, total, data });
+        }
+      })
+      .catch(err => {
+        console.error(err);
+      });
   };
 
   const search = () => {
@@ -61,10 +63,10 @@ const Post = (props) => {
         url: "/Post/FullTextSearch",
         data: {
           Condition: filterText,
-          Username: auth && auth.username,
-        },
+          Username: auth && auth.username
+        }
       })
-      .then((res) => {
+      .then(res => {
         setIsSearching(false);
         const { successful, result } = res;
         if (successful) {
@@ -73,23 +75,20 @@ const Post = (props) => {
           setPosts({ ...state, total, data });
         }
       })
-      .catch((err) => {
+      .catch(err => {
         setIsSearching(false);
         console.error(err);
       });
   };
 
-  const dataSource =
-    data &&
-    data.map((item, index) => {
-      return { ...item, key: item.id, index: index + 1 };
-    });
+  const dataSource = data
+    && data.map((item, index) => ({ ...item, key: item.id, index: index + 1 }));
   const closePopup = () => {
     setSelectedPost(null);
     setPopupVisible(false);
   };
 
-  const remove = (post) => {
+  const remove = post => {
     confirm({
       title: "Bạn có chắc chắn muốn xoá?",
       content: post.postName,
@@ -101,31 +100,31 @@ const Post = (props) => {
           .deleteWithFormAuth({
             url: "/Post/DeletePost",
             data: {
-              postId: post.id,
-            },
+              postId: post.id
+            }
           })
-          .then((res) => {
+          .then(res => {
             const { successful } = res;
             if (successful) {
               openNotificationWithIcon("success", "Thành công.");
               removePost(post.id);
             }
           })
-          .catch((error) => {
+          .catch(error => {
             console.error(error);
             openNotificationWithIcon("error", error);
           });
       },
       onCancel() {
-        console.log("Cancel");
-      },
+        console.error("Cancel");
+      }
     });
   };
 
-  const handleFilterChange = (e) => {
-    const value = e.target.value;
-    if (!value) {
-      auth && loadData(auth);
+  const handleFilterChange = e => {
+    const { value } = e.target;
+    if (!value && auth) {
+      loadData(auth);
     }
     setFilterText(value);
   };
@@ -164,14 +163,14 @@ const Post = (props) => {
         <Table
           dataSource={dataSource}
           pagination={{
-            pageSize: 10,
+            pageSize: 10
           }}
           rowClassName="custom-row"
-          onRow={(record) => ({
+          onRow={record => ({
             onClick: () => {
               setSelectedPost(record);
               setPopupVisible(true);
-            },
+            }
           })}
           style={{ width: "100%" }}
         >
@@ -206,13 +205,13 @@ const Post = (props) => {
             responsive={["xxl", "xl", "lg", "md", "sm", "xs"]}
             render={(text, record) => (
               <>
-                <a href={record.postUrl} target="_blank">
+                <a href={record.postUrl} target="_blank" rel="noreferrer">
                   <Button
                     className="btn-preview"
                     size="small"
                     type="info"
                     icon={<EyeFilled />}
-                    onClick={(e) => {
+                    onClick={e => {
                       e.stopPropagation();
                     }}
                   >
@@ -224,11 +223,11 @@ const Post = (props) => {
                   size="small"
                   type="danger"
                   icon={<CloseOutlined />}
-                  onClick={(e) => {
+                  onClick={e => {
                     e.stopPropagation();
                     remove(record);
                   }}
-                ></Button>
+                />
               </>
             )}
           />

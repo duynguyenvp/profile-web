@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import {
   DeleteFilled,
   CaretUpOutlined,
-  CaretDownOutlined,
+  CaretDownOutlined
 } from "@ant-design/icons";
 import {
   Collapse,
@@ -12,64 +12,63 @@ import {
   Form,
   Input,
   Button,
-  Space,
+  Space
 } from "antd";
+import moment from "moment";
+import EditorComponent from "../../../components/editor";
+
 const { Panel } = Collapse;
 const { RangePicker } = DatePicker;
-import EditorComponent from "../../../components/editor";
-import moment from "moment";
 
-const PanelHeader = ({ title, description, remove, experience }) => {
-  return (
-    <div className="info-block-panel-header">
-      <div className="info-block-panel-header-title">
-        <span className="title">{title}</span>
-        <span className="description">{description}</span>
-      </div>
-      <div>
-        <Button
-          shape="circle"
-          type="danger"
-          size="small"
-          icon={<DeleteFilled />}
-          onClick={(e) => {
-            e.stopPropagation();
-            if (typeof remove === "function") {
-              remove(experience);
-            }
-          }}
-        ></Button>
-      </div>
+const PanelHeader = ({
+  title, description, remove, experience
+}) => (
+  <div className="info-block-panel-header">
+    <div className="info-block-panel-header-title">
+      <span className="title">{title}</span>
+      <span className="description">{description}</span>
     </div>
-  );
-};
+    <div>
+      <Button
+        shape="circle"
+        type="danger"
+        size="small"
+        icon={<DeleteFilled />}
+        onClick={(e) => {
+          e.stopPropagation();
+          if (typeof remove === "function") {
+            remove(experience);
+          }
+        }}
+      />
+    </div>
+  </div>
+);
 
 const getTitle = (company, position) => {
-  let title =
-    (company && position && `Làm ${position} tại ${company}`) ||
-    "Chưa có thông tin";
+  const title = (company && position && `Làm ${position} tại ${company}`)
+    || "Chưa có thông tin";
   return title;
 };
-const getDescription = (time) => {
-  return (
-    (time && `${time[0].format(dateFormat)} - ${time[1].format(dateFormat)}`) ||
-    ""
-  );
-};
+const getDescription = time => (
+  (time && `${time[0].format(dateFormat)} - ${time[1].format(dateFormat)}`)
+    || ""
+);
 const dateFormat = "DD/MM/YYYY";
 const ExperienceInfoBlock = ({
   experience,
   total,
   handleReorderExperience,
   handleRemoveExperience,
-  handleSaveExperience,
+  handleSaveExperience
 }) => {
-  const { id, company, position, detail, startDate, endDate } =
-    experience || {};
+  const {
+    id, company, position, detail, startDate, endDate
+  } = experience || {};
   const [html, setHtml] = useState(detail || "");
   const [time, setTime] = useState([
     moment(new Date(startDate || Date.now()), dateFormat),
-    moment(new Date(endDate || Date.now()), dateFormat),
+    moment(new Date(endDate || Date.now()), dateFormat)
   ]);
   const [title, setTitle] = useState(getTitle(company, position));
   const [description, setDescription] = useState(getDescription(time));
@@ -87,22 +86,24 @@ const ExperienceInfoBlock = ({
     const dateFormatMDY = "MM/DD/YYYY";
     const { position, company, time } = values;
     handleSaveExperience({
-      company: company,
-      position: position,
+      company,
+      position,
       detail: html,
       startDate: time[0].format(dateFormatMDY),
       endDate: time[1].format(dateFormatMDY),
       id,
-      ordinalNumber: experience.ordinalNumber,
+      ordinalNumber: experience.ordinalNumber
     });
   };
 
   useEffect(() => {
-    const { company, position, detail, startDate, endDate } = experience || {};
+    const {
+      company, position, detail, startDate, endDate
+    } = experience || {};
     setHtml(detail || "");
     setTime([
       moment(new Date(startDate || Date.now()), dateFormat),
-      moment(new Date(endDate || Date.now()), dateFormat),
+      moment(new Date(endDate || Date.now()), dateFormat)
     ]);
     setTitle(getTitle(company, position));
     setDescription(getDescription(time));
@@ -110,7 +111,7 @@ const ExperienceInfoBlock = ({
   }, [experience]);
 
   const isDisabledDown = useMemo(() => (experience.ordinalNumber || 0) === 0, [
-    experience,
+    experience
   ]);
   const isDisabledUp = useMemo(
     () => (experience.ordinalNumber || 0) >= total - 1,
@@ -136,11 +137,11 @@ const ExperienceInfoBlock = ({
               nextOrdinalNumber = nextOrdinalNumber < 0 ? 0 : nextOrdinalNumber;
               handleReorderExperience({
                 ...experience,
-                ordinalNumber: nextOrdinalNumber,
+                ordinalNumber: nextOrdinalNumber
               });
             }
           }}
-        ></Button>
+        />
         <Button
           disabled={isDisabledUp}
           size="small"
@@ -150,26 +151,25 @@ const ExperienceInfoBlock = ({
             e.stopPropagation();
             if (typeof handleReorderExperience === "function") {
               let nextOrdinalNumber = (experience.ordinalNumber || 0) + 1;
-              nextOrdinalNumber =
-                nextOrdinalNumber > total ? total : nextOrdinalNumber;
+              nextOrdinalNumber = nextOrdinalNumber > total ? total : nextOrdinalNumber;
               handleReorderExperience({
                 ...experience,
-                ordinalNumber: nextOrdinalNumber,
+                ordinalNumber: nextOrdinalNumber
               });
             }
           }}
-        ></Button>
+        />
       </div>
       <Panel
-        showArrow={true}
-        header={
+        showArrow
+        header={(
           <PanelHeader
             experience={experience}
             remove={handleRemoveExperience}
             title={title}
             description={description}
           />
-        }
+        )}
         className="info-block-panel"
       >
         <Form
@@ -188,14 +188,14 @@ const ExperienceInfoBlock = ({
           <Row gutter={24}>
             <Col span={12}>
               <Form.Item
-                name={`company`}
-                label={`Tên công ty`}
+                name="company"
+                label="Tên công ty"
                 initialValue={company}
                 rules={[
                   {
                     required: true,
-                    message: "Vui lòng nhập tên công ty!",
-                  },
+                    message: "Vui lòng nhập tên công ty!"
+                  }
                 ]}
               >
                 <Input placeholder="Tên công ty ..." />
@@ -203,14 +203,14 @@ const ExperienceInfoBlock = ({
             </Col>
             <Col span={12}>
               <Form.Item
-                name={`position`}
-                label={`Vị trí`}
+                name="position"
+                label="Vị trí"
                 initialValue={position}
                 rules={[
                   {
                     required: true,
-                    message: "Vui lòng nhập vị trí!",
-                  },
+                    message: "Vui lòng nhập vị trí!"
+                  }
                 ]}
               >
                 <Input placeholder="Vị trí ..." />
@@ -225,8 +225,8 @@ const ExperienceInfoBlock = ({
                   {
                     type: "array",
                     required: true,
-                    message: "Vui lòng chọn thời gian!",
-                  },
+                    message: "Vui lòng chọn thời gian!"
+                  }
                 ]}
               >
                 <RangePicker

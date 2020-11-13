@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect } from "react";
 import loadScript from "../../utils/loadScript";
 
 const FbPlugin = () => {
@@ -7,11 +7,11 @@ const FbPlugin = () => {
       "https://connect.facebook.net/en_US/sdk.js",
       () => {
         window.fbAsyncInit = function () {
-          FB.init({
+          window.FB.init({
             appId: "1052049204910473",
             autoLogAppEvents: true,
             xfbml: true,
-            version: "v8.0",
+            version: "v8.0"
           });
         };
       },

@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Row, Col, Form, Input, Button, Space, notification } from "antd";
-import EditorComponent from "../../../components/editor";
+import {
+  Row, Col, Form, Input, Button, Space, notification
+} from "antd";
 import { EditOutlined } from "@ant-design/icons";
+import EditorComponent from "../../../components/editor";
 import { getAuthentication } from "../../../store/authStore";
 import defaultAvatar from "../../../assets/images/avatar.jpg";
 import getApiInstance from "../../../api/generic-api";
@@ -9,14 +11,13 @@ import getApiInstance from "../../../api/generic-api";
 const openNotificationWithIcon = (type, content) => {
   notification[type]({
     message: "Thông báo",
-    description: content,
+    description: content
   });
 };
-const PersonalInfoBlock = ({ portfolioId, personalInfo }) => {
+const PersonalInfoBlock = ({ personalInfo }) => {
   const [key, setKey] = useState(1);
   const [user, setUser] = useState(personalInfo);
   const {
-    id,
     fullName,
     jobTitle,
     email,
@@ -24,7 +25,7 @@ const PersonalInfoBlock = ({ portfolioId, personalInfo }) => {
     skype,
     address,
     about,
-    avatar,
+    avatar
   } = user || {};
   const [form] = Form.useForm();
 
@@ -49,51 +50,47 @@ const PersonalInfoBlock = ({ portfolioId, personalInfo }) => {
     getApiInstance()
       .postWithFormAuth({
         url: "/User/UpdateUserInfo",
-        data: { ...user, ...data, UserName: username },
+        data: { ...user, ...data, UserName: username }
       })
       .then((res) => {
-        const { successful, errorMessage, result } = res;
+        const { successful, errorMessage } = res;
         if (successful) {
           openNotificationWithIcon("success", "Lưu thành công!!!");
         } else {
           openNotificationWithIcon(
             "error",
-            "Lỗi: " + (errorMessage || "Không xác định") + "."
+            `Lỗi: ${errorMessage || "Không xác định"}.`
           );
         }
       })
       .catch((error) => {
         console.error(error);
-        openNotificationWithIcon("error", "Đã xảy ra lỗi. " + error);
+        openNotificationWithIcon("error", `Đã xảy ra lỗi. ${error}`);
       });
   };
 
   const resizeImage = (dataSrc) => {
-    const self = this;
-
-    let img = new Image();
+    const img = new Image();
 
     const maxWidth = 300;
     const maxHeight = 300;
 
     img.onload = function () {
-      let width = img.width;
-      let height = img.height;
+      let { width } = img;
+      let { height } = img;
 
       if (width > height) {
         if (width > maxWidth) {
           height *= maxWidth / width;
           width = maxWidth;
         }
-      } else {
-        if (height > maxHeight) {
-          width *= maxHeight / height;
-          height = maxHeight;
-        }
+      } else if (height > maxHeight) {
+        width *= maxHeight / height;
+        height = maxHeight;
       }
 
-      let oc = document.createElement("canvas"),
-        octx = oc.getContext("2d");
+      const oc = document.createElement("canvas");
+      const octx = oc.getContext("2d");
 
       oc.width = width;
       oc.height = height;
@@ -105,10 +102,9 @@ const PersonalInfoBlock = ({ portfolioId, personalInfo }) => {
   };
 
   const changeAvatar = () => {
-    const self = this;
     const filesToUpload = refIpAvatar.current.files;
     const file = filesToUpload[0];
-    let reader = new FileReader();
+    const reader = new FileReader();
     reader.onload = function (e) {
       resizeImage(e.target.result);
     };
@@ -121,8 +117,8 @@ const PersonalInfoBlock = ({ portfolioId, personalInfo }) => {
     }
   };
 
-  let avatarStyle = {
-    backgroundImage: `url("${avatar || defaultAvatar}")`,
+  const avatarStyle = {
+    backgroundImage: `url("${avatar || defaultAvatar}")`
   };
 
   return (
@@ -150,14 +146,14 @@ const PersonalInfoBlock = ({ portfolioId, personalInfo }) => {
       <Row gutter={24}>
         <Col md={12} span={24}>
           <Form.Item
-            name={`fullName`}
-            label={`Tên đầy đủ`}
+            name="fullName"
+            label="Tên đầy đủ"
             initialValue={fullName}
             rules={[
               {
                 required: true,
-                message: "Vui lòng nhập tên!",
-              },
+                message: "Vui lòng nhập tên!"
+              }
             ]}
           >
             <Input placeholder="Tên ..." />
@@ -165,14 +161,14 @@ const PersonalInfoBlock = ({ portfolioId, personalInfo }) => {
         </Col>
         <Col md={12} span={24}>
           <Form.Item
-            name={`jobTitle`}
-            label={`Nghề nghiệp`}
+            name="jobTitle"
+            label="Nghề nghiệp"
             initialValue={jobTitle}
             rules={[
               {
                 required: true,
-                message: "Vui lòng nhập nghề nghiệp!",
-              },
+                message: "Vui lòng nhập nghề nghiệp!"
+              }
             ]}
           >
             <Input placeholder="Nghề nghiệp ..." />
@@ -180,14 +176,14 @@ const PersonalInfoBlock = ({ portfolioId, personalInfo }) => {
         </Col>
         <Col md={12} span={24}>
           <Form.Item
-            name={`email`}
-            label={`Email`}
+            name="email"
+            label="Email"
             initialValue={email}
             rules={[
               {
                 required: true,
-                message: "Vui lòng nhập email!",
-              },
+                message: "Vui lòng nhập email!"
+              }
             ]}
           >
             <Input placeholder="Email ..." />
@@ -195,26 +191,26 @@ const PersonalInfoBlock = ({ portfolioId, personalInfo }) => {
         </Col>
         <Col md={12} span={24}>
           <Form.Item
-            name={`mobile`}
-            label={`Số điện thoại`}
+            name="mobile"
+            label="Số điện thoại"
             initialValue={mobile}
             rules={[
               {
                 required: true,
-                message: "Vui lòng nhập số điện thoại!",
-              },
+                message: "Vui lòng nhập số điện thoại!"
+              }
             ]}
           >
             <Input placeholder="Số điện thoại ..." />
           </Form.Item>
         </Col>
         <Col md={12} span={24}>
-          <Form.Item name={`skype`} label={`Skype`} initialValue={skype}>
+          <Form.Item name="skype" label="Skype" initialValue={skype}>
             <Input placeholder="Tên tỉnh hoặc thành phố ..." />
           </Form.Item>
         </Col>
         <Col md={12} span={24}>
-          <Form.Item name={`address`} label={`Địa chỉ`} initialValue={address}>
+          <Form.Item name="address" label="Địa chỉ" initialValue={address}>
             <Input placeholder="Địa chỉ ..." />
           </Form.Item>
         </Col>

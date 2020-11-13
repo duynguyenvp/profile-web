@@ -1,13 +1,16 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 let Subcribes = [];
 let post = {};
-const subscribePost = (f) => {
-  Subcribes.push(f);
-  return () => unsubscribePost(Subcribes.filter((a) => a != f));
+
+const unsubscribePost = (subcribes) => {
+  Subcribes = subcribes;
 };
 
-const unsubscribePost = (subscribes) => (Subcribes = subscribes);
+const subscribePost = (f) => {
+  Subcribes.push(f);
+  return () => unsubscribePost(Subcribes.filter(a => a !== f));
+};
 
 const onChange = () => {
   Subcribes.forEach((f) => {
@@ -23,17 +26,19 @@ const setPostState = (data) => {
 };
 
 export function usePostService() {
-  const [post, setPost] = useState(getPostState);
+  const [data, setData] = useState(getPostState);
   useEffect(() => {
     const unsubcribes = subscribePost(() => {
-      setPost(getPostState);
+      setData(getPostState);
     });
     return () => {
       unsubcribes();
     };
   });
 
-  return post;
+  return data;
 }
 
-export { getPostState, setPostState, subscribePost, unsubscribePost };
+export {
+  getPostState, setPostState, subscribePost, unsubscribePost
+};
