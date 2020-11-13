@@ -18,6 +18,7 @@ import BoxSearch from "./box-search/BoxSearch";
 import BoxRecentPosts from "./box-recent-post";
 import BoxTimeline from "./box-timeline";
 import FbShareButton from "./FbShareButton";
+import { getLastPost } from "../queries";
 
 const Blog = props => {
   useStyles(style);
@@ -78,15 +79,21 @@ const Blog = props => {
 
   const initData = () => {
     const { postData, ...restOfProps } = props;
-    const { title, content, postTime } = postData || {};
-    const newPostData = {
-      ...postData,
-      title: title === "{title}" ? "" : title,
-      content: content === "{content}" ? "" : content,
-      postTime: postTime === "{postTime}" ? "" : postTime
-    };
-    setPostState({ postData: newPostData, ...restOfProps });
-    delete window.__INITIAL__DATA__;
+    const { id, title, content, postTime } = postData || {};
+    if (!id) {
+      getLastPost(username || "duynguyen").then(post => {
+        setPostState(post);
+      });
+    } else {
+      const newPostData = {
+        ...postData,
+        title: title === "{title}" ? "" : title,
+        content: content === "{content}" ? "" : content,
+        postTime: postTime === "{postTime}" ? "" : postTime
+      };
+      setPostState({ postData: newPostData, ...restOfProps });
+      delete window.__INITIAL__DATA__;
+    }
   };
 
   const changePost = postId => {
@@ -131,9 +138,7 @@ const Blog = props => {
   }, [post]);
 
   const { postData } = post;
-  const {
-    content, title, postTime, userName
-  } = postData;
+  const { content, title, postTime, userName } = postData;
 
   return (
     <section id="blog" className={`blog ${menuFixed ? "blog--marginTop" : ""}`}>
@@ -159,7 +164,6 @@ const Blog = props => {
           }}
         >
           <i className="material-icons">chevron_left</i>
-          {" "}
           Đóng lại
         </button>
         <BoxSearch changePost={changePost} />

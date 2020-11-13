@@ -1,6 +1,4 @@
-import React, {
-  useState, useLayoutEffect, useEffect, useMemo
-} from "react";
+import React, { useState, useLayoutEffect, useEffect, useMemo } from "react";
 import { gsap } from "gsap/dist/gsap";
 import useStyles from "isomorphic-style-loader/useStyles";
 import InitAlert from "./components/alert";
@@ -159,8 +157,8 @@ const App = ({ children }) => {
     let nextIsShirk;
     let nextIsDisplayPlane;
     if (
-      (wrapper && wrapper.scrollTop > 80)
-      || document.documentElement.scrollTop > 80
+      (wrapper && wrapper.scrollTop > 80) ||
+      document.documentElement.scrollTop > 80
     ) {
       nextIsShirk = true;
       nextIsDisplayPlane = true;
@@ -193,7 +191,10 @@ const App = ({ children }) => {
     pathname = pathname.split(/\//);
     let nextRoute = "home";
     let nextActive = "";
-    if (pathname.indexOf("bai-viet") !== -1) {
+    if (
+      pathname.indexOf("bai-viet") !== -1 ||
+      pathname.indexOf("blog.html") !== -1
+    ) {
       nextRoute = "bai-viet";
       nextActive = "blog";
     }

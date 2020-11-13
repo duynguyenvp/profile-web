@@ -26,11 +26,11 @@ if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker
       .register(`/sw.js?v=${RESOURCE_VERSION}`)
-      .then((registration) => {
+      .then(registration => {
         // eslint-disable-next-line
         console.log("SW registered: ", registration);
       })
-      .catch((registrationError) => {
+      .catch(registrationError => {
         // eslint-disable-next-line
         console.log("SW registration failed: ", registrationError);
       });

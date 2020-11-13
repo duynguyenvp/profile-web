@@ -3,7 +3,7 @@ import useStyles from "isomorphic-style-loader/useStyles";
 import Skeleton from "react-loading-skeleton";
 import style from "./style.scss";
 
-const mockArray = (length) => {
+const mockArray = length => {
   const array = [];
   for (let index = 0; index < length; index += 1) {
     array.push(index);
@@ -19,8 +19,8 @@ const BoxEducationSkeleton = () => {
         <h2 className="boxEducation__container__field boxEducation__container__field--title">
           <Skeleton width={250} height={40} />
         </h2>
-        {educations
-          && educations.map((education, index) => (
+        {educations &&
+          educations.map((education, index) => (
             <div className="content" key={index}>
               <h5 className="w3-opacity">
                 <Skeleton />

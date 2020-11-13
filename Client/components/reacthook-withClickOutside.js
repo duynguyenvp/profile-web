@@ -20,9 +20,9 @@ export default function ({
     for (let index = 0; index < containers.length; index += 1) {
       const element = containers[index];
       if (
-        element
-        && typeof element.contains === "function"
-        && element.contains(event.target)
+        element &&
+        typeof element.contains === "function" &&
+        element.contains(event.target)
       ) {
         return false;
       }
@@ -32,10 +32,10 @@ export default function ({
 
   const handleClickOutside = event => {
     if (
-      wrappedComponent
-      && wrappedComponent.current
-      && !wrappedComponent.current.contains(event.target)
-      && checkIfExistInExcludeDoms(event)
+      wrappedComponent &&
+      wrappedComponent.current &&
+      !wrappedComponent.current.contains(event.target) &&
+      checkIfExistInExcludeDoms(event)
     ) {
       handler(event);
     }

@@ -20,8 +20,8 @@ const { confirm } = Modal;
 const getPopoverContent = services => {
   const result = (
     <div>
-      {services
-        && services.map((service, index) => (
+      {services &&
+        services.map((service, index) => (
           <p key={index}>{service.serviceName}</p>
         ))}
     </div>
@@ -78,8 +78,9 @@ const Role = () => {
       });
   }, []);
 
-  const dataSource = state
-    && state.map((item, index) => ({ ...item, key: item.id, index: index + 1 }));
+  const dataSource =
+    state &&
+    state.map((item, index) => ({ ...item, key: item.id, index: index + 1 }));
 
   const closePopup = () => {
     setSelectedRole(null);
@@ -184,9 +185,7 @@ const Role = () => {
                     setPopovercontent(getPopoverContent(record.services));
                   }}
                 >
-                  {record.services.length}
-                  {" "}
-                  Dịch vụ
+                  {record.services.length} Dịch vụ
                 </Button>
               </Popover>
             )}

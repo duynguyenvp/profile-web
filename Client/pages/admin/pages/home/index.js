@@ -180,11 +180,11 @@ const Home = () => {
     return (
       <Result
         title="Your operation has been executed"
-        extra={(
+        extra={
           <Button type="primary" onClick={createPortfolio}>
             <span>Tạo resume ngay</span>
           </Button>
-        )}
+        }
       />
     );
   }
@@ -196,8 +196,8 @@ const Home = () => {
         <PersonalInfoBlock personalInfo={personalInfo} />
       </Card>
       <Card title="Quá trình học tập" {...cardAttribute}>
-        {educations
-          && educations
+        {educations &&
+          educations
             .sort((a, b) => {
               if ((a.ordinalNumber || 0) < (b.ordinalNumber || 0)) return -1;
               if ((a.ordinalNumber || 0) > (b.ordinalNumber || 0)) return 1;
@@ -225,8 +225,8 @@ const Home = () => {
         </Button>
       </Card>
       <Card title="Kinh nghiệm làm việc" {...cardAttribute}>
-        {experiences
-          && experiences
+        {experiences &&
+          experiences
             .sort((a, b) => {
               if ((a.ordinalNumber || 0) < (b.ordinalNumber || 0)) return -1;
               if ((a.ordinalNumber || 0) > (b.ordinalNumber || 0)) return 1;
@@ -254,8 +254,8 @@ const Home = () => {
         </Button>
       </Card>
       <Card title="Kỹ năng" {...cardAttribute}>
-        {skills
-          && skills
+        {skills &&
+          skills
             .sort((a, b) => {
               if ((a.ordinalNumber || 0) < (b.ordinalNumber || 0)) return -1;
               if ((a.ordinalNumber || 0) > (b.ordinalNumber || 0)) return 1;

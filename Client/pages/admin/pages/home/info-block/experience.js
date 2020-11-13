@@ -20,9 +20,7 @@ import EditorComponent from "../../../components/editor";
 const { Panel } = Collapse;
 const { RangePicker } = DatePicker;
 
-const PanelHeader = ({
-  title, description, remove, experience
-}) => (
+const PanelHeader = ({ title, description, remove, experience }) => (
   <div className="info-block-panel-header">
     <div className="info-block-panel-header-title">
       <span className="title">{title}</span>
@@ -34,7 +32,7 @@ const PanelHeader = ({
         type="danger"
         size="small"
         icon={<DeleteFilled />}
-        onClick={(e) => {
+        onClick={e => {
           e.stopPropagation();
           if (typeof remove === "function") {
             remove(experience);
@@ -46,14 +44,14 @@ const PanelHeader = ({
 );
 
 const getTitle = (company, position) => {
-  const title = (company && position && `Làm ${position} tại ${company}`)
-    || "Chưa có thông tin";
+  const title =
+    (company && position && `Làm ${position} tại ${company}`) ||
+    "Chưa có thông tin";
   return title;
 };
-const getDescription = time => (
-  (time && `${time[0].format(dateFormat)} - ${time[1].format(dateFormat)}`)
-    || ""
-);
+const getDescription = time =>
+  (time && `${time[0].format(dateFormat)} - ${time[1].format(dateFormat)}`) ||
+  "";
 const dateFormat = "DD/MM/YYYY";
 const ExperienceInfoBlock = ({
   experience,
@@ -62,9 +60,8 @@ const ExperienceInfoBlock = ({
   handleRemoveExperience,
   handleSaveExperience
 }) => {
-  const {
-    id, company, position, detail, startDate, endDate
-  } = experience || {};
+  const { id, company, position, detail, startDate, endDate } =
+    experience || {};
   const [html, setHtml] = useState(detail || "");
   const [time, setTime] = useState([
     moment(new Date(startDate || Date.now()), dateFormat),
@@ -82,7 +79,7 @@ const ExperienceInfoBlock = ({
     setEditorKey(editorKey + 1);
     form.resetFields();
   };
-  const onFinish = (values) => {
+  const onFinish = values => {
     const dateFormatMDY = "MM/DD/YYYY";
     const { position, company, time } = values;
     handleSaveExperience({
@@ -97,9 +94,7 @@ const ExperienceInfoBlock = ({
   };
 
   useEffect(() => {
-    const {
-      company, position, detail, startDate, endDate
-    } = experience || {};
+    const { company, position, detail, startDate, endDate } = experience || {};
     setHtml(detail || "");
     setTime([
       moment(new Date(startDate || Date.now()), dateFormat),
@@ -130,7 +125,7 @@ const ExperienceInfoBlock = ({
           disabled={isDisabledDown}
           className="btnOrder"
           icon={<CaretUpOutlined />}
-          onClick={(e) => {
+          onClick={e => {
             e.stopPropagation();
             if (typeof handleReorderExperience === "function") {
               let nextOrdinalNumber = (experience.ordinalNumber || 0) - 1;
@@ -147,11 +142,12 @@ const ExperienceInfoBlock = ({
           size="small"
           className="btnOrder"
           icon={<CaretDownOutlined />}
-          onClick={(e) => {
+          onClick={e => {
             e.stopPropagation();
             if (typeof handleReorderExperience === "function") {
               let nextOrdinalNumber = (experience.ordinalNumber || 0) + 1;
-              nextOrdinalNumber = nextOrdinalNumber > total ? total : nextOrdinalNumber;
+              nextOrdinalNumber =
+                nextOrdinalNumber > total ? total : nextOrdinalNumber;
               handleReorderExperience({
                 ...experience,
                 ordinalNumber: nextOrdinalNumber
@@ -162,14 +158,14 @@ const ExperienceInfoBlock = ({
       </div>
       <Panel
         showArrow
-        header={(
+        header={
           <PanelHeader
             experience={experience}
             remove={handleRemoveExperience}
             title={title}
             description={description}
           />
-        )}
+        }
         className="info-block-panel"
       >
         <Form
@@ -230,7 +226,7 @@ const ExperienceInfoBlock = ({
                 ]}
               >
                 <RangePicker
-                  onChange={(date) => {
+                  onChange={date => {
                     setTime(date);
                   }}
                   style={{ width: "100%" }}
@@ -245,7 +241,7 @@ const ExperienceInfoBlock = ({
               <EditorComponent
                 key={editorKey}
                 html={html}
-                callback={(content) => {
+                callback={content => {
                   setHtml(content);
                 }}
               />

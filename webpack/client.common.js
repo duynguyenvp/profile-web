@@ -5,18 +5,50 @@ let htmlPageNames = ["home", "blog", "resume", "admin"];
 let multipleHtmlPlugins = htmlPageNames.map(name => {
   return new HtmlWebpackPlugin({
     inject: false,
-    templateContent: ({ htmlWebpackPlugin }) => `
-      <html>
-        <head>
-          <title>${htmlWebpackPlugin.options.title}</title>
-          ${htmlWebpackPlugin.tags.headTags}
-        </head>
-        <body>
-          <section id='app'></section>
-          ${htmlWebpackPlugin.tags.bodyTags}
-        </body>
-      </html>
-    `,
+    templateContent: ({ htmlWebpackPlugin }) => {
+      console.log(htmlWebpackPlugin.tags.headTags);
+      console.log(htmlWebpackPlugin.tags.bodyTags);
+      return `
+        <html>
+          <head>
+            <title>${htmlWebpackPlugin.options.title}</title>
+            <link
+              rel="stylesheet"
+              href="https://fonts.googleapis.com/css?family=Montserrat&amp;display=swap"
+              defer
+            />
+            <link
+              rel="stylesheet"
+              href="/material-design-icons/material-icons.css"
+              defer
+            />
+            <link
+              rel="preload"
+              href="/material-design-icons/MaterialIcons-Regular.woff2"
+              type="font/woff2"
+              as="font"
+              crossorigin="anonymous"
+              async
+            />
+            <link
+              rel="preload"
+              href="/material-design-icons/MaterialIcons-Regular.woff"
+              type="font/woff2"
+              as="font"
+              crossorigin="anonymous"
+              async
+            />
+            <script src="dist/lazysizes.min.js" async></script>
+            <script src="dist/ls.unveilhooks.min.js" async></script>
+            ${htmlWebpackPlugin.tags.headTags}
+          </head>
+          <body>
+            <section id='app'></section>
+            ${htmlWebpackPlugin.tags.bodyTags}
+          </body>
+        </html>
+      `;
+    },
     filename: `${name}.html`, // output HTML files
     chunks: [`${name}`] // respective JS files
   });

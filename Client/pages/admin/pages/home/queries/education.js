@@ -43,41 +43,42 @@ export const insertEducation = (portfolioId, educations) => {
   });
 };
 
-export const removeEducation = (portfolioId, educations, item) => new Promise(resolve => {
-  getApiInstance()
-    .deleteWithFormAuth({
-      url: "/Portfolio/DeleteEducation",
-      data: {
-        Id: portfolioId,
-        ObjectId: item.id
-      }
-    })
-    .then(res => {
-      const { successful, errorMessage } = res;
-      if (successful) {
-        let index = 0;
-        const newEducations = educations
-          .filter(f => f.id !== item.id)
-          .sort((a, b) => {
-            if ((a.ordinalNumber || 0) < (b.ordinalNumber || 0)) return -1;
-            if ((a.ordinalNumber || 0) > (b.ordinalNumber || 0)) return 1;
-            return 0;
-          })
-          .map(item => ({ ...item, ordinalNumber: (index += 1) }));
-        resolve(newEducations);
-        openNotificationWithIcon("success", "Thành công!!!");
-      } else {
-        openNotificationWithIcon(
-          "error",
-          `Lỗi: ${errorMessage || "Không xác định"}.`
-        );
-      }
-    })
-    .catch(error => {
-      openNotificationWithIcon("error", `Đã xảy ra lỗi. ${error}`);
-      console.error(error);
-    });
-});
+export const removeEducation = (portfolioId, educations, item) =>
+  new Promise(resolve => {
+    getApiInstance()
+      .deleteWithFormAuth({
+        url: "/Portfolio/DeleteEducation",
+        data: {
+          Id: portfolioId,
+          ObjectId: item.id
+        }
+      })
+      .then(res => {
+        const { successful, errorMessage } = res;
+        if (successful) {
+          let index = 0;
+          const newEducations = educations
+            .filter(f => f.id !== item.id)
+            .sort((a, b) => {
+              if ((a.ordinalNumber || 0) < (b.ordinalNumber || 0)) return -1;
+              if ((a.ordinalNumber || 0) > (b.ordinalNumber || 0)) return 1;
+              return 0;
+            })
+            .map(item => ({ ...item, ordinalNumber: (index += 1) }));
+          resolve(newEducations);
+          openNotificationWithIcon("success", "Thành công!!!");
+        } else {
+          openNotificationWithIcon(
+            "error",
+            `Lỗi: ${errorMessage || "Không xác định"}.`
+          );
+        }
+      })
+      .catch(error => {
+        openNotificationWithIcon("error", `Đã xảy ra lỗi. ${error}`);
+        console.error(error);
+      });
+  });
 const updateEducation = (portfolioId, nextEducations, showAlert = true) => {
   const auth = getAuthentication();
   const data = {
@@ -123,8 +124,8 @@ export const reorderEducation = (portfolioId, educations, education) => {
   if (educationSwapper) {
     nextEducations = nextEducations.map(item => {
       if (
-        item.id !== education.id
-        && (item.ordinalNumber || 0) === (education.ordinalNumber || 0)
+        item.id !== education.id &&
+        (item.ordinalNumber || 0) === (education.ordinalNumber || 0)
       ) {
         return { ...item, ordinalNumber: educationSwapper.ordinalNumber };
       }

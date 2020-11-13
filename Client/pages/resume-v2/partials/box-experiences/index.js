@@ -12,12 +12,11 @@ const BoxExperiences = ({ portfolioExperiences }) => {
     <div className="boxExperience">
       <div className="boxExperience__container">
         <h2 className="boxExperience__container__field boxExperience__container__field--title">
-          <i className="material-icons">assignment</i>
-          {" "}
+          <i className="material-icons">assignment</i>{" "}
           {language.sectionExperiences}
         </h2>
-        {portfolioExperiences
-          && portfolioExperiences
+        {portfolioExperiences &&
+          portfolioExperiences
             .sort((a, b) => {
               if ((a.ordinalNumber || 0) < (b.ordinalNumber || 0)) return -1;
               if ((a.ordinalNumber || 0) > (b.ordinalNumber || 0)) return 1;
@@ -27,18 +26,12 @@ const BoxExperiences = ({ portfolioExperiences }) => {
               <div className="boxExperience__container__content" key={index}>
                 <h5 className="boxExperience__container__content__name">
                   <b>
-                    {item.position}
-                    {" "}
-                    /
-                    {item.company}
+                    {item.position} /{item.company}
                   </b>
                 </h5>
                 <h6 className="boxExperience__container__content__desc">
                   <i className="material-icons">date_range</i>
-                  {dateToStringFormatNoDayCultureVi(item.startDate)}
-                  {" "}
-                  -
-                  {" "}
+                  {dateToStringFormatNoDayCultureVi(item.startDate)} -{" "}
                   {dateToStringFormatNoDayCultureVi(item.endDate)}
                 </h6>
                 <p

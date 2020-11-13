@@ -9,9 +9,8 @@ import StaticProcessBar from "../../../../components/static-process-bar";
 const BoxInfomation = ({ portfolioSkills, portfolioUser }) => {
   useStyles(style);
   const language = useMemo(getLanguage, []);
-  const {
-    fullName, jobTitle, email, mobile, skype, address, avatar
-  } = portfolioUser || {};
+  const { fullName, jobTitle, email, mobile, skype, address, avatar } =
+    portfolioUser || {};
   const avatarStyle = {
     backgroundImage: `url("${avatar || "/dist/images/avatar.jpg"}")`
   };
@@ -24,39 +23,27 @@ const BoxInfomation = ({ portfolioSkills, portfolioUser }) => {
       <div className="boxInfo__container">
         <h2>{bindValue(fullName)}</h2>
         <p className="boxInfo__container__field">
-          <i className="material-icons">work</i>
-          {" "}
-          {bindValue(jobTitle)}
+          <i className="material-icons">work</i> {bindValue(jobTitle)}
         </p>
         <p className="boxInfo__container__field">
-          <i className="material-icons">email</i>
-          {" "}
-          {bindValue(email)}
+          <i className="material-icons">email</i> {bindValue(email)}
         </p>
         <p className="boxInfo__container__field">
-          <i className="material-icons">call</i>
-          {" "}
-          {bindValue(mobile)}
+          <i className="material-icons">call</i> {bindValue(mobile)}
         </p>
         <p className="boxInfo__container__field">
-          <SkypeIcon />
-          {" "}
-          {bindValue(skype)}
+          <SkypeIcon /> {bindValue(skype)}
         </p>
         <p className="boxInfo__container__field">
-          <i className="material-icons">home</i>
-          {" "}
-          {bindValue(address)}
+          <i className="material-icons">home</i> {bindValue(address)}
         </p>
         <hr />
         <p className="boxInfo__container__field boxInfo__container__field--title">
-          <i className="material-icons">ac_unit</i>
-          {" "}
-          {language.sectionSkills}
+          <i className="material-icons">ac_unit</i> {language.sectionSkills}
         </p>
         <div className="boxInfo__container__skills">
-          {portfolioSkills
-            && portfolioSkills
+          {portfolioSkills &&
+            portfolioSkills
               .sort((a, b) => {
                 if ((a.ordinalNumber || 0) < (b.ordinalNumber || 0)) return -1;
                 if ((a.ordinalNumber || 0) > (b.ordinalNumber || 0)) return 1;

@@ -1,9 +1,7 @@
 import React, { useEffect, useState, Fragment } from "react";
 import "./style.scss";
 import { CloseOutlined, EyeFilled, LoadingOutlined } from "@ant-design/icons";
-import {
-  Row, Col, Table, Input, Button, notification, Modal
-} from "antd";
+import { Row, Col, Table, Input, Button, notification, Modal } from "antd";
 import getApiInstance from "../../api/generic-api";
 import { usePostStore, removePost, setPosts } from "../../store/postStore";
 import PostPopup from "./popup";
@@ -81,8 +79,9 @@ const Post = () => {
       });
   };
 
-  const dataSource = data
-    && data.map((item, index) => ({ ...item, key: item.id, index: index + 1 }));
+  const dataSource =
+    data &&
+    data.map((item, index) => ({ ...item, key: item.id, index: index + 1 }));
   const closePopup = () => {
     setSelectedPost(null);
     setPopupVisible(false);

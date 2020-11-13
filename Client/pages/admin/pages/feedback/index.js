@@ -1,9 +1,7 @@
 import React, { useEffect, Fragment } from "react";
 import "./style.scss";
 import { CloseOutlined, EyeFilled } from "@ant-design/icons";
-import {
-  Row, Col, Table, Input, Button, notification, Modal
-} from "antd";
+import { Row, Col, Table, Input, Button, notification, Modal } from "antd";
 import getApiInstance from "../../api/generic-api";
 import {
   useFeedbackStore,
@@ -39,8 +37,9 @@ const Feedback = () => {
         console.error(err);
       });
   }, []);
-  const dataSource = state
-    && state.map((item, index) => ({ ...item, key: item.id, index: index + 1 }));
+  const dataSource =
+    state &&
+    state.map((item, index) => ({ ...item, key: item.id, index: index + 1 }));
 
   const view = feedback => {
     Modal.info({

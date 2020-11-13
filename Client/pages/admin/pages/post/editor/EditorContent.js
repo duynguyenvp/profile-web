@@ -1,6 +1,4 @@
-import React, {
-  useCallback, useLayoutEffect, useRef, useState
-} from "react";
+import React, { useCallback, useLayoutEffect, useRef, useState } from "react";
 import { Layout } from "antd";
 import Quill from "quill";
 import ImageResize from "quill-image-resize-module";
@@ -26,10 +24,12 @@ const EditorContent = ({ post, callback }) => {
   const getEditorMaxWidth = useCallback(() => {
     const editorDOM = document.querySelector(".ql-editor");
     const computedStyle = window.getComputedStyle(editorDOM);
-    const padding = parseInt((computedStyle && computedStyle.paddingLeft) || "0px", 10)
-      + parseInt((computedStyle && computedStyle.paddingRight) || "0px", 10);
+    const padding =
+      parseInt((computedStyle && computedStyle.paddingLeft) || "0px", 10) +
+      parseInt((computedStyle && computedStyle.paddingRight) || "0px", 10);
     const editorClientWidth = (editorDOM && editorDOM.clientWidth) || 0;
-    window.EDITOR_CLIENT_WIDTH = editorClientWidth === 0 ? 0 : editorClientWidth - padding;
+    window.EDITOR_CLIENT_WIDTH =
+      editorClientWidth === 0 ? 0 : editorClientWidth - padding;
   }, []);
 
   const saveContentToLocalStore = async data => {

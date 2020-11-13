@@ -20,9 +20,7 @@ import EditorComponent from "../../../components/editor";
 const { Panel } = Collapse;
 const { RangePicker } = DatePicker;
 
-const PanelHeader = ({
-  title, description, remove, education
-}) => (
+const PanelHeader = ({ title, description, remove, education }) => (
   <div className="info-block-panel-header">
     <div className="info-block-panel-header-title">
       <span className="title">{title}</span>
@@ -46,11 +44,13 @@ const PanelHeader = ({
 );
 
 const getTitle = (school, degree) => {
-  const title = (school && degree && `Học ${degree} tại ${school}`) || "Chưa có thông tin";
+  const title =
+    (school && degree && `Học ${degree} tại ${school}`) || "Chưa có thông tin";
   return title;
 };
-const getDescription = time => (time && `${time[0].format(dateFormat)} - ${time[1].format(dateFormat)}`)
-  || "";
+const getDescription = time =>
+  (time && `${time[0].format(dateFormat)} - ${time[1].format(dateFormat)}`) ||
+  "";
 const dateFormat = "DD/MM/YYYY";
 const EducationInfoBlock = ({
   education,
@@ -59,9 +59,8 @@ const EducationInfoBlock = ({
   handleRemoveEducation,
   handleSave
 }) => {
-  const {
-    id, schoolName, specialized, detail, startDate, endDate
-  } = education || {};
+  const { id, schoolName, specialized, detail, startDate, endDate } =
+    education || {};
   const [html, setHtml] = useState(detail || "");
   const [time, setTime] = useState([
     moment(new Date(startDate || Date.now()), dateFormat),
@@ -94,9 +93,8 @@ const EducationInfoBlock = ({
   };
 
   useEffect(() => {
-    const {
-      schoolName, specialized, detail, startDate, endDate
-    } = education || {};
+    const { schoolName, specialized, detail, startDate, endDate } =
+      education || {};
     setHtml(detail || "");
     setTime([
       moment(new Date(startDate || Date.now()), dateFormat),
@@ -148,7 +146,8 @@ const EducationInfoBlock = ({
             e.stopPropagation();
             if (typeof handleReorderEducation === "function") {
               let nextOrdinalNumber = (education.ordinalNumber || 0) + 1;
-              nextOrdinalNumber = nextOrdinalNumber > total ? total : nextOrdinalNumber;
+              nextOrdinalNumber =
+                nextOrdinalNumber > total ? total : nextOrdinalNumber;
               handleReorderEducation({
                 ...education,
                 ordinalNumber: nextOrdinalNumber
@@ -159,14 +158,14 @@ const EducationInfoBlock = ({
       </div>
       <Panel
         showArrow
-        header={(
+        header={
           <PanelHeader
             education={education}
             remove={handleRemoveEducation}
             title={title}
             description={description}
           />
-        )}
+        }
         className="info-block-panel"
       >
         <Form

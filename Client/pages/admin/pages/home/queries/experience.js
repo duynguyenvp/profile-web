@@ -44,41 +44,42 @@ export const insertNewExperience = (portfolioId, experiences) => {
       });
   });
 };
-export const removeExperience = (portfolioId, experiences, item) => new Promise(resolve => {
-  getApiInstance()
-    .deleteWithFormAuth({
-      url: "/Portfolio/DeleteExperience",
-      data: {
-        Id: portfolioId,
-        ObjectId: item.id
-      }
-    })
-    .then(res => {
-      const { successful, errorMessage } = res;
-      if (successful) {
-        openNotificationWithIcon("success", "Xóa thành công!!!");
-        let index = 0;
-        const newExperiences = experiences
-          .filter(f => f.id !== item.id)
-          .sort((a, b) => {
-            if ((a.ordinalNumber || 0) < (b.ordinalNumber || 0)) return -1;
-            if ((a.ordinalNumber || 0) > (b.ordinalNumber || 0)) return 1;
-            return 0;
-          })
-          .map(item => ({ ...item, ordinalNumber: (index += 1) }));
-        resolve(newExperiences);
-      } else {
-        openNotificationWithIcon(
-          "error",
-          `Lỗi: ${errorMessage || "Không xác định"}.`
-        );
-      }
-    })
-    .catch(error => {
-      openNotificationWithIcon("error", `Đã xảy ra lỗi. ${error}`);
-      console.error(error);
-    });
-});
+export const removeExperience = (portfolioId, experiences, item) =>
+  new Promise(resolve => {
+    getApiInstance()
+      .deleteWithFormAuth({
+        url: "/Portfolio/DeleteExperience",
+        data: {
+          Id: portfolioId,
+          ObjectId: item.id
+        }
+      })
+      .then(res => {
+        const { successful, errorMessage } = res;
+        if (successful) {
+          openNotificationWithIcon("success", "Xóa thành công!!!");
+          let index = 0;
+          const newExperiences = experiences
+            .filter(f => f.id !== item.id)
+            .sort((a, b) => {
+              if ((a.ordinalNumber || 0) < (b.ordinalNumber || 0)) return -1;
+              if ((a.ordinalNumber || 0) > (b.ordinalNumber || 0)) return 1;
+              return 0;
+            })
+            .map(item => ({ ...item, ordinalNumber: (index += 1) }));
+          resolve(newExperiences);
+        } else {
+          openNotificationWithIcon(
+            "error",
+            `Lỗi: ${errorMessage || "Không xác định"}.`
+          );
+        }
+      })
+      .catch(error => {
+        openNotificationWithIcon("error", `Đã xảy ra lỗi. ${error}`);
+        console.error(error);
+      });
+  });
 
 const updateExperiences = (portfolioId, nextExperiences, showAlert = true) => {
   const auth = getAuthentication();
@@ -96,7 +97,9 @@ const updateExperiences = (portfolioId, nextExperiences, showAlert = true) => {
       .then(res => {
         const { successful, errorMessage } = res;
         if (successful) {
-          if (showAlert) openNotificationWithIcon("success", "Lưu thành công!!!");
+          if (showAlert) {
+            openNotificationWithIcon("success", "Lưu thành công!!!");
+          }
           resolve(nextExperiences);
         } else {
           openNotificationWithIcon(
@@ -136,8 +139,8 @@ export const reorderExperience = (portfolioId, experiences, experience) => {
   if (experienceSwapper) {
     nextExperiences = nextExperiences.map(item => {
       if (
-        item.id !== experience.id
-        && (item.ordinalNumber || 0) === (experience.ordinalNumber || 0)
+        item.id !== experience.id &&
+        (item.ordinalNumber || 0) === (experience.ordinalNumber || 0)
       ) {
         return { ...item, ordinalNumber: experienceSwapper.ordinalNumber };
       }

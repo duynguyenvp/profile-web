@@ -20,12 +20,12 @@ const BoxTimeline = ({ username, changePost }) => {
   const [loading, setLoading] = useState(true);
   const [timeline, setTimeline] = useState([]);
 
-  const timelineItemToggle = (item) => {
+  const timelineItemToggle = item => {
     const newTimeline = timeline.filter(f => f.id !== item.id);
     setTimeline([...newTimeline, { ...item, ...{ isOpen: !item.isOpen } }]);
   };
 
-  const getTimelineData = (_username) => {
+  const getTimelineData = _username => {
     setLoading(true);
     getApiInstance()
       .getWithQueryString({
@@ -34,10 +34,10 @@ const BoxTimeline = ({ username, changePost }) => {
           Username: _username
         }
       })
-      .then((res) => {
+      .then(res => {
         setLoading(false);
         if (res.successful) {
-          const _timeline = res.result.map((item) => {
+          const _timeline = res.result.map(item => {
             const firstPart = item.id.slice(0, -4);
             const secondPart = item.id.slice(-4);
             return {
@@ -50,7 +50,7 @@ const BoxTimeline = ({ username, changePost }) => {
           setTimeline(_timeline);
         }
       })
-      .catch((err) => {
+      .catch(err => {
         setLoading(false);
         console.error(err);
       });
@@ -100,12 +100,12 @@ const BoxTimeline = ({ username, changePost }) => {
               <span>{item.name}</span>
             </div>
             <ul className={`nested ${item.isOpen ? "active" : ""}`}>
-              {item.listPost
-                && item.listPost.map(post => (
+              {item.listPost &&
+                item.listPost.map(post => (
                   <li key={post.postId}>
                     <a
                       href={post.postUrl}
-                      onClick={(e) => {
+                      onClick={e => {
                         e.preventDefault();
                         changePost(post.postId);
                       }}

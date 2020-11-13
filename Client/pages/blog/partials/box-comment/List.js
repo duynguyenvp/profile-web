@@ -20,7 +20,7 @@ const List = () => {
   }, [user, postData]);
 
   const getData = () => {
-    if (!postData.id) return;
+    if (!postData || !postData.id) return;
     const data = {
       postId: postData.id,
       userId: user.id

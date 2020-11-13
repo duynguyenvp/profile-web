@@ -1,9 +1,7 @@
 import React, { useEffect, useState, Fragment } from "react";
 import "./style.scss";
 import { CloseOutlined } from "@ant-design/icons";
-import {
-  Row, Col, Table, Input, Button, notification, Modal
-} from "antd";
+import { Row, Col, Table, Input, Button, notification, Modal } from "antd";
 import getApiInstance from "../../api/generic-api";
 import {
   useServiceStore,
@@ -45,8 +43,9 @@ const Service = () => {
       });
   }, []);
 
-  const dataSource = state
-    && state.map((item, index) => ({ ...item, key: item.id, index: index + 1 }));
+  const dataSource =
+    state &&
+    state.map((item, index) => ({ ...item, key: item.id, index: index + 1 }));
 
   const closePopup = () => {
     setSelectedService(null);

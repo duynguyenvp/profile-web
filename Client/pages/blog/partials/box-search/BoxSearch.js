@@ -26,12 +26,12 @@ const BoxSearch = ({ changePost }) => {
     setCurrentUsername(username);
   }, []);
 
-  const onChange = (e) => {
+  const onChange = e => {
     const { value } = e.target;
     setKeyword(value);
   };
 
-  const onKeyDown = (e) => {
+  const onKeyDown = e => {
     clearTimeout(typingTimer);
     const keycode = e.charCode || e.keyCode;
     if (keycode === 13) {
@@ -59,13 +59,13 @@ const BoxSearch = ({ changePost }) => {
           Username: currentUsername
         }
       })
-      .then((res) => {
+      .then(res => {
         setIsSearching(false);
         if (res.successful) {
           setSearchResults(res.result.data);
         }
       })
-      .catch((err) => {
+      .catch(err => {
         setIsSearching(false);
         console.error(err);
       });
@@ -106,23 +106,19 @@ const BoxSearch = ({ changePost }) => {
         )}
         {isShowStatus && keyword && !isSearching && (
           <h5 className="searchResult__status">
-            Đã tìm thấy
-            {" "}
-            {(searchResults && searchResults.length) || 0}
-            {" "}
-            bài viết
+            Đã tìm thấy {(searchResults && searchResults.length) || 0} bài viết
           </h5>
         )}
-        {keyword
-          && !isSearching
-          && searchResults
-          && searchResults.map((item, i) => (
+        {keyword &&
+          !isSearching &&
+          searchResults &&
+          searchResults.map((item, i) => (
             <React.Fragment key={i}>
               <div className="searchItem">
                 <div className="searchItem__title">
                   <a
                     href={item.postUrl}
-                    onClick={(e) => {
+                    onClick={e => {
                       e.preventDefault();
                       changePost(item.id);
                     }}

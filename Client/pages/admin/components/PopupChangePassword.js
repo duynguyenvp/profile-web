@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import {
-  Modal, Form, Input, notification
-} from "antd";
+import { Modal, Form, Input, notification } from "antd";
 import getApiInstance from "../api/generic-api";
 import { getAuthentication } from "../store/authStore";
 
@@ -109,9 +107,9 @@ const ChangePassword = ({ visible, onClose, sigout }) => {
       ...validateConfirmPassword(confirmPassword.value, newPassword.value)
     });
     if (
-      password.validateStatus !== "success"
-      || newPassword.validateStatus !== "success"
-      || confirmPassword.validateStatus !== "success"
+      password.validateStatus !== "success" ||
+      newPassword.validateStatus !== "success" ||
+      confirmPassword.validateStatus !== "success"
     ) {
       return false;
     }
@@ -142,9 +140,7 @@ const ChangePassword = ({ visible, onClose, sigout }) => {
           if (successful) {
             const descriptioin = (
               <p>
-                {result || "Đổi mật khẩu thành công!"}
-                {" "}
-                <br />
+                {result || "Đổi mật khẩu thành công!"} <br />
                 Vui lòng đăng nhập lại sau 3s.
               </p>
             );

@@ -3,24 +3,24 @@ import { useEffect, useState } from "react";
 let Subcribes = [];
 let user = {};
 
-const unsubscribe = (subcribes) => {
+const unsubscribe = subcribes => {
   Subcribes = subcribes;
 };
 
-const subscribe = (f) => {
+const subscribe = f => {
   Subcribes.push(f);
   return () => unsubscribe(Subcribes.filter(a => a !== f));
 };
 
 const onChange = () => {
-  Subcribes.forEach((f) => {
+  Subcribes.forEach(f => {
     f();
   });
 };
 
 const getState = () => user;
 
-const setState = (data) => {
+const setState = data => {
   user = { ...user, ...data };
   onChange();
 };

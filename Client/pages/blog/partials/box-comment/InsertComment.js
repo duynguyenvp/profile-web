@@ -1,80 +1,101 @@
-import React, {
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState
-} from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
-import { useUserService } from "../../../../services/userService";
-import { usePostService } from "../../../../services/postService";
 import {
-  setCommentState,
-  useCommentService
+  getState,
+  subscribe,
+  unsubscribe
+} from "../../../../services/userService";
+import { getPostState } from "../../../../services/postService";
+import {
+  getCommentState,
+  setCommentState
 } from "../../../../services/commentService";
 import getApiInstance from "../../../../ajax/generic-api";
 
-const InsertComment = ({ parentId }) => {
-  const [returnUrl, setReturnUrl] = useState("/");
-  const [isMobile, setIsMobile] = useState(false);
-  const [PickerComponent, setPickerComponent] = useState(null);
-  const [emojiPickerState, setEmojiPickerState] = useState(false);
-  const [emojiPickerShouldUp, setEmojiPickerShouldUp] = useState(false);
+class InsertComment extends Component {
+  detectEnter = false;
 
-  const { postData } = usePostService();
-  const user = useUserService();
-  const commentState = useCommentService();
+  unsubscribeFuncs = [];
 
-  const textInput = useRef(null);
-  const detectEnter = useRef(null);
+  static propTypes = {
+    parentId: PropTypes.string
+  };
 
-  useEffect(() => {
-    let nextReturnUrl = "";
+  static defaultProps = {
+    parentId: null
+  };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      returnUrl: "/",
+      isMobile: false,
+      Picker: null,
+      emojiPickerState: false,
+      emojiPickerShouldUp: false
+    };
+  }
+
+  componentDidMount() {
+    let returnUrl = "";
     if (window.location && window.location.href) {
-      nextReturnUrl = window.location.href;
+      returnUrl = window.location.href;
     }
-    let nextIsMobile = true;
+    let isMobile = true;
     if (window.matchMedia("(min-width: 800px)").matches) {
-      nextIsMobile = false;
+      isMobile = false;
     }
-    setReturnUrl(nextReturnUrl);
-    setIsMobile(nextIsMobile);
-  }, []);
-  useLayoutEffect(() => {
-    initEmojiBox();
-  }, []);
-  const initEmojiBox = async () => {
+    this.setState({
+      returnUrl,
+      isMobile
+    });
+    this.initEmojiBox();
+    this.unsubscribeFuncs = subscribe(() => this.forceUpdate());
+  }
+
+  componentWillUnmount() {
+    unsubscribe(this.unsubscribeFuncs());
+  }
+
+  initEmojiBox = async () => {
     await import("emoji-mart/css/emoji-mart.css");
     const { Picker } = await import("emoji-mart");
-    setPickerComponent(Picker);
+    this.setState({ Picker });
   };
-  const renderEmojiPicker = useMemo(() => {
-    if (emojiPickerState && PickerComponent) {
+
+  renderEmojiPicker = () => {
+    const { Picker, emojiPickerState, emojiPickerShouldUp } = this.state;
+    if (emojiPickerState && Picker) {
       return (
         <div
           className={`input-emojibox ${emojiPickerShouldUp ? "up" : "down"}`}
           id="input-emojibox"
         >
-          <PickerComponent
+          <Picker
             title="Pick your emoji…"
             emoji="point_up"
             set="facebook"
             native
-            onSelect={emoji => insertEmoji(emoji.native)}
+            onSelect={emoji => this.insertEmoji(emoji.native)}
           />
         </div>
       );
     }
 
     return null;
-  }, [emojiPickerState, PickerComponent]);
+  };
 
-  const addNewComment = comment => {
+  addNewComment = comment => {
+    const { postData } = getPostState();
+    const user = getState();
+    const { parentId } = this.props;
     const data = {
-      comment,
       userId: user.id,
+      postId: postData.id,
       parentId,
-      postId: postData.id
+      comment
     };
     getApiInstance()
       .postWithBodyAuth({
@@ -83,6 +104,7 @@ const InsertComment = ({ parentId }) => {
       })
       .then(res => {
         if (res.successful) {
+          const commentState = getCommentState();
           const newCommentState = {
             commentLikeDislikeStat: [
               ...commentState.commentLikeDislikeStat,
@@ -90,102 +112,114 @@ const InsertComment = ({ parentId }) => {
             ]
           };
           setCommentState({ ...commentState, ...newCommentState });
-          textInput.innerHTML = "";
+          this.inputComment.innerHTML = "";
         }
       })
       .catch(err => {
         console.error(err);
       });
   };
-  const handleKeydown = e => {
+
+  handleKeydown = e => {
+    const { isMobile } = this.state;
     const keycode = e.charCode || e.keyCode;
     if (keycode === 13 && !isMobile) {
       if (!e.shiftKey) {
-        detectEnter.current = true;
+        this.detectEnter = true;
         const value = e.target.innerHTML;
         if (value) {
-          addNewComment(value);
+          this.addNewComment(value);
         }
         return false;
       }
     }
     return true;
   };
-  const send = () => {
-    const value = textInput.innerHTML;
+
+  send = () => {
+    const value = this.inputComment.innerHTML;
     if (value) {
-      addNewComment(value);
-    }
-  };
-  const onInput = e => {
-    if (detectEnter.current === true) {
-      e.target.innerHTML = "";
-      detectEnter.current = false;
+      this.addNewComment(value);
     }
   };
 
-  const toggleEmojiPicker = () => {
+  onInput = e => {
+    if (this.detectEnter === true) {
+      e.target.innerHTML = "";
+      this.detectEnter = false;
+    }
+  };
+
+  toggleEmojiPicker = () => {
+    const { emojiPickerState, isMobile } = this.state;
     if (emojiPickerState) {
-      setEmojiPickerState(false);
+      this.setState({ emojiPickerState: false });
     } else {
       const app = document.getElementById("app");
       const inputControls = document.getElementsByClassName(
         "input-controls"
       )[0];
       const boundingClientRect = inputControls.getBoundingClientRect();
-      const { top } = boundingClientRect;
+      const top = boundingClientRect.top;
       const bottom = app.clientHeight - boundingClientRect.bottom;
-      let nextEmojiPickerShouldUp = false;
+      let emojiPickerShouldUp = false;
       if (!isMobile && top > bottom) {
-        nextEmojiPickerShouldUp = true;
+        emojiPickerShouldUp = true;
       }
-      setEmojiPickerState(true);
-      setEmojiPickerShouldUp(nextEmojiPickerShouldUp);
+      this.setState({ emojiPickerState: true, emojiPickerShouldUp });
     }
   };
 
-  const insertEmoji = emoji => {
-    textInput.innerHTML += emoji;
+  insertEmoji = emoji => {
+    this.inputComment.innerHTML = this.inputComment.innerHTML + emoji;
   };
 
-  if (user && user.username) {
-    return (
-      <div className="input-comment-container">
-        <i className="material-icons">account_circle</i>
-        <div className="input-wrapper">
-          <div
-            contentEditable
-            ref={textInput}
-            className="input-text"
-            placeholder="Viết bình luận ..."
-            onKeyDown={handleKeydown}
-            onInput={onInput}
-          />
-          <div className="input-controls">
-            {renderEmojiPicker()}
-            {PickerComponent && (
-              <i
-                className="material-icons emoji-button"
-                onClick={toggleEmojiPicker}
-              >
-                mood
+  render() {
+    const user = getState();
+    const { Picker } = this.state;
+    if (user && user.username) {
+      return (
+        <div className="input-comment-container">
+          <i className="material-icons">account_circle</i>
+          <div className="input-wrapper">
+            <div
+              contentEditable
+              ref={instance => (this.inputComment = instance)}
+              className="input-text"
+              placeholder="Viết bình luận ..."
+              onKeyDown={this.handleKeydown}
+              onInput={this.onInput}
+            />
+            <div className="input-controls">
+              {this.renderEmojiPicker()}
+              {Picker && (
+                <i
+                  className="material-icons emoji-button"
+                  onClick={this.toggleEmojiPicker}
+                >
+                  mood
+                </i>
+              )}
+              <i className="material-icons send-button" onClick={this.send}>
+                send
               </i>
-            )}
-            <i className="material-icons send-button" onClick={send}>
-              send
-            </i>
+            </div>
           </div>
         </div>
+      );
+    }
+    const { returnUrl } = this.state;
+    return (
+      <div className="input-comment-require-auth">
+        <a
+          className="btn-try-now"
+          href={`/account/login?returnUrl=${returnUrl}`}
+        >
+          Đăng nhập để bình luận
+        </a>
       </div>
     );
   }
-  return (
-    <div className="input-comment-require-auth">
-      <a className="btn-try-now" href={`/account/login?returnUrl=${returnUrl}`}>
-        Đăng nhập để bình luận
-      </a>
-    </div>
-  );
-};
+}
 
 export default InsertComment;

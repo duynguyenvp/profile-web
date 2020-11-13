@@ -38,6 +38,8 @@
         "aspects": ["noHref"]
       }
     ],
+    "react/jsx-wrap-multilines": 0,
+    "react/jsx-one-expression-per-line": 0,
     "jsx-a11y/no-static-element-interactions": 0,
     "jsx-a11y/click-events-have-key-events": 0,
     "jsx-a11y/label-has-associated-control": 0,
@@ -47,7 +49,14 @@
     "import/prefer-default-export": 0,
     "import/extensions": 1,
     "global-require": 0,
-    "operator-line": 0
+    "operator-line": 0,
+    "object-curly-newline": 0,
+    "operator-linebreak": [
+      "error",
+      "after",
+      { "overrides": { "?": "ignore", ":": "ignore" } }
+    ],
+    "implicit-arrow-linebreak": 0
   },
   "env": {
     "es6": true,

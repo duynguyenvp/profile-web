@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import {
-  Modal, Button, Row, Col, Input, notification
-} from "antd";
+import { Modal, Button, Row, Col, Input, notification } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import getApiInstance from "../../api/generic-api";
 import "./style.scss";
@@ -41,16 +39,18 @@ const ImageManager = ({ visible, callback, close }) => {
       });
   };
 
-  const readAsDataURL = file => new Promise(resolve => {
-    const fileReader = new FileReader();
-    fileReader.onload = async () => resolve({
-      data: fileReader.result,
-      name: file.name,
-      size: file.size,
-      type: file.type
+  const readAsDataURL = file =>
+    new Promise(resolve => {
+      const fileReader = new FileReader();
+      fileReader.onload = async () =>
+        resolve({
+          data: fileReader.result,
+          name: file.name,
+          size: file.size,
+          type: file.type
+        });
+      fileReader.readAsDataURL(file);
     });
-    fileReader.readAsDataURL(file);
-  });
 
   const uploadImage = base64image => {
     getApiInstance()
@@ -104,28 +104,29 @@ const ImageManager = ({ visible, callback, close }) => {
     setSelected(img.path);
   };
 
-  const testImage = (url, timeoutT) => new Promise((resolve, reject) => {
-    const timeout = timeoutT || 5000;
-    let timer;
-    const img = new Image();
-    function error() {
-      clearTimeout(timer);
-      reject(new Error("error"));
-    }
-    img.onerror = error;
-    img.onabort = error;
-    img.onload = function () {
-      clearTimeout(timer);
-      resolve("success");
-    };
-    timer = setTimeout(() => {
-      // reset .src to invalid URL so it stops previous
-      // loading, but doens't trigger new load
-      img.src = "//!!!!/noexist.jpg";
-      reject(new Error("timeout"));
-    }, timeout);
-    img.src = url;
-  });
+  const testImage = (url, timeoutT) =>
+    new Promise((resolve, reject) => {
+      const timeout = timeoutT || 5000;
+      let timer;
+      const img = new Image();
+      function error() {
+        clearTimeout(timer);
+        reject(new Error("error"));
+      }
+      img.onerror = error;
+      img.onabort = error;
+      img.onload = function () {
+        clearTimeout(timer);
+        resolve("success");
+      };
+      timer = setTimeout(() => {
+        // reset .src to invalid URL so it stops previous
+        // loading, but doens't trigger new load
+        img.src = "//!!!!/noexist.jpg";
+        reject(new Error("timeout"));
+      }, timeout);
+      img.src = url;
+    });
 
   const handleUploadFromUrl = url => {
     if (!url) {
@@ -199,8 +200,8 @@ const ImageManager = ({ visible, callback, close }) => {
       <Row>
         <Col span={14} push={10}>
           <div className="list-images">
-            {images
-              && images.map((item, index) => (
+            {images &&
+              images.map((item, index) => (
                 <ImageItem
                   key={index}
                   image={item}
@@ -222,9 +223,7 @@ const ImageManager = ({ visible, callback, close }) => {
           <Row>
             <label>Từ máy tính</label>
             <label htmlFor="input-image" className="input-button">
-              <UploadOutlined />
-              {" "}
-              Upload ảnh mới
+              <UploadOutlined /> Upload ảnh mới
             </label>
             <input type="file" id="input-image" onChange={handleImageChange} />
           </Row>

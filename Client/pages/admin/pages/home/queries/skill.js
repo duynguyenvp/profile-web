@@ -55,8 +55,8 @@ export const reorderSkill = (portfolioId, skills, skill) => {
   if (skillSwapper) {
     nextSkills = nextSkills.map(item => {
       if (
-        item.id !== skill.id
-        && (item.ordinalNumber || 0) === (skill.ordinalNumber || 0)
+        item.id !== skill.id &&
+        (item.ordinalNumber || 0) === (skill.ordinalNumber || 0)
       ) {
         return { ...item, ordinalNumber: skillSwapper.ordinalNumber };
       }
@@ -99,7 +99,9 @@ const updateSkill = (portfolioId, nextSkills, showAlert = true) => {
       .then(res => {
         const { successful, errorMessage } = res;
         if (successful) {
-          if (showAlert) openNotificationWithIcon("success", "Lưu thành công!!!");
+          if (showAlert) {
+            openNotificationWithIcon("success", "Lưu thành công!!!");
+          }
           resolve(nextSkills);
         } else {
           openNotificationWithIcon(
@@ -115,38 +117,39 @@ const updateSkill = (portfolioId, nextSkills, showAlert = true) => {
   });
 };
 
-export const removeSkill = (portfolioId, skills, item) => new Promise(resolve => {
-  getApiInstance()
-    .deleteWithFormAuth({
-      url: "/Portfolio/DeleteSkill",
-      data: {
-        Id: portfolioId,
-        ObjectId: item.id
-      }
-    })
-    .then(res => {
-      const { successful, errorMessage } = res;
-      if (successful) {
-        openNotificationWithIcon("success", "Thành công!!!");
-        let index = 0;
-        const newSkills = skills
-          .filter(f => f.id !== item.id)
-          .sort((a, b) => {
-            if ((a.ordinalNumber || 0) < (b.ordinalNumber || 0)) return -1;
-            if ((a.ordinalNumber || 0) > (b.ordinalNumber || 0)) return 1;
-            return 0;
-          })
-          .map(item => ({ ...item, ordinalNumber: (index += 1) }));
-        resolve(newSkills);
-      } else {
-        openNotificationWithIcon(
-          "error",
-          `Lỗi: ${errorMessage || "Không xác định"}.`
-        );
-      }
-    })
-    .catch(error => {
-      openNotificationWithIcon("error", `Lỗi khi xóa: ${error}`);
-      console.error(error);
-    });
-});
+export const removeSkill = (portfolioId, skills, item) =>
+  new Promise(resolve => {
+    getApiInstance()
+      .deleteWithFormAuth({
+        url: "/Portfolio/DeleteSkill",
+        data: {
+          Id: portfolioId,
+          ObjectId: item.id
+        }
+      })
+      .then(res => {
+        const { successful, errorMessage } = res;
+        if (successful) {
+          openNotificationWithIcon("success", "Thành công!!!");
+          let index = 0;
+          const newSkills = skills
+            .filter(f => f.id !== item.id)
+            .sort((a, b) => {
+              if ((a.ordinalNumber || 0) < (b.ordinalNumber || 0)) return -1;
+              if ((a.ordinalNumber || 0) > (b.ordinalNumber || 0)) return 1;
+              return 0;
+            })
+            .map(item => ({ ...item, ordinalNumber: (index += 1) }));
+          resolve(newSkills);
+        } else {
+          openNotificationWithIcon(
+            "error",
+            `Lỗi: ${errorMessage || "Không xác định"}.`
+          );
+        }
+      })
+      .catch(error => {
+        openNotificationWithIcon("error", `Lỗi khi xóa: ${error}`);
+        console.error(error);
+      });
+  });
