@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+// eslint-disable-next-line
+import React, { useEffect, useRef, useState } from "react";
 
 export default function ({
   handler,

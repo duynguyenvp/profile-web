@@ -20,11 +20,12 @@ const menuMeta = [
 ];
 
 const App = ({ children }) => {
-  useStyles(s);
   const [isShirk, setIsShirk] = useState(() => false);
   const [active, setActive] = useState(() => "home");
   const [route, setRoute] = useState(() => "");
   const [isDisplayPlane, setIsDisplayPlane] = useState(() => false);
+
+  useStyles(s);
 
   const wrapperId = useMemo(() => {
     if (route === "home") return "app";

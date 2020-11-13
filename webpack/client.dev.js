@@ -22,7 +22,7 @@ module.exports = {
     filename: "[name].js",
     chunkFilename: "[id].js",
     path: path.resolve(__dirname, "../build/dist/"),
-    publicPath: "/dist/"
+    publicPath: "/"
   },
   entry: entries,
   module: {
@@ -104,7 +104,6 @@ module.exports = {
   },
   devServer: {
     contentBase: path.join(__dirname, "../build/dist/"),
-    publicPath: path.join(__dirname, "/"),
     index: "home.html",
     open: true,
     compress: true,

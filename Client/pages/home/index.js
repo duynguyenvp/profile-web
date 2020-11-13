@@ -10,7 +10,7 @@ import RESOURCE_VERSION from "../../../version";
 const history = createBrowserHistory();
 const trackingId = "UA-151257939-2";
 ReactGA.initialize(trackingId);
-history.listen((location) => {
+history.listen(location => {
   ReactGA.set({ page: location.pathname });
   ReactGA.pageview(location.pathname);
 });
@@ -20,26 +20,38 @@ const insertCss = (...styles) => {
   return () => removeCss.forEach(dispose => dispose());
 };
 
-ReactDOM.hydrate(
+const Page = () => (
   <StyleContext.Provider value={{ insertCss }}>
     <App>
       <Home />
     </App>
-  </StyleContext.Provider>,
-  document.getElementById("app")
+  </StyleContext.Provider>
 );
 
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker
-      .register(`/sw.js?v=${RESOURCE_VERSION}`)
-      .then((registration) => {
-        // eslint-disable-next-line
-        console.log("SW registered: ", registration);
-      })
-      .catch((registrationError) => {
-        // eslint-disable-next-line
-        console.log("SW registration failed: ", registrationError);
-      });
-  });
+if (process.env === "production") {
+  ReactDOM.hydrate(<Page />, document.getElementById("app"));
+
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker
+        .register(`/sw.js?v=${RESOURCE_VERSION}`)
+        .then(registration => {
+          // eslint-disable-next-line
+          console.log("SW registered: ", registration);
+        })
+        .catch(registrationError => {
+          // eslint-disable-next-line
+          console.log("SW registration failed: ", registrationError);
+        });
+    });
+  }
+} else {
+  ReactDOM.render(
+    <StyleContext.Provider value={{ insertCss }}>
+      <App>
+        <Home />
+      </App>
+    </StyleContext.Provider>,
+    document.getElementById("app")
+  );
 }

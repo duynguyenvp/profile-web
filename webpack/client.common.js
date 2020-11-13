@@ -4,6 +4,19 @@ const path = require("path");
 let htmlPageNames = ["home", "blog", "resume", "admin"];
 let multipleHtmlPlugins = htmlPageNames.map(name => {
   return new HtmlWebpackPlugin({
+    inject: false,
+    templateContent: ({ htmlWebpackPlugin }) => `
+      <html>
+        <head>
+          <title>${htmlWebpackPlugin.options.title}</title>
+          ${htmlWebpackPlugin.tags.headTags}
+        </head>
+        <body>
+          <section id='app'></section>
+          ${htmlWebpackPlugin.tags.bodyTags}
+        </body>
+      </html>
+    `,
     filename: `${name}.html`, // output HTML files
     chunks: [`${name}`] // respective JS files
   });

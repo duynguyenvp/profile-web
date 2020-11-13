@@ -46,7 +46,8 @@
     "prefer-destructuring": ["warn", { "object": true, "array": false }],
     "import/prefer-default-export": 0,
     "import/extensions": 1,
-    "global-require": 0
+    "global-require": 0,
+    "operator-line": 0
   },
   "env": {
     "es6": true,

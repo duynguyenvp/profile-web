@@ -154,4 +154,4 @@ const Menu = ({ routeDerection, isShirk, active }) => {
   );
 };
 
-export default withClickOutside(Menu);
+export default Menu;
