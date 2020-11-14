@@ -1,5 +1,5 @@
 export default {
-    sectionSkills: 'SKILLS',
-    sectionExperiences: 'EXPERIENCES',
-    sectionEducations: 'EDUCATIONS',
-}
+  sectionSkills: "SKILLS",
+  sectionExperiences: "EXPERIENCES",
+  sectionEducations: "EDUCATIONS"
+};

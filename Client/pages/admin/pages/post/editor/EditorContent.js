@@ -1,17 +1,18 @@
 import React, { useCallback, useLayoutEffect, useRef, useState } from "react";
 import { Layout } from "antd";
-const { Header, Content } = Layout;
+import Quill from "quill";
+import ImageResize from "quill-image-resize-module";
 import ImageManager from "../../../components/image-manager";
 
-import Quill from "quill";
 import VideoBlot from "./VideoBlot";
-import ImageResize from "quill-image-resize-module";
-Quill.register("modules/imageResize", ImageResize);
-Quill.register(VideoBlot);
 import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "./quill.scss";
 import { getObject, setObject } from "../../../utils/localForage";
+
+const { Header, Content } = Layout;
+Quill.register("modules/imageResize", ImageResize);
+Quill.register(VideoBlot);
 
 const EditorContent = ({ post, callback }) => {
   const [flagOpenImageManager, setFlagOpenImageManager] = useState(() => false);
@@ -28,10 +29,10 @@ const EditorContent = ({ post, callback }) => {
       parseInt((computedStyle && computedStyle.paddingRight) || "0px", 10);
     const editorClientWidth = (editorDOM && editorDOM.clientWidth) || 0;
     window.EDITOR_CLIENT_WIDTH =
-      editorClientWidth == 0 ? 0 : editorClientWidth - padding;
+      editorClientWidth === 0 ? 0 : editorClientWidth - padding;
   }, []);
 
-  const saveContentToLocalStore = async (data) => {
+  const saveContentToLocalStore = async data => {
     await setObject("post-content", data);
   };
 
@@ -52,10 +53,10 @@ const EditorContent = ({ post, callback }) => {
     window.QuillEditor = new Quill(refEditor.current, {
       modules: {
         toolbar: "#toolbar",
-        imageResize: {},
+        imageResize: {}
       },
       placeholder: "Nhập nội dung...",
-      theme: "snow", // or 'bubble'
+      theme: "snow" // or 'bubble'
     });
     if (post && post.delta) {
       try {
@@ -69,11 +70,10 @@ const EditorContent = ({ post, callback }) => {
     }
     if (!post || Object.keys(post).length === 0) {
       getContentFromLocalStore()
-        .then((data) => {
-          console.log(data);
+        .then(data => {
           window.QuillEditor.setContents(data);
         })
-        .catch((error) => {
+        .catch(error => {
           console.error(error);
         });
     }
@@ -87,19 +87,19 @@ const EditorContent = ({ post, callback }) => {
       setRange(range);
       setFlagOpenImageManager(true);
     });
-    editor.on("text-change", function (range, oldRange, source) {
+    editor.on("text-change", () => {
       const change = editor.getContents();
       if (change.length()) {
         saveContentToLocalStore(change);
       }
       callback({
         content: editor.root.innerHTML,
-        delta: change,
+        delta: change
       });
     });
     getEditorMaxWidth();
   }, [editor]);
-  const handleClickEmojiButton = (e) => {
+  const handleClickEmojiButton = e => {
     e.stopPropagation();
     setEmojiPickerState(!emojiPickerState);
   };
@@ -112,9 +112,9 @@ const EditorContent = ({ post, callback }) => {
           title="Pick your emoji…"
           emoji="point_up"
           set="facebook"
-          native={true}
+          native
           showPreview={false}
-          onSelect={(emoji) => insertEmoji(emoji.native)}
+          onSelect={emoji => insertEmoji(emoji.native)}
         />
       </div>
     );
@@ -128,49 +128,49 @@ const EditorContent = ({ post, callback }) => {
     return null;
   };
 
-  const insertEmoji = (emoji) => {
+  const insertEmoji = emoji => {
     setEmojiPickerState(false);
-    const currentRange =
-      window.QuillEditor && window.QuillEditor.getSelection();
-    window.QuillEditor &&
+    if (window.QuillEditor) {
+      const currentRange = window.QuillEditor.getSelection();
       window.QuillEditor.insertText(
         (currentRange && currentRange.index) || 0,
         emoji
       );
+    }
   };
   return (
     <Layout>
       <Header className="editor-main-header">
         <div id="toolbar">
           <select className="ql-size" defaultValue="small">
-            <option value="small"></option>
-            <option value="large"></option>
-            <option value="huge"></option>
+            <option value="small" />
+            <option value="large" />
+            <option value="huge" />
           </select>
-          <button className="ql-bold"></button>
-          <button className="ql-italic"></button>
-          <button className="ql-underline"></button>
+          <button className="ql-bold" />
+          <button className="ql-italic" />
+          <button className="ql-underline" />
           <span className="ql-formats">
-            <select className="ql-color"></select>
-            <select className="ql-background"></select>
+            <select className="ql-color" />
+            <select className="ql-background" />
           </span>
-          <button className="ql-align" value="justify"></button>
-          <button className="ql-align" value="center"></button>
-          <button className="ql-align" value="right"></button>
+          <button className="ql-align" value="justify" />
+          <button className="ql-align" value="center" />
+          <button className="ql-align" value="right" />
           <span className="ql-formats">
             <button className="ql-list" value="ordered" />
             <button className="ql-list" value="bullet" />
             <button className="ql-indent" value="-1" />
             <button className="ql-indent" value="+1" />
           </span>
-          <button className="ql-script" value="sub"></button>
-          <button className="ql-script" value="super"></button>
-          <button className="ql-link"></button>
-          <button className="ql-image"></button>
-          <button className="ql-video"></button>
+          <button className="ql-script" value="sub" />
+          <button className="ql-script" value="super" />
+          <button className="ql-link" />
+          <button className="ql-image" />
+          <button className="ql-video" />
           <span className="ql-formats">
-            <button className="ql-blockquote"></button>
-            <button className="ql-code-block"></button>
+            <button className="ql-blockquote" />
+            <button className="ql-code-block" />
           </span>
           <button
             className={emojiPickerState ? "ql-active" : ""}
@@ -190,19 +190,20 @@ const EditorContent = ({ post, callback }) => {
         <ImageManager
           visible={flagOpenImageManager}
           close={closeImageManager}
-          callback={(src) => {
+          callback={src => {
             const Delta = Quill.import("delta");
-            window.QuillEditor &&
+            if (window.QuillEditor) {
               window.QuillEditor.updateContents(
                 new Delta().retain((range && range.index) || 0).insert(
                   {
-                    image: src,
+                    image: src
                   },
                   {
-                    alt: src,
+                    alt: src
                   }
                 )
               );
+            }
             setRange(null);
           }}
         />
@@ -210,9 +211,9 @@ const EditorContent = ({ post, callback }) => {
           className="editor-content"
           ref={refEditor}
           dangerouslySetInnerHTML={{
-            __html: (post && post.content) || "",
+            __html: (post && post.content) || ""
           }}
-        ></div>
+        />
       </Content>
     </Layout>
   );

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import App from "../../Client/pages/home/App";
+import App from "../../Client/App";
 import Blog from "../../Client/pages/blog/partials/Blog";
 
 class BlogPage extends Component {

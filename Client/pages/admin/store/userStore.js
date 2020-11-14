@@ -1,23 +1,24 @@
-import React, { useReducer, useContext, createContext } from 'react'
-const initialState = []
+import React, { useReducer, useContext, createContext } from "react";
+
+const initialState = [];
 
 function reducer(state, action) {
   switch (action.type) {
-    case 'fetch':
+    case "fetch":
       return action.data;
-    case 'getall':
+    case "getall":
       return state;
-    case 'getById':
-      return state.filter(f => f.id == action.id)
-    case 'insertOrUpdate':
-      const temp = state.find(f => f.id == action.user.id)
+    case "getById":
+      return state.filter(f => f.id === action.id);
+    case "insertOrUpdate": {
+      const temp = state.find(f => f.id === action.user.id);
       if (temp && Object.keys(temp).length) {
-        return state.map(f => f.id == action.user.id ? action.user : f)
-      } else {
-        return [...state, action.user]
+        return state.map(f => (f.id === action.user.id ? action.user : f));
       }
-    case 'delete':
-      return state.filter(f => f.id != action.id)
+      return [...state, action.user];
+    }
+    case "delete":
+      return state.filter(f => f.id !== action.id);
     default:
       return state;
   }
@@ -28,14 +29,10 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
   const contextValue = useReducer(reducer, initialState);
   return (
-    <UserContext.Provider value={contextValue}>
-      {children}
-    </UserContext.Provider>
-  )
-}
+    <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>
+  );
+};
 
-const useUser = () => {
-  return useContext(UserContext);
-}
+const useUser = () => useContext(UserContext);
 
-export default useUser
+export default useUser;

@@ -1,9 +1,14 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import Signup from './form-signup'
-import '../../common-resources/root.scss'
+import React from "react";
+import ReactDOM from "react-dom";
+import Signup from "./form-signup";
+import "../../assets/root.scss";
 
 ReactDOM.render(
-  <Signup callback={() => {console.log("this is loginIn form.")}} />,
-  document.getElementById('app')
-)
+  <Signup
+    callback={() => {
+      // eslint-disable-next-line
+      console.log("this is loginIn form.");
+    }}
+  />,
+  document.getElementById("app")
+);

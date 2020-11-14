@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
+import useStyles from "isomorphic-style-loader/useStyles";
 import getApiInstance from "../../../../ajax/generic-api";
 
-import useStyles from "isomorphic-style-loader/useStyles";
 import s from "./style.scss";
 import { dateToStringFormatCultureVi } from "../../../../utils/date-utils";
 
@@ -16,30 +16,30 @@ const BoxSearch = ({ changePost }) => {
   const [isShowStatus, setIsShowStatus] = useState(false);
 
   useEffect(() => {
-    let pathname = window.location.pathname;
+    let { pathname } = window.location;
     pathname = pathname.split(/\//);
     let username = "";
-    if (pathname && pathname.length && pathname[2] != "bai-viet") {
+    if (pathname && pathname.length && pathname[2] !== "bai-viet") {
       username = pathname[2];
     }
     username = username && username.length > 0 ? username : "duynguyen";
     setCurrentUsername(username);
   }, []);
 
-  const onChange = (e) => {
-    const value = e.target.value;
+  const onChange = e => {
+    const { value } = e.target;
     setKeyword(value);
   };
 
-  const onKeyDown = (e) => {
+  const onKeyDown = e => {
     clearTimeout(typingTimer);
-    var keycode = e.charCode || e.keyCode;
-    if (keycode == 13) {
+    const keycode = e.charCode || e.keyCode;
+    if (keycode === 13) {
       search();
     }
   };
 
-  const onKeyUp = (e) => {
+  const onKeyUp = () => {
     clearTimeout(typingTimer);
     typingTimer = setTimeout(doneTyping, doneTypingInterval);
   };
@@ -56,16 +56,16 @@ const BoxSearch = ({ changePost }) => {
         url: "/Post/FullTextSearch",
         data: {
           Condition: keyword,
-          Username: currentUsername,
-        },
+          Username: currentUsername
+        }
       })
-      .then((res) => {
+      .then(res => {
         setIsSearching(false);
         if (res.successful) {
           setSearchResults(res.result.data);
         }
       })
-      .catch((err) => {
+      .catch(err => {
         setIsSearching(false);
         console.error(err);
       });
@@ -112,28 +112,26 @@ const BoxSearch = ({ changePost }) => {
         {keyword &&
           !isSearching &&
           searchResults &&
-          searchResults.map((item, i) => {
-            return (
-              <React.Fragment key={i}>
-                <div className="searchItem">
-                  <div className="searchItem__title">
-                    <a
-                      href={item.postUrl}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        changePost(item.id);
-                      }}
-                    >
-                      <p className="searchItem__postTime">
-                        {dateToStringFormatCultureVi(item.postTime)}
-                      </p>
-                      <p>{item.title}</p>
-                    </a>
-                  </div>
+          searchResults.map((item, i) => (
+            <React.Fragment key={i}>
+              <div className="searchItem">
+                <div className="searchItem__title">
+                  <a
+                    href={item.postUrl}
+                    onClick={e => {
+                      e.preventDefault();
+                      changePost(item.id);
+                    }}
+                  >
+                    <p className="searchItem__postTime">
+                      {dateToStringFormatCultureVi(item.postTime)}
+                    </p>
+                    <p>{item.title}</p>
+                  </a>
                 </div>
-              </React.Fragment>
-            );
-          })}
+              </div>
+            </React.Fragment>
+          ))}
       </div>
     </section>
   );

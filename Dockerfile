@@ -6,6 +6,7 @@ RUN apk update && apk upgrade && \
 RUN yarn install && yarn release
 
 FROM node:12.18.1-alpine3.12
+ENV NODE_ENV="production"
 ENV CHROME_BIN="/usr/bin/chromium-browser" \
     PUPPETEER_SKIP_CHROMIUM_DOWNLOAD="true"
 RUN set -x \

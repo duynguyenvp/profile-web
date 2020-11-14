@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import {
   CaretDownOutlined,
   CaretUpOutlined,
-  DeleteFilled,
+  DeleteFilled
 } from "@ant-design/icons";
 import {
   Collapse,
@@ -12,63 +12,59 @@ import {
   Form,
   Input,
   Button,
-  Space,
+  Space
 } from "antd";
+import moment from "moment";
+import EditorComponent from "../../../components/editor";
+
 const { Panel } = Collapse;
 const { RangePicker } = DatePicker;
-import EditorComponent from "../../../components/editor";
-import moment from "moment";
 
-const PanelHeader = ({ title, description, remove, education }) => {
-  return (
-    <div className="info-block-panel-header">
-      <div className="info-block-panel-header-title">
-        <span className="title">{title}</span>
-        <span className="description">{description}</span>
-      </div>
-      <div>
-        <Button
-          shape="circle"
-          type="danger"
-          size="small"
-          icon={<DeleteFilled />}
-          onClick={(e) => {
-            e.stopPropagation();
-            if (typeof remove === "function") {
-              remove(education);
-            }
-          }}
-        ></Button>
-      </div>
+const PanelHeader = ({ title, description, remove, education }) => (
+  <div className="info-block-panel-header">
+    <div className="info-block-panel-header-title">
+      <span className="title">{title}</span>
+      <span className="description">{description}</span>
     </div>
-  );
-};
+    <div>
+      <Button
+        shape="circle"
+        type="danger"
+        size="small"
+        icon={<DeleteFilled />}
+        onClick={e => {
+          e.stopPropagation();
+          if (typeof remove === "function") {
+            remove(education);
+          }
+        }}
+      />
+    </div>
+  </div>
+);
 
 const getTitle = (school, degree) => {
-  let title =
+  const title =
     (school && degree && `Học ${degree} tại ${school}`) || "Chưa có thông tin";
   return title;
 };
-const getDescription = (time) => {
-  return (
-    (time && `${time[0].format(dateFormat)} - ${time[1].format(dateFormat)}`) ||
-    ""
-  );
-};
+const getDescription = time =>
+  (time && `${time[0].format(dateFormat)} - ${time[1].format(dateFormat)}`) ||
+  "";
 const dateFormat = "DD/MM/YYYY";
 const EducationInfoBlock = ({
   education,
   total,
   handleReorderEducation,
   handleRemoveEducation,
-  handleSave,
+  handleSave
 }) => {
   const { id, schoolName, specialized, detail, startDate, endDate } =
     education || {};
   const [html, setHtml] = useState(detail || "");
   const [time, setTime] = useState([
     moment(new Date(startDate || Date.now()), dateFormat),
-    moment(new Date(endDate || Date.now()), dateFormat),
+    moment(new Date(endDate || Date.now()), dateFormat)
   ]);
   const [title, setTitle] = useState(getTitle(schoolName, specialized));
   const [description, setDescription] = useState(getDescription(time));
@@ -82,7 +78,7 @@ const EducationInfoBlock = ({
     setEditorKey(editorKey + 1);
     form.resetFields();
   };
-  const onFinish = (values) => {
+  const onFinish = values => {
     const dateFormatMDY = "MM/DD/YYYY";
     const { degree, school, time } = values;
     handleSave({
@@ -92,17 +88,17 @@ const EducationInfoBlock = ({
       startDate: time[0].format(dateFormatMDY),
       endDate: time[1].format(dateFormatMDY),
       id,
-      ordinalNumber: education.ordinalNumber,
+      ordinalNumber: education.ordinalNumber
     });
   };
 
   useEffect(() => {
-    const { id, schoolName, specialized, detail, startDate, endDate } =
+    const { schoolName, specialized, detail, startDate, endDate } =
       education || {};
     setHtml(detail || "");
     setTime([
       moment(new Date(startDate || Date.now()), dateFormat),
-      moment(new Date(endDate || Date.now()), dateFormat),
+      moment(new Date(endDate || Date.now()), dateFormat)
     ]);
     setTitle(getTitle(schoolName, specialized));
     setDescription(getDescription(time));
@@ -110,7 +106,7 @@ const EducationInfoBlock = ({
   }, [education]);
 
   const isDisabledDown = useMemo(() => (education.ordinalNumber || 0) === 0, [
-    education,
+    education
   ]);
   const isDisabledUp = useMemo(
     () => (education.ordinalNumber || 0) >= total - 1,
@@ -129,24 +125,24 @@ const EducationInfoBlock = ({
           disabled={isDisabledDown}
           className="btnOrder"
           icon={<CaretUpOutlined />}
-          onClick={(e) => {
+          onClick={e => {
             e.stopPropagation();
             if (typeof handleReorderEducation === "function") {
               let nextOrdinalNumber = (education.ordinalNumber || 0) - 1;
               nextOrdinalNumber = nextOrdinalNumber < 0 ? 0 : nextOrdinalNumber;
               handleReorderEducation({
                 ...education,
-                ordinalNumber: nextOrdinalNumber,
+                ordinalNumber: nextOrdinalNumber
               });
             }
           }}
-        ></Button>
+        />
         <Button
           disabled={isDisabledUp}
           size="small"
           className="btnOrder"
           icon={<CaretDownOutlined />}
-          onClick={(e) => {
+          onClick={e => {
             e.stopPropagation();
             if (typeof handleReorderEducation === "function") {
               let nextOrdinalNumber = (education.ordinalNumber || 0) + 1;
@@ -154,14 +150,14 @@ const EducationInfoBlock = ({
                 nextOrdinalNumber > total ? total : nextOrdinalNumber;
               handleReorderEducation({
                 ...education,
-                ordinalNumber: nextOrdinalNumber,
+                ordinalNumber: nextOrdinalNumber
               });
             }
           }}
-        ></Button>
+        />
       </div>
       <Panel
-        showArrow={true}
+        showArrow
         header={
           <PanelHeader
             education={education}
@@ -187,14 +183,14 @@ const EducationInfoBlock = ({
           <Row gutter={24}>
             <Col span={12}>
               <Form.Item
-                name={`school`}
-                label={`Tên trường`}
+                name="school"
+                label="Tên trường"
                 initialValue={schoolName}
                 rules={[
                   {
                     required: true,
-                    message: "Vui lòng nhập tên trường!",
-                  },
+                    message: "Vui lòng nhập tên trường!"
+                  }
                 ]}
               >
                 <Input placeholder="Tên trường ..." />
@@ -202,14 +198,14 @@ const EducationInfoBlock = ({
             </Col>
             <Col span={12}>
               <Form.Item
-                name={`degree`}
-                label={`Ngành học`}
+                name="degree"
+                label="Ngành học"
                 initialValue={specialized}
                 rules={[
                   {
                     required: true,
-                    message: "Vui lòng nhập ngành học!",
-                  },
+                    message: "Vui lòng nhập ngành học!"
+                  }
                 ]}
               >
                 <Input placeholder="Ngành học ..." />
@@ -224,12 +220,12 @@ const EducationInfoBlock = ({
                   {
                     type: "array",
                     required: true,
-                    message: "Vui lòng chọn thời gian!",
-                  },
+                    message: "Vui lòng chọn thời gian!"
+                  }
                 ]}
               >
                 <RangePicker
-                  onChange={(date) => {
+                  onChange={date => {
                     setTime(date);
                   }}
                   style={{ width: "100%" }}
@@ -244,7 +240,7 @@ const EducationInfoBlock = ({
               <EditorComponent
                 key={editorKey}
                 html={html}
-                callback={(content) => {
+                callback={content => {
                   setHtml(content);
                 }}
               />

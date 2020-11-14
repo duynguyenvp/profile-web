@@ -1,46 +1,67 @@
-import { randomId } from '../utils/string-utils'
+import { useEffect, useState } from "react";
 
-var Subcribes = []
-var user = {}
-const subscribe = (f) => {
-    Subcribes.push(f)
-    return () => unsubscribe(Subcribes.filter(a => a != f));
-}
+let Subcribes = [];
+let user = {};
 
-const unsubscribe = (subcribes) => Subcribes = subcribes;
-
-const onChange = () => {
-    Subcribes.forEach(f => {
-        f();
-    })
+const unsubscribe = subcribes => {
+  Subcribes = [].concat(subcribes);
 };
 
-const getState = () => user
+const subscribe = f => {
+  Subcribes.push(f);
+  return () => {
+    unsubscribe((Subcribes && Subcribes.filter(a => a !== f)) || []);
+  };
+};
 
-const setState = (data) => {
-    user = { ...user, ...data }
-    onChange();
-}
+const onChange = () => {
+  Subcribes.forEach(f => {
+    f();
+  });
+};
+
+const getState = () => user;
+
+const setState = data => {
+  user = { ...user, ...data };
+  onChange();
+};
 
 const resetState = () => {
-    user = {}
-    onChange();
-}
+  user = {};
+  onChange();
+};
 
 const checkAdminRole = () => {
-    if (!user || !user.userRoles) return false
-    const isAdmin = user.userRoles.find(f => f.roleName == 'admin' || f.roleName == 'superadmin')
-    if (isAdmin) {
-        return true
-    }
-    return false
+  if (!user || !user.userRoles) return false;
+  const isAdmin = user.userRoles.find(
+    f => f.roleName === "admin" || f.roleName === "superadmin"
+  );
+  if (isAdmin) {
+    return true;
+  }
+  return false;
+};
+
+export function useUserService() {
+  const [data, setData] = useState(getState);
+  useEffect(() => {
+    const unsubcribes = subscribe(() => {
+      setData(getState);
+    });
+    return () => {
+      unsubcribes();
+    };
+  });
+
+  return data;
 }
 
 export {
-    getState,
-    setState,
-    subscribe,
-    unsubscribe,
-    resetState,
-    checkAdminRole
-}
+  getState,
+  setState,
+  subscribe,
+  unsubscribe,
+  resetState,
+  checkAdminRole
+};

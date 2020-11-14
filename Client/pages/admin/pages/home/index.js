@@ -14,25 +14,25 @@ import {
   insertNewSkill,
   removeSkill,
   reorderSkill,
-  saveSkill,
+  saveSkill
 } from "./queries/skill";
 import {
   insertEducation,
   removeEducation,
   reorderEducation,
-  saveEducation,
+  saveEducation
 } from "./queries/education";
 import {
   insertNewExperience,
   removeExperience,
   reorderExperience,
-  saveExperience,
+  saveExperience
 } from "./queries/experience";
 import { loadData, openNotificationWithIcon } from "./queries/queries";
 
 const cardAttribute = {
   bordered: false,
-  headStyle: { textTransform: "uppercase", fontWeight: "bold" },
+  headStyle: { textTransform: "uppercase", fontWeight: "bold" }
 };
 const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -59,7 +59,7 @@ const Home = () => {
             portfolioEducations,
             portfolioExperiences,
             portfolioSkills,
-            portfolioUser,
+            portfolioUser
           } = result;
           setPortfolioId(id);
           setPersonalInfo(portfolioUser);
@@ -68,7 +68,7 @@ const Home = () => {
           setSkills(portfolioSkills);
         }
       })
-      .catch((error) => {
+      .catch(error => {
         setIsLoading(false);
         setError(error);
         console.error(error);
@@ -76,65 +76,65 @@ const Home = () => {
   }, [portfolioId]);
 
   const handleInsertNewSkill = () => {
-    insertNewSkill(portfolioId, skills).then((res) => {
+    insertNewSkill(portfolioId, skills).then(res => {
       setSkills(res);
     });
   };
 
-  const handleReorderSkill = (skill) => {
-    reorderSkill(portfolioId, skills, skill).then((res) => {
+  const handleReorderSkill = skill => {
+    reorderSkill(portfolioId, skills, skill).then(res => {
       setSkills(res);
     });
   };
-  const handleSaveSkill = (skill) => {
-    saveSkill(portfolioId, skills, skill).then((res) => {
+  const handleSaveSkill = skill => {
+    saveSkill(portfolioId, skills, skill).then(res => {
       setSkills(res);
     });
   };
-  const handleRemoveSkill = (item) => {
-    removeSkill(portfolioId, skills, item).then((res) => {
+  const handleRemoveSkill = item => {
+    removeSkill(portfolioId, skills, item).then(res => {
       setSkills(res);
     });
   };
 
   const handleInsertEducation = () => {
-    insertEducation(portfolioId, educations).then((res) => {
+    insertEducation(portfolioId, educations).then(res => {
       setEducations(res);
     });
   };
-  const handleRemoveEducation = (item) => {
-    removeEducation(portfolioId, educations, item).then((res) => {
+  const handleRemoveEducation = item => {
+    removeEducation(portfolioId, educations, item).then(res => {
       setEducations(res);
     });
   };
-  const handleSaveEducation = (education) => {
-    saveEducation(portfolioId, educations, education).then((res) => {
+  const handleSaveEducation = education => {
+    saveEducation(portfolioId, educations, education).then(res => {
       setEducations(res);
     });
   };
-  const handleReorderEducation = (education) => {
-    reorderEducation(portfolioId, educations, education).then((res) => {
+  const handleReorderEducation = education => {
+    reorderEducation(portfolioId, educations, education).then(res => {
       setEducations(res);
     });
   };
 
   const handleInsertNewExperience = () => {
-    insertNewExperience(portfolioId, experiences).then((res) => {
+    insertNewExperience(portfolioId, experiences).then(res => {
       setExperiences(res);
     });
   };
-  const handleRemoveExperience = (item) => {
-    removeExperience(portfolioId, experiences, item).then((res) => {
+  const handleRemoveExperience = item => {
+    removeExperience(portfolioId, experiences, item).then(res => {
       setExperiences(res);
     });
   };
-  const handleSaveExperience = (experience) => {
-    saveExperience(portfolioId, experiences, experience).then((res) => {
+  const handleSaveExperience = experience => {
+    saveExperience(portfolioId, experiences, experience).then(res => {
       setExperiences(res);
     });
   };
-  const handleReorderExperience = (experience) => {
-    reorderExperience(portfolioId, experiences, experience).then((res) => {
+  const handleReorderExperience = experience => {
+    reorderExperience(portfolioId, experiences, experience).then(res => {
       setExperiences(res);
     });
   };
@@ -145,40 +145,38 @@ const Home = () => {
       .postWithBodyAuth({
         url: "/Portfolio/Insert",
         data: {
-          UserId: auth.id,
-        },
+          UserId: auth.id
+        }
       })
-      .then((res) => {
-        const { successful } = res;
+      .then(res => {
+        const { successful, errorMessage } = res;
         if (successful) {
           openNotificationWithIcon("success", "Lưu thành công!!!");
           loadData();
         } else {
           openNotificationWithIcon(
             "error",
-            "Lỗi: " + (errorMessage || "Không xác định") + "."
+            `Lỗi: ${errorMessage || "Không xác định"}.`
           );
           setError(error || "Tạo resume lỗi: Không xác định");
         }
       })
-      .catch((error) => {
-        openNotificationWithIcon(
-          "error",
-          "Lỗi: " + (error || "Không xác định") + "."
-        );
+      .catch(error => {
+        openNotificationWithIcon("error", `Lỗi: ${error || "Không xác định"}.`);
         console.error(error);
         setError(error || "Tạo resume lỗi: Không xác định");
       });
   };
 
-  if (isLoading)
+  if (isLoading) {
     return (
       <Result
         icon={<LoadingOutlined />}
         title="Đang xử lý thông tin, vui lòng chờ ...!"
       />
     );
-  if (isEmpty)
+  }
+  if (isEmpty) {
     return (
       <Result
         title="Your operation has been executed"
@@ -189,6 +187,7 @@ const Home = () => {
         }
       />
     );
+  }
   if (error) return <Result status="500" title="500" subTitle={error} />;
 
   return (
@@ -204,7 +203,7 @@ const Home = () => {
               if ((a.ordinalNumber || 0) > (b.ordinalNumber || 0)) return 1;
               return 0;
             })
-            .map((item) => (
+            .map(item => (
               <EducationInfoBlock
                 key={item.id}
                 education={item}
@@ -222,7 +221,7 @@ const Home = () => {
           icon={<PlusCircleFilled />}
           onClick={handleInsertEducation}
         >
-          {"Thêm mới"}
+          Thêm mới
         </Button>
       </Card>
       <Card title="Kinh nghiệm làm việc" {...cardAttribute}>
@@ -233,7 +232,7 @@ const Home = () => {
               if ((a.ordinalNumber || 0) > (b.ordinalNumber || 0)) return 1;
               return 0;
             })
-            .map((item) => (
+            .map(item => (
               <ExperienceInfoBlock
                 key={item.id}
                 experience={item}
@@ -251,7 +250,7 @@ const Home = () => {
           icon={<PlusCircleFilled />}
           onClick={handleInsertNewExperience}
         >
-          {"Thêm mới"}
+          Thêm mới
         </Button>
       </Card>
       <Card title="Kỹ năng" {...cardAttribute}>
@@ -262,7 +261,7 @@ const Home = () => {
               if ((a.ordinalNumber || 0) > (b.ordinalNumber || 0)) return 1;
               return 0;
             })
-            .map((item) => (
+            .map(item => (
               <SkillInfoBlock
                 key={item.id}
                 total={skills.length}
@@ -280,7 +279,7 @@ const Home = () => {
           icon={<PlusCircleFilled />}
           onClick={handleInsertNewSkill}
         >
-          {"Thêm mới"}
+          Thêm mới
         </Button>
       </Card>
     </Fragment>

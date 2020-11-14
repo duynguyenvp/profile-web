@@ -4,6 +4,7 @@ import { setAuthentication, getAuthentication } from "./store/authStore";
 import getApiInstance from "./api/generic-api";
 import "./Admin.css";
 import "antd/dist/antd.css";
+
 export default function App() {
   useEffect(() => {
     loadUser();
@@ -11,7 +12,7 @@ export default function App() {
   const loadUser = () => {
     getApiInstance()
       .getWithQueryStringAuth({
-        url: "/User/UserInfo",
+        url: "/User/UserInfo"
       })
       .then((res) => {
         if (res.successful) {
@@ -26,7 +27,7 @@ export default function App() {
   const loadRoles = () => {
     getApiInstance()
       .getWithQueryStringAuth({
-        url: "/User/UserGetRoles",
+        url: "/User/UserGetRoles"
       })
       .then((res) => {
         if (res && res.successful) {

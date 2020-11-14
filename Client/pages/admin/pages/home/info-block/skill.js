@@ -2,40 +2,41 @@ import React, { useState, useEffect, useMemo } from "react";
 import {
   CaretDownOutlined,
   CaretUpOutlined,
-  DeleteFilled,
+  DeleteFilled
 } from "@ant-design/icons";
-import { Collapse, Row, Col, Form, Input, Button, Space, Slider } from "antd";
+import {
+  Collapse, Row, Col, Form, Input, Button, Space, Slider
+} from "antd";
+
 const { Panel } = Collapse;
 
-const PanelHeader = ({ title, remove, skill }) => {
-  return (
-    <div className="info-block-panel-header">
-      <div className="info-block-panel-header-title">
-        <span className="title">{title}</span>
-      </div>
-      <div>
-        <Button
-          shape="circle"
-          type="danger"
-          size="small"
-          icon={<DeleteFilled />}
-          onClick={(e) => {
-            e.stopPropagation();
-            if (typeof remove === "function") {
-              remove(skill);
-            }
-          }}
-        ></Button>
-      </div>
+const PanelHeader = ({ title, remove, skill }) => (
+  <div className="info-block-panel-header">
+    <div className="info-block-panel-header-title">
+      <span className="title">{title}</span>
     </div>
-  );
-};
+    <div>
+      <Button
+        shape="circle"
+        type="danger"
+        size="small"
+        icon={<DeleteFilled />}
+        onClick={(e) => {
+          e.stopPropagation();
+          if (typeof remove === "function") {
+            remove(skill);
+          }
+        }}
+      />
+    </div>
+  </div>
+);
 const SkillInfoBlock = ({
   skill,
   total,
   handleReorderSkill,
   handleSaveSkill,
-  handleRemoveSkill,
+  handleRemoveSkill
 }) => {
   const [skillData, setSkillData] = useState(skill);
   const { id, skillName, level: _level } = skillData || {};
@@ -55,23 +56,23 @@ const SkillInfoBlock = ({
       ...values,
       level,
       id,
-      ordinalNumber: skill.ordinalNumber,
+      ordinalNumber: skill.ordinalNumber
     });
   };
 
   useEffect(() => {
     setSkillData(skill);
-    const { id, skillName, level: _level } = skill || {};
+    const { skillName, level: _level } = skill || {};
     setTitle((skillName && skillName) || "Chưa có thông tin");
     setLevel(_level || 50);
   }, [skill]);
 
   const isDisabledDown = useMemo(() => (skill.ordinalNumber || 0) === 0, [
-    skill,
+    skill
   ]);
   const isDisabledUp = useMemo(() => (skill.ordinalNumber || 0) >= total - 1, [
     skill,
-    total,
+    total
   ]);
 
   return (
@@ -92,11 +93,11 @@ const SkillInfoBlock = ({
               nextOrdinalNumber = nextOrdinalNumber < 0 ? 0 : nextOrdinalNumber;
               handleReorderSkill({
                 ...skill,
-                ordinalNumber: nextOrdinalNumber,
+                ordinalNumber: nextOrdinalNumber
               });
             }
           }}
-        ></Button>
+        />
         <Button
           disabled={isDisabledUp}
           size="small"
@@ -105,25 +106,24 @@ const SkillInfoBlock = ({
             e.stopPropagation();
             if (typeof handleReorderSkill === "function") {
               let nextOrdinalNumber = (skill.ordinalNumber || 0) + 1;
-              nextOrdinalNumber =
-                nextOrdinalNumber > total ? total : nextOrdinalNumber;
+              nextOrdinalNumber = nextOrdinalNumber > total ? total : nextOrdinalNumber;
               handleReorderSkill({
                 ...skill,
-                ordinalNumber: nextOrdinalNumber,
+                ordinalNumber: nextOrdinalNumber
               });
             }
           }}
-        ></Button>
+        />
       </div>
       <Panel
-        showArrow={true}
-        header={
+        showArrow
+        header={(
           <PanelHeader
             skill={skillData}
             remove={handleRemoveSkill}
             title={title}
           />
-        }
+        )}
         key="1"
         className="info-block-panel"
       >
@@ -141,14 +141,14 @@ const SkillInfoBlock = ({
           <Row gutter={24}>
             <Col span={12}>
               <Form.Item
-                name={`skillName`}
-                label={`Tên kỹ năng`}
+                name="skillName"
+                label="Tên kỹ năng"
                 initialValue={skillName}
                 rules={[
                   {
                     required: true,
-                    message: "Vui lòng nhập tên kỹ năng!",
-                  },
+                    message: "Vui lòng nhập tên kỹ năng!"
+                  }
                 ]}
               >
                 <Input placeholder="Tên kỹ năng ..." />

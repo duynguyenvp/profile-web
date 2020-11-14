@@ -1,9 +1,9 @@
-@import "../../../common-resources/root.scss";
+@import "../../../assets/root.scss";
 .bg-login {
   width: 100%;
   height: 100%;
   position: relative;
-  background-image: url("../../../common-resources/images/login-background.jpg");
+  background-image: url("../../../assets/images/login-background.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -144,7 +144,8 @@
         font-weight: 600;
         cursor: pointer;
         border: 2px solid rgba(255, 255, 255, 0.5);
-        transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+        transition: background-color 0.3s ease-in-out,
+          border-color 0.3s ease-in-out;
         background-color: transparent;
         color: white;
         border-radius: 4px;

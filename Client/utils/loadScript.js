@@ -7,8 +7,8 @@ export default (url, callback, checkProp) => {
     return;
   }
   // Adding the script tag to the head as suggested before
-  var head = document.head;
-  var script = document.createElement("script");
+  const { head } = document;
+  const script = document.createElement("script");
   script.type = "text/javascript";
   script.src = url;
 

@@ -1,4 +1,3 @@
-import React from "react";
 import getApiInstance from "../../../api/generic-api";
 import { getAuthentication } from "../../../store/authStore";
 import { openNotificationWithIcon } from "./queries";
@@ -16,98 +15,97 @@ export const insertEducation = (portfolioId, educations) => {
         isStillHere: false,
         endDate: new Date(),
         detail: "",
-        ordinalNumber: educations.length,
-      },
-    ],
+        ordinalNumber: educations.length
+      }
+    ]
   };
-  return new Promise((resolve, reject) => {
+  return new Promise(resolve => {
     getApiInstance()
       .postWithBodyAuth({
         url: "/Portfolio/InsertOrUpdateEducations",
-        data,
+        data
       })
-      .then((res) => {
+      .then(res => {
         const { successful, errorMessage, result } = res;
         if (successful) {
           resolve([...educations, ...result]);
         } else {
           openNotificationWithIcon(
             "error",
-            "Lỗi: " + (errorMessage || "Không xác định") + "."
+            `Lỗi: ${errorMessage || "Không xác định"}.`
           );
         }
       })
-      .catch((error) => {
-        openNotificationWithIcon("error", "Đã xảy ra lỗi. " + error);
+      .catch(error => {
+        openNotificationWithIcon("error", `Đã xảy ra lỗi. ${error}`);
         console.error(error);
       });
   });
 };
 
-export const removeEducation = (portfolioId, educations, item) => {
-  return new Promise((resolve, reject) => {
+export const removeEducation = (portfolioId, educations, item) =>
+  new Promise(resolve => {
     getApiInstance()
       .deleteWithFormAuth({
         url: "/Portfolio/DeleteEducation",
         data: {
           Id: portfolioId,
-          ObjectId: item.id,
-        },
+          ObjectId: item.id
+        }
       })
-      .then((res) => {
-        const { successful, errorMessage, result } = res;
+      .then(res => {
+        const { successful, errorMessage } = res;
         if (successful) {
           let index = 0;
-          let newEducations = educations
-            .filter((f) => f.id != item.id)
+          const newEducations = educations
+            .filter(f => f.id !== item.id)
             .sort((a, b) => {
               if ((a.ordinalNumber || 0) < (b.ordinalNumber || 0)) return -1;
               if ((a.ordinalNumber || 0) > (b.ordinalNumber || 0)) return 1;
               return 0;
             })
-            .map((item) => ({ ...item, ordinalNumber: index++ }));
+            .map(item => ({ ...item, ordinalNumber: (index += 1) }));
           resolve(newEducations);
           openNotificationWithIcon("success", "Thành công!!!");
         } else {
           openNotificationWithIcon(
             "error",
-            "Lỗi: " + (errorMessage || "Không xác định") + "."
+            `Lỗi: ${errorMessage || "Không xác định"}.`
           );
         }
       })
-      .catch((error) => {
-        openNotificationWithIcon("error", "Đã xảy ra lỗi. " + error);
+      .catch(error => {
+        openNotificationWithIcon("error", `Đã xảy ra lỗi. ${error}`);
         console.error(error);
       });
   });
-};
 const updateEducation = (portfolioId, nextEducations, showAlert = true) => {
   const auth = getAuthentication();
   const data = {
     id: portfolioId,
     userId: auth.id,
-    portfolioEducations: nextEducations || [],
+    portfolioEducations: nextEducations || []
   };
-  return new Promise((resolve, reject) => {
+  return new Promise(resolve => {
     getApiInstance()
       .postWithBodyAuth({
         url: "/Portfolio/InsertOrUpdateEducations",
-        data,
+        data
       })
-      .then((res) => {
-        const { successful, errorMessage, result } = res;
+      .then(res => {
+        const { successful, errorMessage } = res;
         if (successful) {
-          showAlert && openNotificationWithIcon("success", "Thành công!!!");
+          if (showAlert) openNotificationWithIcon("success", "Thành công!!!");
           resolve(nextEducations);
         } else {
           openNotificationWithIcon(
             "error",
-            "Lỗi: " + (errorMessage || "Không xác định") + "."
+            `Lỗi: ${errorMessage || "Không xác định"}.`
           );
         }
       })
-      .catch((error) => {
-        openNotificationWithIcon("error", "Đã xảy ra lỗi. " + error);
+      .catch(error => {
+        openNotificationWithIcon("error", `Đã xảy ra lỗi. ${error}`);
         console.error(error);
       });
   });
@@ -115,7 +113,7 @@ const updateEducation = (portfolioId, nextEducations, showAlert = true) => {
 export const reorderEducation = (portfolioId, educations, education) => {
   let isExisted = false;
   let educationSwapper = null;
-  let nextEducations = educations.map((item) => {
+  let nextEducations = educations.map(item => {
     if (item.id === education.id) {
       isExisted = true;
       educationSwapper = item;
@@ -124,7 +122,7 @@ export const reorderEducation = (portfolioId, educations, education) => {
     return item;
   });
   if (educationSwapper) {
-    nextEducations = nextEducations.map((item) => {
+    nextEducations = nextEducations.map(item => {
       if (
         item.id !== education.id &&
         (item.ordinalNumber || 0) === (education.ordinalNumber || 0)
@@ -142,7 +140,7 @@ export const reorderEducation = (portfolioId, educations, education) => {
 
 export const saveEducation = (portfolioId, educations, education) => {
   let isExisted = false;
-  const nextEducations = educations.map((item) => {
+  let nextEducations = educations.map(item => {
     if (item.id === education.id) {
       isExisted = true;
       return education;

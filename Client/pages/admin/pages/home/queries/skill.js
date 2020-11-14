@@ -1,4 +1,3 @@
-import React from "react";
 import getApiInstance from "../../../api/generic-api";
 import { getAuthentication } from "../../../store/authStore";
 import { openNotificationWithIcon } from "./queries";
@@ -13,30 +12,30 @@ export const insertNewSkill = (portfolioId, skills) => {
         skillName: "",
         level: 1,
         detail: "",
-        ordinalNumber: skills.length,
-      },
-    ],
+        ordinalNumber: skills.length
+      }
+    ]
   };
 
-  return new Promise((resolve, reject) => {
+  return new Promise(resolve => {
     getApiInstance()
       .postWithBodyAuth({
         url: "/Portfolio/InsertOrUpdateSkills",
-        data,
+        data
       })
-      .then((res) => {
+      .then(res => {
         const { successful, errorMessage, result } = res;
         if (successful) {
           resolve([...skills, ...result]);
         } else {
           openNotificationWithIcon(
             "error",
-            "Lỗi: " + (errorMessage || "Không xác định") + "."
+            `Lỗi: ${errorMessage || "Không xác định"}.`
           );
         }
       })
-      .catch((error) => {
-        openNotificationWithIcon("error", "Đã xảy ra lỗi. " + error);
+      .catch(error => {
+        openNotificationWithIcon("error", `Đã xảy ra lỗi. ${error}`);
         console.error(error);
       });
   });
@@ -45,7 +44,7 @@ export const insertNewSkill = (portfolioId, skills) => {
 export const reorderSkill = (portfolioId, skills, skill) => {
   let isExisted = false;
   let skillSwapper = null;
-  let nextSkills = skills.map((item) => {
+  let nextSkills = skills.map(item => {
     if (item.id === skill.id) {
       isExisted = true;
       skillSwapper = item;
@@ -54,7 +53,7 @@ export const reorderSkill = (portfolioId, skills, skill) => {
     return item;
   });
   if (skillSwapper) {
-    nextSkills = nextSkills.map((item) => {
+    nextSkills = nextSkills.map(item => {
       if (
         item.id !== skill.id &&
         (item.ordinalNumber || 0) === (skill.ordinalNumber || 0)
@@ -71,7 +70,7 @@ export const reorderSkill = (portfolioId, skills, skill) => {
 };
 export const saveSkill = (portfolioId, skills, skill) => {
   let isExisted = false;
-  const nextSkills = skills.map((item) => {
+  let nextSkills = skills.map(item => {
     if (item.id === skill.id) {
       isExisted = true;
       return skill;
@@ -89,67 +88,68 @@ const updateSkill = (portfolioId, nextSkills, showAlert = true) => {
   const data = {
     id: portfolioId,
     userId: auth.id,
-    portfolioSkills: nextSkills || [],
+    portfolioSkills: nextSkills || []
   };
-  return new Promise((resolve, reject) => {
+  return new Promise(resolve => {
     getApiInstance()
       .postWithBodyAuth({
         url: "/Portfolio/InsertOrUpdateSkills",
-        data,
+        data
       })
-      .then((res) => {
-        const { successful, errorMessage, result } = res;
+      .then(res => {
+        const { successful, errorMessage } = res;
         if (successful) {
-          showAlert && openNotificationWithIcon("success", "Lưu thành công!!!");
+          if (showAlert) {
+            openNotificationWithIcon("success", "Lưu thành công!!!");
+          }
           resolve(nextSkills);
         } else {
           openNotificationWithIcon(
             "error",
-            "Lỗi: " + (errorMessage || "Không xác định") + "."
+            `Lỗi: ${errorMessage || "Không xác định"}.`
           );
         }
       })
-      .catch((error) => {
-        openNotificationWithIcon("error", "Đã xảy ra lỗi. " + error);
+      .catch(error => {
+        openNotificationWithIcon("error", `Đã xảy ra lỗi. ${error}`);
         console.error(error);
       });
   });
 };
 
-export const removeSkill = (portfolioId, skills, item) => {
-  return new Promise((resolve, reject) => {
+export const removeSkill = (portfolioId, skills, item) =>
+  new Promise(resolve => {
     getApiInstance()
       .deleteWithFormAuth({
         url: "/Portfolio/DeleteSkill",
         data: {
           Id: portfolioId,
-          ObjectId: item.id,
-        },
+          ObjectId: item.id
+        }
       })
-      .then((res) => {
+      .then(res => {
         const { successful, errorMessage } = res;
         if (successful) {
           openNotificationWithIcon("success", "Thành công!!!");
           let index = 0;
-          let newSkills = skills
-            .filter((f) => f.id != item.id)
+          const newSkills = skills
+            .filter(f => f.id !== item.id)
             .sort((a, b) => {
               if ((a.ordinalNumber || 0) < (b.ordinalNumber || 0)) return -1;
               if ((a.ordinalNumber || 0) > (b.ordinalNumber || 0)) return 1;
               return 0;
             })
-            .map((item) => ({ ...item, ordinalNumber: index++ }));
+            .map(item => ({ ...item, ordinalNumber: (index += 1) }));
           resolve(newSkills);
         } else {
           openNotificationWithIcon(
             "error",
-            "Lỗi: " + (errorMessage || "Không xác định") + "."
+            `Lỗi: ${errorMessage || "Không xác định"}.`
           );
         }
       })
-      .catch((error) => {
-        openNotificationWithIcon("error", "Lỗi khi xóa: " + error);
+      .catch(error => {
+        openNotificationWithIcon("error", `Lỗi khi xóa: ${error}`);
         console.error(error);
       });
   });
-};

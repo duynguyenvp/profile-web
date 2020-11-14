@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import App from "../home/App";
+import App from "../../App";
 import getApiInstance from "../../ajax/generic-api";
 
 import ResumeBody from "./resume-body";
@@ -10,14 +10,14 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
   const loadData = (Username) => {
     let options = {
-      url: "/Portfolio/ForHomePage",
+      url: "/Portfolio/ForHomePage"
     };
     if (Username) {
       options = {
         ...options,
         data: {
-          Username,
-        },
+          Username
+        }
       };
     }
     getApiInstance()
@@ -37,11 +37,11 @@ const Home = () => {
       });
   };
   useEffect(() => {
-    let pathname = window.location.pathname;
+    let { pathname } = window.location;
     pathname = pathname.split(/\//);
 
-    let Username = pathname[pathname.length - 1];
-    if (Username && Username != "resume" && Username != "print") {
+    const Username = pathname[pathname.length - 1];
+    if (Username && Username !== "resume" && Username !== "print") {
       loadData(Username);
     } else {
       loadData();

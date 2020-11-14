@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useLayoutEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import useStyles from "isomorphic-style-loader/useStyles";
 import style from "../style.scss";
 
@@ -6,7 +6,7 @@ import { getResumeData, resumePrint } from "../queries";
 import BoxInfomation from "./box-info";
 import BoxExperiences from "./box-experiences";
 import BoxEducations from "./box-educations";
-import PrintDisabled from "../../../common-resources/ic_print_disabled";
+import PrintDisabled from "../../../assets/ic_print_disabled";
 import { addAlert } from "../../../services/alertService";
 import BoxInfomationSkeleton from "./box-info/skeleton";
 import BoxExperienceSkeleton from "./box-experiences/skeleton";
@@ -21,11 +21,11 @@ const Resume = () => {
   const [username, setUsername] = useState("");
 
   useEffect(() => {
-    let pathname = window.location.pathname;
+    let { pathname } = window.location;
     pathname = pathname.split(/\//);
 
-    let Username = pathname[pathname.length - 1];
-    if (Username && Username != "resume" && Username != "print") {
+    const Username = pathname[pathname.length - 1];
+    if (Username && Username !== "resume" && Username !== "print") {
       setUsername(Username);
     }
     setIsReady(true);
@@ -41,17 +41,6 @@ const Resume = () => {
   }, [username, isReady]);
 
   const loadData = (Username) => {
-    let options = {
-      url: "/Portfolio/ForHomePage",
-    };
-    if (Username) {
-      options = {
-        ...options,
-        data: {
-          Username,
-        },
-      };
-    }
     getResumeData(Username)
       .then((res) => {
         setIsLoading(false);
@@ -65,11 +54,11 @@ const Resume = () => {
   const print = () => {
     setIsPrinting(true);
     resumePrint(username)
-      .then((res) => {
+      .then(() => {
         setIsPrinting(false);
         addAlert({ type: "success", message: "Đã tải xuống file PDF." });
       })
-      .catch((eror) => {
+      .catch(() => {
         setIsPrinting(false);
       });
   };
@@ -81,6 +70,7 @@ const Resume = () => {
     if (portfolioUser && portfolioSkills) {
       return <BoxInfomation {...state} />;
     }
+    return null;
   };
   const renderRightZone = () => {
     const { portfolioUser, portfolioExperiences, portfolioEducations } = state;
@@ -111,7 +101,7 @@ const Resume = () => {
   };
 
   return (
-    <section id="resume" className={`resume`}>
+    <section id="resume" className="resume">
       <button
         className={`btn-control-item ${isPrinting ? "disabled" : ""}`}
         onClick={print}
@@ -123,14 +113,14 @@ const Resume = () => {
         )}
         {isPrinting ? (
           <Fragment>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
+            <span />
+            <span />
+            <span />
+            <span />
           </Fragment>
         ) : null}
       </button>
-      <aside className={`resume__aside resume__aside--width`}>
+      <aside className="resume__aside resume__aside--width">
         {renderLeftZone()}
       </aside>
       <section id="resume__body" className="resume__body">

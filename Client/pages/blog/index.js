@@ -1,32 +1,38 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import App from '../home/App'
-import Blog from './partials/Blog'
-import StyleContext from 'isomorphic-style-loader/StyleContext'
-import RESOURCE_VERSION from '../../../version'
-import { setPostState } from '../../services/postService'
-setPostState(window.__INITIAL__DATA__)
+import React from "react";
+import ReactDOM from "react-dom";
+import StyleContext from "isomorphic-style-loader/StyleContext";
+import App from "../../App";
+import Blog from "./partials/Blog";
+import RESOURCE_VERSION from "../../../version";
+import { setPostState } from "../../services/postService";
+
+setPostState(window.__INITIAL__DATA__);
 
 const insertCss = (...styles) => {
-    const removeCss = styles.map(style => style._insertCss())
-    return () => removeCss.forEach(dispose => dispose())
-}
+  const removeCss = styles.map(style => style._insertCss());
+  return () => removeCss.forEach(dispose => dispose());
+};
 
 ReactDOM.hydrate(
-    <StyleContext.Provider value={{ insertCss }}>
-        <App>
-            <Blog {...window.__INITIAL__DATA__} />
-        </App>
-    </StyleContext.Provider>,
-    document.getElementById('app')
-)
+  <StyleContext.Provider value={{ insertCss }}>
+    <App>
+      <Blog {...window.__INITIAL__DATA__} />
+    </App>
+  </StyleContext.Provider>,
+  document.getElementById("app")
+);
 
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js?v=' + RESOURCE_VERSION).then(registration => {
-            console.log('SW registered: ', registration);
-        }).catch(registrationError => {
-            console.log('SW registration failed: ', registrationError);
-        });
-    });
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register(`/sw.js?v=${RESOURCE_VERSION}`)
+      .then((registration) => {
+        // eslint-disable-next-line
+        console.log("SW registered: ", registration);
+      })
+      .catch((registrationError) => {
+        // eslint-disable-next-line
+        console.log("SW registration failed: ", registrationError);
+      });
+  });
 }

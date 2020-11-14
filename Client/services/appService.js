@@ -5,37 +5,45 @@ let data = {
   isShirk: false,
   active: "home",
   route: "",
-  isDisplayPlane: false,
+  isDisplayPlane: false
 };
-const subscribes = (f) => {
+
+const unsubscribe = subcribes => {
+  registeredObjects = subcribes;
+};
+
+const subscribes = f => {
   registeredObjects.push(f);
-  return () => unsubscribe(registeredObjects.filter((a) => a !== f));
+  return () => {
+    unsubscribe(registeredObjects.filter(a => a !== f));
+  };
 };
-const unsubscribe = (subcribes) => (registeredObjects = subcribes);
+
 const onChange = () => {
-  registeredObjects.forEach((f) => {
+  registeredObjects.forEach(f => {
     f();
   });
 };
 
 export const getAppData = () => data;
-export const setAppData = (nextData) => {
+export const setAppData = nextData => {
   data = { ...nextData };
   onChange();
 };
 
 export function useAppStore() {
-  const [appData, setAppData] = useState(getAppData);
+  const [value, setValue] = useState(getAppData);
   useEffect(() => {
     const unsubcribes = subscribes(() => {
       const nextData = getAppData();
-      if (JSON.stringify(appData) != JSON.stringify(nextData))
-        setAppData(nextData);
+      if (JSON.stringify(value) !== JSON.stringify(nextData)) {
+        setValue(nextData);
+      }
     });
     return () => {
       unsubcribes();
     };
   }, []);
 
-  return appData;
+  return value;
 }

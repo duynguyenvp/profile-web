@@ -1,0 +1,39 @@
+@import "./assets/root.scss";
+@import "./components/alert/style.scss";
+.plane {
+  width: 50px;
+  height: 50px;
+  font-size: 46px;
+  top: 90%;
+  right: 70px;
+  background-color: $primaryColor;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  border-radius: 50%;
+  cursor: pointer;
+  position: fixed;
+  user-select: none;
+}
+
+.btn-try-now {
+  text-decoration: none;
+  background: transparent;
+  border: 2px solid $primaryColor;
+  border-radius: 50px;
+  color: $primaryColor;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0.8;
+
+  &:hover,
+  &:active {
+    border-width: 3px;
+    font-weight: bolder;
+    opacity: 1;
+  }
+}

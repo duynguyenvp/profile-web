@@ -3,9 +3,9 @@ import Skeleton from "react-loading-skeleton";
 import useStyles from "isomorphic-style-loader/useStyles";
 import style from "./style.scss";
 
-const mockArray = (length) => {
-  let array = [];
-  for (let index = 0; index < length; index++) {
+const mockArray = length => {
+  const array = [];
+  for (let index = 0; index < length; index += 1) {
     array.push(index);
   }
   return array;
@@ -16,7 +16,7 @@ const BoxInfomationSkeleton = () => {
   const skills = mockArray(6);
 
   return (
-    <div className={`boxInfo`}>
+    <div className="boxInfo">
       <div className="boxInfo__avatar">
         <Skeleton height={250} width={250} />
       </div>
@@ -43,14 +43,12 @@ const BoxInfomationSkeleton = () => {
         </p>
         <div className="boxInfo__container__skills">
           {skills &&
-            skills.map((skill, index) => {
-              return (
-                <Fragment key={index}>
-                  <Skeleton width={100} />
-                  <Skeleton width={250} />
-                </Fragment>
-              );
-            })}
+            skills.map(skill => (
+              <Fragment key={skill}>
+                <Skeleton width={100} />
+                <Skeleton width={250} />
+              </Fragment>
+            ))}
         </div>
       </div>
     </div>
