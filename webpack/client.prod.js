@@ -88,7 +88,7 @@ module.exports = {
       dry: false,
     }),
     new WebpackAssetsManifest({
-      output: "assets.json",
+      output: path.join(__dirname, "../Server/views/assets.json"),
       entrypoints: true,
       entrypointsKey: "entryPoints",
     }),

@@ -59,6 +59,10 @@ module.exports = env => {
             {
               source: path.resolve(__dirname, "../public"),
               destination: path.resolve(__dirname, "../build/public")
+            },
+            {
+              source: path.resolve(__dirname, "../Server/views/assets.json"),
+              destination: path.resolve(__dirname, "../build/dist/assets.json")
             }
           ]
         }

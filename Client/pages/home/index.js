@@ -30,7 +30,8 @@ const Page = () => (
 function render() {
   ReactDOM.render(<Page />, document.getElementById("app"));
 }
-if (process.env === "production") {
+console.warn(process.env);
+if (process.env.NODE_ENV === "production") {
   ReactDOM.hydrate(<Page />, document.getElementById("app"));
 
   if ("serviceWorker" in navigator) {
