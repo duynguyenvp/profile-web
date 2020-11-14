@@ -1,10 +1,10 @@
 import axios from "axios";
 import qs from "qs";
 // import tokenService from '../user/services/token.js'
-import { isAbsoluteUrl } from "../utils/string-utils.js";
-import { DOMAIN_API } from "../configs/env.js";
+import { isAbsoluteUrl } from "../utils/string-utils";
+import { DOMAIN_API } from "../configs/env";
 
-export const create = (options) => {
+export const create = options => {
   const opts = {};
 
   if (options.baseURL && !isAbsoluteUrl(options.baseURL)) {
@@ -13,7 +13,7 @@ export const create = (options) => {
 
   const instance = axios.create(Object.assign({}, options, opts));
 
-  instance.interceptors.request.use((config) => {
+  instance.interceptors.request.use(config => {
     const { method, data, header } = config;
     if (method === "post" && typeof data === "object") {
       const nextHeader = Object.assign({}, header, {
@@ -31,7 +31,7 @@ export const create = (options) => {
 
   instance.interceptors.response.use(
     response => response.data,
-    (error) => {
+    error => {
       console.error(error);
       if (error.response.status === 401) {
         // tokenService.expireToken();

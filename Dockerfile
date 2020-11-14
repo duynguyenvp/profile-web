@@ -6,7 +6,11 @@ RUN apk update && apk upgrade && \
 RUN yarn install && yarn release
 
 FROM node:12.18.1-alpine3.12
-ENV NODE_ENV="production"
+LABEL traefik.docker.network="web"
+LABEL traefik.enable="true"
+LABEL traefik.basic.frontend.rule="Host:somethingaboutme.info"
+LABEL traefik.basic.port="8080"
+LABEL traefik.basic.protocol="http"
 ENV CHROME_BIN="/usr/bin/chromium-browser" \
     PUPPETEER_SKIP_CHROMIUM_DOWNLOAD="true"
 RUN set -x \

@@ -113,49 +113,54 @@ const ExperienceInfoBlock = ({
     [experience, total]
   );
 
+  const isOrderable = useMemo(() => total > 1, [total]);
+
   return (
     <Collapse
       bordered={false}
       defaultActiveKey={[]}
       className="info-block-collapse"
     >
-      <div className="order-controls">
-        <Button
-          size="small"
-          disabled={isDisabledDown}
-          className="btnOrder"
-          icon={<CaretUpOutlined />}
-          onClick={e => {
-            e.stopPropagation();
-            if (typeof handleReorderExperience === "function") {
-              let nextOrdinalNumber = (experience.ordinalNumber || 0) - 1;
-              nextOrdinalNumber = nextOrdinalNumber < 0 ? 0 : nextOrdinalNumber;
-              handleReorderExperience({
-                ...experience,
-                ordinalNumber: nextOrdinalNumber
-              });
-            }
-          }}
-        />
-        <Button
-          disabled={isDisabledUp}
-          size="small"
-          className="btnOrder"
-          icon={<CaretDownOutlined />}
-          onClick={e => {
-            e.stopPropagation();
-            if (typeof handleReorderExperience === "function") {
-              let nextOrdinalNumber = (experience.ordinalNumber || 0) + 1;
-              nextOrdinalNumber =
-                nextOrdinalNumber > total ? total : nextOrdinalNumber;
-              handleReorderExperience({
-                ...experience,
-                ordinalNumber: nextOrdinalNumber
-              });
-            }
-          }}
-        />
-      </div>
+      {isOrderable && (
+        <div className="order-controls">
+          <Button
+            size="small"
+            disabled={isDisabledDown}
+            className="btnOrder"
+            icon={<CaretUpOutlined />}
+            onClick={e => {
+              e.stopPropagation();
+              if (typeof handleReorderExperience === "function") {
+                let nextOrdinalNumber = (experience.ordinalNumber || 0) - 1;
+                nextOrdinalNumber =
+                  nextOrdinalNumber < 0 ? 0 : nextOrdinalNumber;
+                handleReorderExperience({
+                  ...experience,
+                  ordinalNumber: nextOrdinalNumber
+                });
+              }
+            }}
+          />
+          <Button
+            disabled={isDisabledUp}
+            size="small"
+            className="btnOrder"
+            icon={<CaretDownOutlined />}
+            onClick={e => {
+              e.stopPropagation();
+              if (typeof handleReorderExperience === "function") {
+                let nextOrdinalNumber = (experience.ordinalNumber || 0) + 1;
+                nextOrdinalNumber =
+                  nextOrdinalNumber > total ? total : nextOrdinalNumber;
+                handleReorderExperience({
+                  ...experience,
+                  ordinalNumber: nextOrdinalNumber
+                });
+              }
+            }}
+          />
+        </div>
+      )}
       <Panel
         showArrow
         header={

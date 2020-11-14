@@ -275,8 +275,8 @@ const ImagePopup = props => {
             <div className="list-images">
               <h3 style={{ width: "100%" }}>Danh sách ảnh đã upload</h3>
               <div className="list-images-item">
-                {images
-                  && images.map((item, index) => (
+                {images &&
+                  images.map((item, index) => (
                     <ImageItem
                       key={index}
                       src={item.path}

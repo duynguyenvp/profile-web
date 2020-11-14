@@ -83,9 +83,9 @@ const fileManagerPlugin = new FileManagerPlugin({
       {
         source: path.resolve(
           __dirname,
-          "../Client/assets/material-design-icons/"
+          "../Client/assets/fonts/"
         ),
-        destination: path.resolve(__dirname, "../build/material-design-icons/")
+        destination: path.resolve(__dirname, "../build/fonts/")
       },
       {
         source: path.resolve(__dirname, "../Client/assets/images"),
@@ -104,6 +104,10 @@ const fileManagerPlugin = new FileManagerPlugin({
           __dirname,
           "../build/dist/ls.unveilhooks.min.js"
         )
+      },
+      {
+        source: path.resolve(__dirname, "../Client/assets/modernizr-webp.js"),
+        destination: path.resolve(__dirname, "../build/dist/modernizr-webp.js")
       }
     ]
   }

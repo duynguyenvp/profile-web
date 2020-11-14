@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import withStyles from "isomorphic-style-loader/withStyles";
 import s from "./style.scss";
-
 import getApiInstance from "../../../ajax/generic-api";
 import { validateEmail } from "../../../utils/validate";
-
 import { addAlert } from "../../../services/alertService";
 import FbPlugin from "../FbPagePlugin";
 
@@ -53,9 +51,7 @@ class FourthZone extends Component {
   };
 
   send = () => {
-    const {
-      email, message, isValidateEmail, isValidateMessage
-    } = this.state;
+    const { email, message, isValidateEmail, isValidateMessage } = this.state;
     if (isValidateEmail || isValidateMessage) {
       addAlert({ type: "warning", message: "Lỗi Validate." });
       return;
@@ -69,7 +65,7 @@ class FourthZone extends Component {
         url: "/Home",
         data: { email, message }
       })
-      .then((res) => {
+      .then(res => {
         if (res) {
           addAlert({
             message: "Gửi phải hồi thành công. Cảm ơn bạn!!!",
@@ -85,20 +81,18 @@ class FourthZone extends Component {
           addAlert({ type: "warning", message: "Đã xảy ra lỗi!" });
         }
       })
-      .catch((err) => {
+      .catch(err => {
         console.error("Lỗi", err);
       });
   };
 
   render() {
-    const {
-      email, message, isValidateEmail, isValidateMessage
-    } = this.state;
+    const { email, message, isValidateEmail, isValidateMessage } = this.state;
     return (
       <div
         id="fourthZoneId"
         className="lazyload"
-        data-bg="dist/images/feedback-background.jpg"
+        data-bg="dist/images/feedback-background.webp"
       >
         <div className="fourthZoneContent">
           <div className="box-contact" data-aos="fade-right">
@@ -113,7 +107,7 @@ class FourthZone extends Component {
                 className={isValidateEmail ? "error" : ""}
                 placeholder="Email ..."
                 value={email}
-                onChange={(e) => {
+                onChange={e => {
                   this.onChange("email", e.target.value);
                 }}
               />
@@ -132,7 +126,7 @@ class FourthZone extends Component {
                 className={isValidateMessage ? "error" : ""}
                 placeholder="Nhập nội dung ..."
                 value={message}
-                onChange={(e) => {
+                onChange={e => {
                   this.onChange("message", e.target.value);
                 }}
               />

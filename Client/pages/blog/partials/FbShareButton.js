@@ -7,7 +7,7 @@ const FbShareButton = ({ postUrl }) => {
     loadScript(
       "https://connect.facebook.net/en_US/sdk.js",
       () => {
-        window.fbAsyncInit = function () {
+        window.fbAsyncInit = () => {
           window.FB.init({
             appId: fbAppId,
             autoLogAppEvents: true,

@@ -115,7 +115,7 @@ const ImageManager = ({ visible, callback, close }) => {
       }
       img.onerror = error;
       img.onabort = error;
-      img.onload = function () {
+      img.onload = () => {
         clearTimeout(timer);
         resolve("success");
       };

@@ -1,4 +1,4 @@
-import { create } from "./api-axios.js";
+import { create } from "./api-axios";
 
 const getApiInstance = (baseURL = "/api") => {
   const ajax = create({ baseURL });

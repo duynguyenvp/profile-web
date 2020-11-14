@@ -5,7 +5,6 @@ import s from "./style.scss";
 import StaticProcessBar from "../../../components/static-process-bar";
 import SkypeIcon from "../../../assets/ic_skype";
 
-import getLanguage from "./languages";
 import { getState } from "../../../services/userService";
 
 import {
@@ -38,7 +37,7 @@ class ResumeBody extends Component {
           timeout: 15 * 1000
         }
       )
-      .then((res) => {
+      .then(res => {
         const blob = new Blob([res], { type: "application/pdf" });
         const link = document.createElement("a");
         link.href = window.URL.createObjectURL(blob);
@@ -50,7 +49,7 @@ class ResumeBody extends Component {
           this.setState({ isPrinting: false, isComplete: true });
         }, 300);
       })
-      .catch((err) => {
+      .catch(err => {
         console.error(err);
         this.setState({ isPrinting: false });
       });
@@ -72,11 +71,10 @@ class ResumeBody extends Component {
     );
   };
 
-  renderUserInfo = (portfolioUser, language) => {
+  renderUserInfo = (portfolioUser) => {
     const { portfolioSkills: skills, isPrint } = this.props;
-    const {
-      fullName, jobTitle, email, mobile, skype, address, avatar
-    } = portfolioUser || {};
+    const { fullName, jobTitle, email, mobile, skype, address, avatar } =
+      portfolioUser || {};
     const avatarStyle = {
       backgroundImage: `url("${avatar || "/dist/images/avatar.jpg"}")`
     };
@@ -89,48 +87,37 @@ class ResumeBody extends Component {
         <div className="container">
           <h2>{bindValue(fullName)}</h2>
           <p className="card-field-info">
-            <i className="material-icons">work</i>
-            {" "}
-            {bindValue(jobTitle)}
+            <i className="material-icons">work</i> {bindValue(jobTitle)}
           </p>
           <p className="card-field-info">
-            <i className="material-icons">email</i>
-            {" "}
-            {bindValue(email)}
+            <i className="material-icons">email</i> {bindValue(email)}
           </p>
           <p className="card-field-info">
-            <i className="material-icons">call</i>
-            {" "}
-            {bindValue(mobile)}
+            <i className="material-icons">call</i> {bindValue(mobile)}
           </p>
           <p className="card-field-info">
-            <SkypeIcon />
-            {" "}
-            {bindValue(skype)}
+            <SkypeIcon /> {bindValue(skype)}
           </p>
           <p className="card-field-info">
-            <i className="material-icons">home</i>
-            {" "}
-            {bindValue(address)}
+            <i className="material-icons">home</i> {bindValue(address)}
           </p>
           <hr />
           <p className="card-field-info field-title">
-            <i className="material-icons">ac_unit</i>
-            {" "}
-            {language.sectionSkills}
+            <i className="material-icons">ac_unit</i> SKILLS
           </p>
           <div className="skills-box">
-            {skills
-              && skills.map((skill, index) => (isPrint ? (
-                <div className="skill-for-print" key={index}>
-                  {skill.skillName}
-                </div>
-              ) : (
-                <StaticProcessBar
-                  name={skill.skillName}
-                  value={skill.level}
-                />
-              )))}
+            {skills &&
+              skills.map((skill, index) =>
+                (isPrint ? (
+                  <div className="skill-for-print" key={index}>
+                    {skill.skillName}
+                  </div>
+                ) : (
+                  <StaticProcessBar
+                    name={skill.skillName}
+                    value={skill.level}
+                  />
+                )))}
           </div>
         </div>
       </div>
@@ -144,7 +131,6 @@ class ResumeBody extends Component {
       portfolioEducations: educations,
       isPrint
     } = this.props;
-    const language = getLanguage();
     const { isPrinting } = this.state;
     return (
       <div className={`resume-body ${isPrint ? "print" : ""}`}>
@@ -181,68 +167,64 @@ class ResumeBody extends Component {
             <div className="secondZoneContent">
               {!isPrint && (
                 <div className="secondZoneLeftPanel">
-                  {this.renderUserInfo(portfolioUser, language)}
+                  {this.renderUserInfo(portfolioUser)}
                 </div>
               )}
               <div className="secondZoneRightPanel">
-                {isPrint && this.renderUserInfo(portfolioUser, language)}
+                {isPrint && this.renderUserInfo(portfolioUser)}
                 <div className="card">
                   <div className="container">
                     <h2 className="card-field-info container-title">
-                      <i className="material-icons">assignment</i>
-                      {" "}
-                      {language.sectionExperiences}
+                      <i className="material-icons">assignment</i>{" "}
+                      EXPERIENCES
                     </h2>
-                    {experiences
-                      && experiences.map((item, index) => (
-                        <div className="content" key={index}>
-                          <h5 className="w3-opacity">
-                            <b>
-                              {item.position}
-                              {" "}
-                              /
-                              {item.company}
-                            </b>
-                          </h5>
-                          <h6 className="w3-text-teal">
-                            <i className="material-icons">date_range</i>
-                            {dateToStringFormatNoDayCultureVi(
-                              item.startDate
-                            )}
-                            {" "}
-                            -
-                            {" "}
-                            {dateToStringFormatNoDayCultureVi(item.endDate)}
-                          </h6>
-                          <p
-                            dangerouslySetInnerHTML={{
-                              __html: item.detail
-                            }}
-                          />
-                          {experiences.length - 1 !== index && <hr />}
-                        </div>
-                      ))}
+                    {experiences &&
+                      experiences
+                        .sort((a, b) => {
+                          if ((a.ordinalNumber || 0) < (b.ordinalNumber || 0)) { return -1; }
+                          if ((a.ordinalNumber || 0) > (b.ordinalNumber || 0)) { return 1; }
+                          return 0;
+                        })
+                        .map((item, index) => (
+                          <div className="content" key={index}>
+                            <h5 className="w3-opacity">
+                              <b>
+                                {item.position} /{item.company}
+                              </b>
+                            </h5>
+                            <h6 className="w3-text-teal">
+                              <i className="material-icons">date_range</i>
+                              {dateToStringFormatNoDayCultureVi(
+                                item.startDate
+                              )}{" "}
+                              - {dateToStringFormatNoDayCultureVi(item.endDate)}
+                            </h6>
+                            <p
+                              dangerouslySetInnerHTML={{
+                                __html: item.detail
+                              }}
+                            />
+                            {experiences.length - 1 !== index && <hr />}
+                          </div>
+                        ))}
                   </div>
                 </div>
                 <div className="card">
                   <div className="container">
                     <h2 className="card-field-info container-title">
-                      <i className="material-icons">school</i>
-                      {" "}
-                      {language.sectionEducations}
+                      <i className="material-icons">school</i>{" "}
+                      EDUCATIONS
                     </h2>
-                    {educations
-                      && educations.map((education, index) => (
+                    {educations &&
+                      educations.map((education, index) => (
                         <div className="content" key={index}>
                           <h5 className="w3-opacity">
                             <b>{education.schoolName}</b>
                             <b className="PeriodTime">
                               {dateToStringFormatNoDayCultureVi(
                                 education.startDate
-                              )}
-                              {" "}
-                              -
-                              {" "}
+                              )}{" "}
+                              -{" "}
                               {dateToStringFormatNoDayCultureVi(
                                 education.endDate
                               )}

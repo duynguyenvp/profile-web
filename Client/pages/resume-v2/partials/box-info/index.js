@@ -1,14 +1,12 @@
-import React, { useMemo } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import useStyles from "isomorphic-style-loader/useStyles";
 import style from "./style.scss";
-import getLanguage from "../../languages";
 import SkypeIcon from "../../../../assets/ic_skype";
 import StaticProcessBar from "../../../../components/static-process-bar";
 
 const BoxInfomation = ({ portfolioSkills, portfolioUser }) => {
   useStyles(style);
-  const language = useMemo(getLanguage, []);
   const { fullName, jobTitle, email, mobile, skype, address, avatar } =
     portfolioUser || {};
   const avatarStyle = {
@@ -39,7 +37,7 @@ const BoxInfomation = ({ portfolioSkills, portfolioUser }) => {
         </p>
         <hr />
         <p className="boxInfo__container__field boxInfo__container__field--title">
-          <i className="material-icons">ac_unit</i> {language.sectionSkills}
+          <i className="material-icons">ac_unit</i> SKILLS
         </p>
         <div className="boxInfo__container__skills">
           {portfolioSkills &&
@@ -64,12 +62,12 @@ const BoxInfomation = ({ portfolioSkills, portfolioUser }) => {
 };
 
 BoxInfomation.propTypes = {
-  portfolioUser: PropTypes.array,
+  portfolioUser: PropTypes.object,
   portfolioSkills: PropTypes.array
 };
 
 BoxInfomation.defaultProps = {
-  portfolioUser: [],
+  portfolioUser: {},
   portfolioSkills: []
 };
 

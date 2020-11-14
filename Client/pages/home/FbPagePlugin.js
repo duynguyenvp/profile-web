@@ -6,12 +6,12 @@ const FbPlugin = () => {
     loadScript(
       "https://connect.facebook.net/en_US/sdk.js",
       () => {
-        window.fbAsyncInit = function () {
+        window.fbAsyncInit = () => {
           window.FB.init({
             appId: "1052049204910473",
             autoLogAppEvents: true,
             xfbml: true,
-            version: "v8.0"
+            version: "v9.0"
           });
         };
       },
@@ -24,9 +24,9 @@ const FbPlugin = () => {
         className="fb-page"
         data-href="https://www.facebook.com/somethingaboutme.info/"
         data-lazy="true"
-        data-tabs=""
-        data-width=""
-        data-height=""
+        data-tabs="timeline"
+        data-width="400"
+        data-height="470"
         data-small-header="false"
         data-adapt-container-width="true"
         data-hide-cover="false"

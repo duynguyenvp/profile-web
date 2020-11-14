@@ -18,7 +18,7 @@ const BoxInfomationSkeleton = () => {
   return (
     <div className="boxInfo">
       <div className="boxInfo__avatar">
-        <Skeleton height={250} width={250} />
+        <Skeleton height={200} width={200} circle />
       </div>
       <div className="boxInfo__container">
         <Skeleton height={26} />

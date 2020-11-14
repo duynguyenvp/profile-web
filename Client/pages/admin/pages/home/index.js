@@ -44,8 +44,7 @@ const Home = () => {
   const [skills, setSkills] = useState(null);
   const [personalInfo, setPersonalInfo] = useState(null);
 
-  useEffect(() => {
-    if (portfolioId) return;
+  const getResume = () => {
     loadData()
       .then(({ error, isEmpty, result }) => {
         setIsLoading(false);
@@ -61,6 +60,7 @@ const Home = () => {
             portfolioSkills,
             portfolioUser
           } = result;
+          setIsEmpty(false);
           setPortfolioId(id);
           setPersonalInfo(portfolioUser);
           setEducations(portfolioEducations);
@@ -73,6 +73,11 @@ const Home = () => {
         setError(error);
         console.error(error);
       });
+  };
+
+  useEffect(() => {
+    if (portfolioId) return;
+    getResume();
   }, [portfolioId]);
 
   const handleInsertNewSkill = () => {
@@ -151,8 +156,8 @@ const Home = () => {
       .then(res => {
         const { successful, errorMessage } = res;
         if (successful) {
-          openNotificationWithIcon("success", "Lưu thành công!!!");
-          loadData();
+          openNotificationWithIcon("success", "Tạo resume thành công!!!");
+          getResume();
         } else {
           openNotificationWithIcon(
             "error",

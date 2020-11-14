@@ -4,4 +4,4 @@
 /package-lock.json
 /yarn.lock
 /yarn-error.log
-Server/views/assets.json
+Server/assets.json

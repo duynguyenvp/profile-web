@@ -41,8 +41,8 @@ class ResumeBodySkeleton extends Component {
             <Skeleton height={26} width={250} />
           </p>
           <div className="skills-box">
-            {skills
-              && skills.map(() => (
+            {skills &&
+              skills.map(() => (
                 <>
                   <Skeleton width={100} />
                   <Skeleton width={250} />
@@ -68,8 +68,8 @@ class ResumeBodySkeleton extends Component {
                   <h2 className="card-field-info container-title">
                     <Skeleton width={250} height={40} />
                   </h2>
-                  {experiences
-                    && experiences.map((item, index) => (
+                  {experiences &&
+                    experiences.map((item, index) => (
                       <div className="content" key={item}>
                         <Skeleton />
                         <Skeleton />
@@ -84,8 +84,8 @@ class ResumeBodySkeleton extends Component {
                   <h2 className="card-field-info container-title">
                     <Skeleton width={250} height={40} />
                   </h2>
-                  {educations
-                    && educations.map((education, index) => (
+                  {educations &&
+                    educations.map((education, index) => (
                       <div className="content" key={education}>
                         <h5 className="w3-opacity">
                           <Skeleton />

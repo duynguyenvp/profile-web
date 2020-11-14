@@ -1,4 +1,4 @@
-export const cloneDate = (date) => {
+export const cloneDate = date => {
   if (!date) {
     return null;
   }
@@ -9,7 +9,7 @@ export const cloneDate = (date) => {
   return result;
 };
 
-export const dateToStringFormatCultureVi = (date) => {
+export const dateToStringFormatCultureVi = date => {
   const newDate = cloneDate(date);
   try {
     const options = { year: "numeric", month: "2-digit", day: "2-digit" };
@@ -19,7 +19,7 @@ export const dateToStringFormatCultureVi = (date) => {
   }
 };
 
-export const datetimeToStringFormatCultureVi = (date) => {
+export const datetimeToStringFormatCultureVi = date => {
   const newDate = cloneDate(date);
   try {
     const options = {
@@ -36,12 +36,17 @@ export const datetimeToStringFormatCultureVi = (date) => {
   }
 };
 
-export const dateToStringFormatNoDayCultureVi = (date) => {
-  const newDate = cloneDate(date);
+function lamtron(value) {
+  return value > 0 && value < 10 ? `0${value}` : value;
+}
+
+export const dateToStringFormatNoDayCultureVi = date => {
   try {
-    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
-    const result = newDate.toLocaleDateString("vi", options);
-    return result.substring(3);
+    const newDate = new Date(date);
+    const result = `${lamtron(
+      newDate.getMonth() + 1
+    )}/${newDate.getFullYear()}`;
+    return result;
   } catch (error) {
     return "";
   }

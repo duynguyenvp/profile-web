@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useMemo, useState } from "react";
+import { Layout, Menu, Avatar, Dropdown } from "antd";
+import { BrowserRouter as Router } from "react-router-dom";
 import {
-  Layout, Menu, Avatar, Dropdown
-} from "antd";
-import {
-  BrowserRouter as Router,
-  NavLink,
-  useLocation
-} from "react-router-dom";
-import { LogoutOutlined, LockOutlined } from "@ant-design/icons";
-import menus from "../assets/menus";
+  LogoutOutlined,
+  LockOutlined,
+  MenuUnfoldOutlined,
+  MenuFoldOutlined
+} from "@ant-design/icons";
 import RouteLayout from "./RouteLayout";
 import { useAuthenticationStore } from "../store/authStore";
 import Logo from "../assets/images/logo.png";
@@ -16,110 +14,9 @@ import LogoSmall from "../assets/images/logo_small.png";
 import defaultAvatar from "../assets/images/avatar.jpg";
 import getApiInstance from "../api/generic-api";
 import PopupChangePassword from "../components/PopupChangePassword";
+import AppMenu from "./AppMenu";
 
-const {
-  Content, Footer, Sider, Header
-} = Layout;
-const { SubMenu } = Menu;
-const checkAdminRole = authentication => {
-  if (!authentication || !authentication.userRoles) return false;
-  const isAdmin = authentication.userRoles.find(
-    f => f.roleName === "admin" || f.roleName === "superadmin"
-  );
-  if (isAdmin) {
-    return true;
-  }
-  return false;
-};
-const AppMenu = () => {
-  const [openKeys, setOpenKeys] = useState([""]);
-  const [selectKeys, setSelectKeys] = useState([""]);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const location = useLocation();
-  const auth = useAuthenticationStore();
-  useEffect(() => {
-    setIsAdmin(checkAdminRole(auth));
-  }, [auth]);
-  useEffect(() => {
-    // current menu
-    const current = menus.find(f => f.path === location.pathname);
-    if (current) {
-      setSelectKeys([current.menuId]);
-      const keys = getAllOpenKeys(current);
-      setOpenKeys(keys);
-    }
-  }, [location]);
-
-  const menuSort = (a, b) => {
-    if (a.order === b.order && a.name === b.name) return 0;
-    if (a.order < b.order) return -1;
-    if (a.order > b.order) return 1;
-    if (a.name < b.name) return -1;
-    if (a.name > b.name) return 1;
-    return 0;
-  };
-
-  const renderMenus = id => {
-    const menuItem = menus.find(f => f.menuId === id && f.disable !== true);
-    if (!menuItem || (menuItem.adminOnly && !isAdmin)) return null;
-    const submenus = menus.filter(f => f.parentMenuId === id).sort(menuSort);
-
-    return renderMenuItem(menuItem, submenus);
-  };
-  const renderMenuItem = (menu, submenus) => (submenus && submenus.length ? (
-    <SubMenu
-      key={menu.menuId}
-      title={(
-        <span>
-          {menu.icon}
-          <span>{menu.name}</span>
-        </span>
-        )}
-      onTitleClick={({ key }) => {
-        if (openKeys.includes(key)) {
-          setOpenKeys(openKeys.filter(f => f !== key));
-        } else {
-          setOpenKeys([key]);
-        }
-      }}
-    >
-      {submenus.map(item => renderMenus(item.menuId))}
-    </SubMenu>
-  ) : (
-    <Menu.Item key={menu.menuId}>
-      <NavLink to={menu.path}>{menu.name}</NavLink>
-    </Menu.Item>
-  ));
-
-  const getAllOpenKeys = current => {
-    const getParentSub = (menu, keys) => {
-      const parentSub = menus.find(f => f.menuId === menu.parentMenuId);
-      if (parentSub) {
-        keys.push(parentSub.menuId);
-        return getParentSub(parentSub, keys);
-      }
-      return keys;
-    };
-
-    return getParentSub(current, []);
-  };
-
-  const root = menus.find(f => f.isRoot);
-
-  return (
-    <Menu
-      theme="dark"
-      mode="inline"
-      selectedKeys={selectKeys}
-      openKeys={openKeys}
-    >
-      {menus
-        .filter(f => f.parentMenuId === root.menuId)
-        .sort(menuSort)
-        .map(item => renderMenus(item.menuId))}
-    </Menu>
-  );
-};
+const { Content, Footer, Sider, Header } = Layout;
 
 const AppLayout = () => {
   const [broken, setBroken] = useState(false);
@@ -133,11 +30,10 @@ const AppLayout = () => {
     setVisible(false);
   };
 
-  const onCollapse = collapsed => {
-    setCollapsed(collapsed);
+  const onCollapseToggle = () => {
+    setCollapsed(collapsed => !collapsed);
   };
   const auth = useAuthenticationStore();
-  const siderProps = broken ? { collapsedWidth: "0" } : { collapsible: true };
 
   const sigout = () => {
     getApiInstance("/account")
@@ -164,17 +60,26 @@ const AppLayout = () => {
     </Menu>
   );
 
+  const isRenderUserInfo = useMemo(() => {
+    if (!broken) return true;
+    return collapsed;
+  }, [collapsed, broken]);
+
   return (
     <Router>
       <Layout>
         <Sider
-          breakpoint="md"
-          onCollapse={onCollapse}
-          collapsed={collapsed}
+          breakpoint="sm"
           onBreakpoint={_broken => {
+            if (broken !== _broken && _broken) {
+              setCollapsed(true);
+            }
             setBroken(_broken);
           }}
-          {...siderProps}
+          trigger={null}
+          collapsible
+          collapsedWidth={broken ? 0 : 80}
+          collapsed={collapsed}
         >
           <div className="logo">
             <a href="/">
@@ -194,28 +99,40 @@ const AppLayout = () => {
           }}
         >
           <Header className="page-header">
-            <Dropdown overlay={menu} trigger={["click"]}>
-              <a href="#" style={{ color: "unset" }} onClick={e => e.preventDefault()}>
-                <Avatar src={(auth && auth.avatar) || defaultAvatar} />
-                <span style={{ color: "white", marginLeft: 8 }}>
-                  {auth && auth.fullName}
-                </span>
-              </a>
-            </Dropdown>
-            <PopupChangePassword
-              visible={visible}
-              onClose={onClose}
-              sigout={sigout}
-            />
+            {React.createElement(
+              collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
+              {
+                className: "trigger",
+                onClick: onCollapseToggle
+              }
+            )}
+            {isRenderUserInfo && (
+              <>
+                <Dropdown overlay={menu} trigger={["click"]}>
+                  <a
+                    href="#"
+                    style={{ color: "unset" }}
+                    onClick={e => e.preventDefault()}
+                  >
+                    <Avatar src={(auth && auth.avatar) || defaultAvatar} />
+                    <span style={{ color: "white", marginLeft: 8 }}>
+                      {auth && auth.fullName}
+                    </span>
+                  </a>
+                </Dropdown>
+                <PopupChangePassword
+                  visible={visible}
+                  onClose={onClose}
+                  sigout={sigout}
+                />
+              </>
+            )}
           </Header>
           <Content style={{ margin: "16px", minHeight: "unset" }}>
             <RouteLayout />
           </Content>
           <Footer style={{ textAlign: "center" }}>
-            ©
-            {new Date().getFullYear()}
-            {" "}
-            Created by Duy Nguyễn
+            ©{new Date().getFullYear()} Created by Duy Nguyễn
           </Footer>
         </Layout>
       </Layout>

@@ -14,8 +14,8 @@ body {
 .trigger {
   font-size: 18px;
   line-height: 64px;
-  padding: 0 24px;
   cursor: pointer;
+  color: white;
   transition: color 0.3s;
 }
 
@@ -46,7 +46,7 @@ body {
   display: flex;
   align-items: center;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 
 .ant-modal-header,

@@ -113,49 +113,54 @@ const EducationInfoBlock = ({
     [education, total]
   );
 
+  const isOrderable = useMemo(() => total > 1, [total]);
+
   return (
     <Collapse
       bordered={false}
       defaultActiveKey={[]}
       className="info-block-collapse"
     >
-      <div className="order-controls">
-        <Button
-          size="small"
-          disabled={isDisabledDown}
-          className="btnOrder"
-          icon={<CaretUpOutlined />}
-          onClick={e => {
-            e.stopPropagation();
-            if (typeof handleReorderEducation === "function") {
-              let nextOrdinalNumber = (education.ordinalNumber || 0) - 1;
-              nextOrdinalNumber = nextOrdinalNumber < 0 ? 0 : nextOrdinalNumber;
-              handleReorderEducation({
-                ...education,
-                ordinalNumber: nextOrdinalNumber
-              });
-            }
-          }}
-        />
-        <Button
-          disabled={isDisabledUp}
-          size="small"
-          className="btnOrder"
-          icon={<CaretDownOutlined />}
-          onClick={e => {
-            e.stopPropagation();
-            if (typeof handleReorderEducation === "function") {
-              let nextOrdinalNumber = (education.ordinalNumber || 0) + 1;
-              nextOrdinalNumber =
-                nextOrdinalNumber > total ? total : nextOrdinalNumber;
-              handleReorderEducation({
-                ...education,
-                ordinalNumber: nextOrdinalNumber
-              });
-            }
-          }}
-        />
-      </div>
+      {isOrderable && (
+        <div className="order-controls">
+          <Button
+            size="small"
+            disabled={isDisabledDown}
+            className="btnOrder"
+            icon={<CaretUpOutlined />}
+            onClick={e => {
+              e.stopPropagation();
+              if (typeof handleReorderEducation === "function") {
+                let nextOrdinalNumber = (education.ordinalNumber || 0) - 1;
+                nextOrdinalNumber =
+                  nextOrdinalNumber < 0 ? 0 : nextOrdinalNumber;
+                handleReorderEducation({
+                  ...education,
+                  ordinalNumber: nextOrdinalNumber
+                });
+              }
+            }}
+          />
+          <Button
+            disabled={isDisabledUp}
+            size="small"
+            className="btnOrder"
+            icon={<CaretDownOutlined />}
+            onClick={e => {
+              e.stopPropagation();
+              if (typeof handleReorderEducation === "function") {
+                let nextOrdinalNumber = (education.ordinalNumber || 0) + 1;
+                nextOrdinalNumber =
+                  nextOrdinalNumber > total ? total : nextOrdinalNumber;
+                handleReorderEducation({
+                  ...education,
+                  ordinalNumber: nextOrdinalNumber
+                });
+              }
+            }}
+          />
+        </div>
+      )}
       <Panel
         showArrow
         header={

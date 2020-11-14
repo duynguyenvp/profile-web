@@ -1,5 +1,4 @@
 import React, { useState, useLayoutEffect, useEffect, useMemo } from "react";
-import { gsap } from "gsap/dist/gsap";
 import useStyles from "isomorphic-style-loader/useStyles";
 import AlertContainer from "./components/alert";
 
@@ -8,6 +7,7 @@ import s from "./App.scss";
 
 import getApiInstance from "./ajax/generic-api";
 import { setState } from "./services/userService";
+
 
 let SmoothScroll = null;
 
@@ -28,126 +28,6 @@ const App = ({ children }) => {
     if (route === "bai-viet") return "blog__body";
     if (route === "resume") return "resume_body";
     return "app";
-  }, [route]);
-
-  useLayoutEffect(() => {
-    const memoGsap = async () => {
-      const { ScrollTrigger } = await import("gsap/ScrollTrigger");
-      gsap.registerPlugin(ScrollTrigger);
-      gsap.core.globals("ScrollTrigger", ScrollTrigger);
-      gsap.fromTo(
-        "#welcome-text-1",
-        {
-          y: -100,
-          opacity: 0
-        },
-        {
-          scrollTrigger: {
-            trigger: "#welcome-text-1"
-          },
-          y: 0,
-          opacity: 1,
-          duration: 0.5
-        }
-      );
-      gsap.fromTo(
-        "#welcome-text-2",
-        {
-          y: 100,
-          opacity: 0
-        },
-        {
-          scrollTrigger: {
-            trigger: "#welcome-text-2"
-          },
-          y: 0,
-          opacity: 1,
-          duration: 0.5
-        }
-      );
-
-      const secondZoneTimeline = gsap.timeline({
-        scrollTrigger: {
-          scroller: "#app",
-          trigger: ".secondZone",
-          start: "top center",
-          end: "top"
-        }
-      });
-
-      secondZoneTimeline
-        .from(".secondZone p", {
-          scale: 0.3,
-          rotation: 45,
-          autoAlpha: 0,
-          ease: "power2",
-          duration: 0.8
-        })
-        .from(
-          ".secondZone .secondZoneRightPanel",
-          {
-            scale: 0.3,
-            rotation: 45,
-            autoAlpha: 0,
-            ease: "power2",
-            duration: 0.4
-          },
-          "-=0.6"
-        )
-        .from(
-          ".secondZone .btn-try-now",
-          {
-            scale: 0.3,
-            rotation: 45,
-            autoAlpha: 0,
-            ease: "power2",
-            duration: 0.3
-          },
-          "-=.4"
-        );
-      const thirdZoneTimeline = gsap.timeline({
-        scrollTrigger: {
-          scroller: "#app",
-          trigger: ".thirdZone",
-          start: "top center",
-          end: "top"
-        }
-      });
-
-      thirdZoneTimeline
-        .from(".thirdZone .thirdZoneRightPanel", {
-          scale: 0.3,
-          rotation: 45,
-          autoAlpha: 0,
-          ease: "power2",
-          duration: 0.8
-        })
-        .from(
-          ".thirdZone p",
-          {
-            scale: 0.3,
-            rotation: 45,
-            autoAlpha: 0,
-            ease: "power2",
-            duration: 0.4
-          },
-          "-=0.6"
-        )
-        .from(
-          ".thirdZone .btn-try-now",
-          {
-            scale: 0.3,
-            rotation: 45,
-            autoAlpha: 0,
-            ease: "power2",
-            duration: 0.3
-          },
-          "-=.4"
-        );
-    };
-    if (route === "home") {
-      memoGsap();
-    }
   }, [route]);
 
   const handleScroll = () => {

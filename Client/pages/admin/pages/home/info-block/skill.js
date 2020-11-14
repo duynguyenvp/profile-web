@@ -75,12 +75,15 @@ const SkillInfoBlock = ({
     total
   ]);
 
+  const isOrderable = useMemo(() => total > 1, [total]);
+
   return (
     <Collapse
       bordered={false}
       defaultActiveKey={[]}
       className="info-block-collapse"
     >
+      {isOrderable && (
       <div className="order-controls">
         <Button
           size="small"
@@ -115,6 +118,7 @@ const SkillInfoBlock = ({
           }}
         />
       </div>
+      )}
       <Panel
         showArrow
         header={(

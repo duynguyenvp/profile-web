@@ -24,10 +24,10 @@ const Post = () => {
   const [filterText, setFilterText] = useState(null);
   const auth = getAuthentication();
   const state = usePostStore();
-  const { take, page, data } = state;
+  const { take, page, data, total } = state;
   useEffect(() => {
     loadData(auth);
-  }, [auth && auth.id]);
+  }, [auth && auth.id, take, page]);
 
   const loadData = auth => {
     if (!auth || !auth.id) return;
@@ -162,7 +162,11 @@ const Post = () => {
         <Table
           dataSource={dataSource}
           pagination={{
-            pageSize: 10
+            onChange: nextPage => {
+              setPosts({ ...state, page: nextPage });
+            },
+            pageSize: 10,
+            total
           }}
           rowClassName="custom-row"
           onRow={record => ({
@@ -237,7 +241,6 @@ const Post = () => {
         visible={popupVisible}
         post={selectedPost}
         callback={() => {
-          setPosts({ ...state, page: 1 });
           loadData(auth);
         }}
       />

@@ -1,19 +1,17 @@
-import React, { useMemo } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import useStyles from "isomorphic-style-loader/useStyles";
 import style from "./style.scss";
 import { dateToStringFormatNoDayCultureVi } from "../../../../utils/date-utils";
-import getLanguage from "../../languages";
 
 const BoxExperiences = ({ portfolioExperiences }) => {
   useStyles(style);
-  const language = useMemo(getLanguage, []);
   return (
     <div className="boxExperience">
       <div className="boxExperience__container">
         <h2 className="boxExperience__container__field boxExperience__container__field--title">
           <i className="material-icons">assignment</i>{" "}
-          {language.sectionExperiences}
+          EXPERIENCES
         </h2>
         {portfolioExperiences &&
           portfolioExperiences

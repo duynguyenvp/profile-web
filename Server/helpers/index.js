@@ -1,4 +1,4 @@
-import assets from "../views/assets.json";
+import assets from "../assets.json";
 import RESOURCE_VERSION from "../../version";
 
 export const getResources = (page) => {

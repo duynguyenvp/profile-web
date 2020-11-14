@@ -6,7 +6,8 @@ import { getResumeData, resumePrint } from "../queries";
 import BoxInfomation from "./box-info";
 import BoxExperiences from "./box-experiences";
 import BoxEducations from "./box-educations";
-import PrintDisabled from "../../../assets/ic_print_disabled";
+import IconPrintDisabled from "../../../assets/ic_print_disabled";
+import IconPrint from "../../../assets/ic_print";
 import { addAlert } from "../../../services/alertService";
 import BoxInfomationSkeleton from "./box-info/skeleton";
 import BoxExperienceSkeleton from "./box-experiences/skeleton";
@@ -28,6 +29,7 @@ const Resume = () => {
     if (Username && Username !== "resume" && Username !== "print") {
       setUsername(Username);
     }
+    document.title = Username;
     setIsReady(true);
   }, []);
 
@@ -40,13 +42,13 @@ const Resume = () => {
     }
   }, [username, isReady]);
 
-  const loadData = (Username) => {
+  const loadData = Username => {
     getResumeData(Username)
-      .then((res) => {
+      .then(res => {
         setIsLoading(false);
         setState(res);
       })
-      .catch((error) => {
+      .catch(error => {
         setIsLoading(false);
         console.error(error);
       });
@@ -85,9 +87,9 @@ const Resume = () => {
     if (!portfolioUser && !portfolioExperiences && !portfolioEducations) {
       return (
         <Fragment>
-          <h1>Bạn chưa được tạo resume.</h1>
-          <a href="/quan-tri" className="btn-add-new">
-            Tạo resume ở đâyy
+          <h1 style={{ textAlign: "center" }}>Bạn chưa được tạo resume.</h1>
+          <a href="/quan-tri" className="resume__body__btnAddNew">
+            Tạo resume ở đây
           </a>
         </Fragment>
       );
@@ -106,11 +108,7 @@ const Resume = () => {
         className={`btn-control-item ${isPrinting ? "disabled" : ""}`}
         onClick={print}
       >
-        {isPrinting ? (
-          <PrintDisabled />
-        ) : (
-          <i className="material-icons">print</i>
-        )}
+        {isPrinting ? <IconPrintDisabled /> : <IconPrint />}
         {isPrinting ? (
           <Fragment>
             <span />

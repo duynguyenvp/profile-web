@@ -1,3 +1,5 @@
+@import "../../../assets/quill.core.scss";
+
 .topnav {
   position: unset !important;
   background-color: $primaryColor !important;
@@ -67,7 +69,7 @@
 
     span {
       font-size: 16px;
-      font-weight: bold;
+      font-weight: 600;
       width: 140px;
       color: black;
     }
@@ -282,14 +284,14 @@
           }
 
           &.field-title {
-            font-weight: bold;
+            font-weight: 600;
             font-size: 16px !important;
           }
 
           &.container-title {
             padding: 10px 0;
             margin: 8px 0;
-            font-weight: bold;
+            font-weight: 600;
             font-size: 20px !important;
 
             i {
@@ -307,7 +309,7 @@
 
         .content {
           padding: 0px 10px;
-
+          @include postContent();
           h5,
           h6 {
             margin: 8px 0;

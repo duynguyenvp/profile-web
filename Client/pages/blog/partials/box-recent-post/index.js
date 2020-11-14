@@ -46,7 +46,8 @@ const BoxRecentPosts = ({ username, changePost }) => {
             <div className="post">
               <div className="post__title">
                 <SkeletonTheme color="#a2a2a2" highlightColor="#adadad">
-                  <Skeleton count={2} />
+                  <Skeleton width={150} />
+                  <Skeleton width={250} />
                 </SkeletonTheme>
               </div>
             </div>

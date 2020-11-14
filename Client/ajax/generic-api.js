@@ -1,4 +1,4 @@
-import { create } from "./api-axios.js";
+import { create } from "./api-axios";
 
 const getApiInstance = (baseURL = "/api") => {
   const ajax = create({ baseURL });
@@ -15,7 +15,8 @@ const getApiInstance = (baseURL = "/api") => {
 
   const getWithQueryString = args => ajax.post("/getWithQueryString", args);
 
-  const getWithQueryStringAuth = args => ajax.post("/getWithQueryStringAuth", args);
+  const getWithQueryStringAuth = args =>
+    ajax.post("/getWithQueryStringAuth", args);
 
   const signout = args => ajax.post("/signout", args);
 

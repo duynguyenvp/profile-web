@@ -51,7 +51,6 @@ export function useAlertService() {
       unsubcribes();
     };
   });
-  console.warn(data);
   return data;
 }
 

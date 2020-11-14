@@ -18,7 +18,6 @@ import BoxSearch from "./box-search/BoxSearch";
 import BoxRecentPosts from "./box-recent-post";
 import BoxTimeline from "./box-timeline";
 import FbShareButton from "./FbShareButton";
-import { getLastPost } from "../queries";
 
 const Blog = props => {
   useStyles(style);
@@ -79,21 +78,16 @@ const Blog = props => {
 
   const initData = () => {
     const { postData, ...restOfProps } = props;
-    const { id, title, content, postTime } = postData || {};
-    if (!id) {
-      getLastPost(username || "duynguyen").then(post => {
-        setPostState(post);
-      });
-    } else {
-      const newPostData = {
-        ...postData,
-        title: title === "{title}" ? "" : title,
-        content: content === "{content}" ? "" : content,
-        postTime: postTime === "{postTime}" ? "" : postTime
-      };
-      setPostState({ postData: newPostData, ...restOfProps });
-      delete window.__INITIAL__DATA__;
-    }
+    const { title, content, postTime } = postData || {};
+
+    const newPostData = {
+      ...postData,
+      title: title === "{title}" ? "" : title,
+      content: content === "{content}" ? "" : content,
+      postTime: postTime === "{postTime}" ? "" : postTime
+    };
+    setPostState({ postData: newPostData, ...restOfProps });
+    delete window.__INITIAL__DATA__;
   };
 
   const changePost = postId => {
@@ -140,6 +134,8 @@ const Blog = props => {
   const { postData } = post;
   const { content, title, postTime, userName } = postData;
 
+  const hasNoPost = !content && !title && !postTime;
+
   return (
     <section id="blog" className={`blog ${menuFixed ? "blog--marginTop" : ""}`}>
       {!asideOpen && (
@@ -172,10 +168,10 @@ const Blog = props => {
       </aside>
       <section id="blog__body" className="blog__body">
         <article className="content">
-          {!content && !title && !postTime ? (
+          {hasNoPost ? (
             <Fragment>
-              <h1>Chưa có bài viết nào.</h1>
-              <a href="/quan-tri/blog-post" className="content__btnAddNew">
+              <h1 style={{ textAlign: "center" }}>Chưa có bài viết nào.</h1>
+              <a href="/quan-tri/post" className="blog__body__btnAddNew">
                 Tạo mới bài viết ở đây
               </a>
             </Fragment>
@@ -205,7 +201,7 @@ const Blog = props => {
           )}
         </article>
         <section className="blog__comments">
-          <BoxComment />
+          {!hasNoPost && <BoxComment />}
         </section>
       </section>
     </section>

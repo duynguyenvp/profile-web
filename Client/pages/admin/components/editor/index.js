@@ -69,7 +69,7 @@ class EditorComponent extends Component {
       try {
         toolbar.parentNode.removeChild(toolbar);
       } catch (error) {
-        console.warn(error);
+        console.error(error);
       }
     }
   };

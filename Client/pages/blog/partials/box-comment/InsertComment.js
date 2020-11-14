@@ -159,7 +159,7 @@ class InsertComment extends Component {
         "input-controls"
       )[0];
       const boundingClientRect = inputControls.getBoundingClientRect();
-      const top = boundingClientRect.top;
+      const { top } = boundingClientRect;
       const bottom = app.clientHeight - boundingClientRect.bottom;
       let emojiPickerShouldUp = false;
       if (!isMobile && top > bottom) {

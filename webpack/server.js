@@ -5,17 +5,21 @@ const FileManagerPlugin = require("filemanager-webpack-plugin");
 
 module.exports = env => {
   const reStyle = /\.(css|less|styl|scss|sass|sss)$/;
-  const enviromentConfig = isDevBuild => {
-    if (isDevBuild)
+  const enviromentConfig = isProdBuild => {
+    if (isProdBuild)
       return {
-        mode: "development",
-        devtool: "inline-source-map"
+        mode: "production"
       };
-
     return {
-      mode: "production"
+      mode: "development",
+      devtool: "source-map"
     };
   };
+  const host =
+    env && !!env.prod
+      ? "https://somethingaboutme.info"
+      : "http://localhost:8080";
+
   const config = {
     name: "SSR",
     context: path.join(__dirname, "./dist/"),
@@ -40,6 +44,13 @@ module.exports = env => {
     externals: nodeExternals({
       whitelist: /\.(sa|sc|c)ss$/
     }),
+    resolve: {
+      extensions: [".js", ".jsx"],
+      alias: {
+        modules: path.join(__dirname, "node_modules"),
+        fonts: path.resolve(__dirname, "Client/assets/fonts")
+      }
+    },
     plugins: [
       new FileManagerPlugin({
         onEnd: {
@@ -61,8 +72,11 @@ module.exports = env => {
               destination: path.resolve(__dirname, "../build/public")
             },
             {
-              source: path.resolve(__dirname, "../Server/views/assets.json"),
-              destination: path.resolve(__dirname, "../build/dist/assets.json")
+              source: path.resolve(__dirname, "../Server/assets.json"),
+              destination: path.resolve(
+                __dirname,
+                "../build/Server/assets.json"
+              )
             }
           ]
         }
@@ -98,7 +112,12 @@ module.exports = env => {
                   }
                 },
                 "postcss-loader",
-                "sass-loader",
+                {
+                  loader: "sass-loader",
+                  options: {
+                    additionalData: "$host: '" + host + "';"
+                  }
+                },
                 {
                   loader: "sass-resources-loader",
                   options: {
@@ -128,10 +147,13 @@ module.exports = env => {
           }
         },
         {
-          test: /\.(eot|ttf|woff|woff2)$/,
-          loader: "file-loader?name=fonts/[name].[ext]",
-          options: {
-            emitFile: false
+          test: /\.(woff|woff2|eot|ttf|svg)$/,
+          use: {
+            loader: "url-loader",
+            options: {
+              emitFile: false,
+              limit: 50000
+            }
           }
         },
         {
@@ -150,5 +172,5 @@ module.exports = env => {
     }
   };
 
-  return merge(enviromentConfig(), config);
+  return merge(enviromentConfig(env && !!env.prod), config);
 };

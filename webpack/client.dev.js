@@ -13,8 +13,8 @@ const {
   fileManagerPlugin,
   htmlWebpackPlugins
 } = require("./client.common");
-
-const reStyle = /\.(css|less|styl|scss|sass|sss)$/;
+const host = "http://localhost:8080";
+const styleTypes = /\.(css|less|styl|scss|sass|sss)$/;
 module.exports = {
   mode: "development",
   devtool: "inline-source-map",
@@ -29,20 +29,25 @@ module.exports = {
   module: {
     rules: [
       {
-        test: reStyle,
+        test: styleTypes,
         rules: [
           {
-            issuer: { not: [reStyle] },
+            issuer: { not: [styleTypes] },
             use: "isomorphic-style-loader",
             sideEffects: true
           },
           {
-            test: reStyle,
+            test: styleTypes,
             use: [
               MiniCssExtractPlugin.loader,
               "css-loader",
               "postcss-loader",
-              "sass-loader",
+              {
+                loader: "sass-loader",
+                options: {
+                  additionalData: "$host: '" + host + "';"
+                }
+              },
               {
                 loader: "sass-resources-loader",
                 options: {
@@ -72,7 +77,12 @@ module.exports = {
       },
       {
         test: /\.(woff|woff2|eot|ttf|svg)$/,
-        loader: "url-loader?limit=100000"
+        use: {
+          loader: "url-loader",
+          options: {
+            limit: 50000
+          }
+        }
       },
       {
         test: /\.mp4$/,
@@ -140,7 +150,7 @@ module.exports = {
       dry: false
     }),
     new WebpackAssetsManifest({
-      output: path.join(__dirname, "../Server/views/assets.json"),
+      output: path.join(__dirname, "../Server/assets.json"),
       entrypoints: true,
       entrypointsKey: "entryPoints"
     }),
@@ -149,7 +159,8 @@ module.exports = {
   resolve: {
     extensions: [".js", ".jsx"],
     alias: {
-      modules: path.join(__dirname, "node_modules")
+      modules: path.join(__dirname, "node_modules"),
+      fonts: path.resolve(__dirname, "Client/assets/fonts")
     }
   }
 };

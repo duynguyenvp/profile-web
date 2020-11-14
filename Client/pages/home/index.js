@@ -30,7 +30,6 @@ const Page = () => (
 function render() {
   ReactDOM.render(<Page />, document.getElementById("app"));
 }
-console.warn(process.env);
 if (process.env.NODE_ENV === "production") {
   ReactDOM.hydrate(<Page />, document.getElementById("app"));
 

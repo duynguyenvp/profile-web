@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  Row, Col, Form, Input, Button, Space, notification
-} from "antd";
+import { Row, Col, Form, Input, Button, Space, notification } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import EditorComponent from "../../../components/editor";
 import { getAuthentication } from "../../../store/authStore";
@@ -17,23 +15,15 @@ const openNotificationWithIcon = (type, content) => {
 const PersonalInfoBlock = ({ personalInfo }) => {
   const [key, setKey] = useState(1);
   const [user, setUser] = useState(personalInfo);
-  const {
-    fullName,
-    jobTitle,
-    email,
-    mobile,
-    skype,
-    address,
-    about,
-    avatar
-  } = user || {};
+  const { fullName, jobTitle, email, mobile, skype, address, about, avatar } =
+    user || {};
   const [form] = Form.useForm();
 
   const onReset = () => {
     setKey(key + 1);
     form.resetFields();
   };
-  const onFinish = (values) => {
+  const onFinish = values => {
     handleSave(values);
   };
 
@@ -44,7 +34,7 @@ const PersonalInfoBlock = ({ personalInfo }) => {
 
   const refIpAvatar = useRef();
 
-  const handleSave = (data) => {
+  const handleSave = data => {
     const auth = getAuthentication();
     const username = auth && auth.username;
     getApiInstance()
@@ -52,7 +42,7 @@ const PersonalInfoBlock = ({ personalInfo }) => {
         url: "/User/UpdateUserInfo",
         data: { ...user, ...data, UserName: username }
       })
-      .then((res) => {
+      .then(res => {
         const { successful, errorMessage } = res;
         if (successful) {
           openNotificationWithIcon("success", "Lưu thành công!!!");
@@ -63,19 +53,19 @@ const PersonalInfoBlock = ({ personalInfo }) => {
           );
         }
       })
-      .catch((error) => {
+      .catch(error => {
         console.error(error);
         openNotificationWithIcon("error", `Đã xảy ra lỗi. ${error}`);
       });
   };
 
-  const resizeImage = (dataSrc) => {
+  const resizeImage = dataSrc => {
     const img = new Image();
 
     const maxWidth = 300;
     const maxHeight = 300;
 
-    img.onload = function () {
+    img.onload = () => {
       let { width } = img;
       let { height } = img;
 
@@ -105,10 +95,10 @@ const PersonalInfoBlock = ({ personalInfo }) => {
     const filesToUpload = refIpAvatar.current.files;
     const file = filesToUpload[0];
     const reader = new FileReader();
-    reader.onload = function (e) {
+    reader.onload = e => {
       resizeImage(e.target.result);
     };
-    reader.onerror = function (error) {
+    reader.onerror = error => {
       console.error(error);
       refIpAvatar.current.value = null;
     };
@@ -220,7 +210,7 @@ const PersonalInfoBlock = ({ personalInfo }) => {
           <span style={{ marginBottom: 16 }}>Giới thiệu bản thân</span>
           <EditorComponent
             html={about}
-            callback={(content) => {
+            callback={content => {
               setUser({ ...user, about: content });
             }}
           />

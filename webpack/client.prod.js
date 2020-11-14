@@ -8,51 +8,56 @@ const WebpackAssetsManifest = require("webpack-assets-manifest");
 const TerserPlugin = require("terser-webpack-plugin");
 
 const { entries, fileManagerPlugin } = require("./client.common");
-
-const reStyle = /\.(css|less|styl|scss|sass|sss)$/;
+const host = "https://somethingaboutme.info";
+const styleTypes = /\.(css|less|styl|scss|sass|sss)$/;
 module.exports = {
   mode: "production",
   output: {
     filename: "[name].[contenthash].js",
     chunkFilename: "[id].[contenthash].js",
     path: path.resolve(__dirname, "../build/dist/"),
-    publicPath: "/dist/",
+    publicPath: "/dist/"
   },
   entry: entries,
   module: {
     rules: [
       {
-        test: reStyle,
+        test: styleTypes,
         rules: [
           {
-            issuer: { not: [reStyle] },
+            issuer: { not: [styleTypes] },
             use: "isomorphic-style-loader",
-            sideEffects: true,
+            sideEffects: true
           },
           {
-            test: reStyle,
+            test: styleTypes,
             use: [
               MiniCssExtractPlugin.loader,
               "css-loader",
               "postcss-loader",
-              "sass-loader",
+              {
+                loader: "sass-loader",
+                options: {
+                  additionalData: "$host: '" + host + "';"
+                }
+              },
               {
                 loader: "sass-resources-loader",
                 options: {
-                  resources: ["./Client/assets/variables.scss"],
-                },
-              },
+                  resources: ["./Client/assets/variables.scss"]
+                }
+              }
             ],
-            sideEffects: true,
-          },
-        ],
+            sideEffects: true
+          }
+        ]
       },
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules(?!\/quill-image-drop-module|quill-image-resize-module)/,
         use: {
-          loader: "babel-loader",
-        },
+          loader: "babel-loader"
+        }
       },
       {
         test: /\.(jpg|svg|jpeg|gif|png)$/,
@@ -60,37 +65,42 @@ module.exports = {
         loader: "file-loader",
         options: {
           fallback: "file-loader",
-          limit: 1024,
-        },
+          limit: 1024
+        }
       },
       {
         test: /\.(woff|woff2|eot|ttf|svg)$/,
-        loader: "url-loader?limit=100000",
+        use: {
+          loader: "url-loader",
+          options: {
+            limit: 50000
+          }
+        }
       },
       {
         test: /\.mp4$/,
-        use: "file-loader?name=videos/[name].[ext]",
-      },
-    ],
+        use: "file-loader?name=videos/[name].[ext]"
+      }
+    ]
   },
   plugins: [
     new MiniCssExtractPlugin({
       filename: "[name].css",
-      chunkFilename: "[id].[contenthash].css",
+      chunkFilename: "[id].[contenthash].css"
     }),
     new webpack.ProvidePlugin({
       React: "react",
-      "window.Quill": "quill",
+      "window.Quill": "quill"
     }),
     // new CheckerPlugin(),
     new CleanWebpackPlugin({
       verbose: true,
-      dry: false,
+      dry: false
     }),
     new WebpackAssetsManifest({
-      output: path.join(__dirname, "../Server/views/assets.json"),
+      output: path.join(__dirname, "../Server/assets.json"),
       entrypoints: true,
-      entrypointsKey: "entryPoints",
+      entrypointsKey: "entryPoints"
     }),
     new WorkboxPlugin.GenerateSW({
       swDest: "../sw.js",
@@ -100,47 +110,48 @@ module.exports = {
       runtimeCaching: [
         {
           urlPattern: new RegExp(
-            "^(http|https)://(somethingaboutme.info|localhost)/video"
+            "^(http|https)://(somethingaboutme.info|localhost)/fonts"
           ),
-          handler: "NetworkOnly",
+          handler: "CacheFirst"
         },
         {
           urlPattern: new RegExp("^https://(.*).fbcdn.net/(.*)"),
-          handler: "CacheFirst",
+          handler: "CacheFirst"
         },
         {
           urlPattern: new RegExp(
             "^https://fonts.(?:googleapis|gstatic).com/(.*)"
           ),
-          handler: "CacheFirst",
+          handler: "CacheFirst"
         },
         {
           urlPattern: new RegExp(
             "^(http|https)://(somethingaboutme.info|localhost)/workbox(.*).js"
           ),
-          handler: "CacheFirst",
+          handler: "CacheFirst"
         },
         {
           urlPattern: new RegExp(
             "^(http|https)://(somethingaboutme.info|localhost)/#(.*)"
           ),
-          handler: "NetworkFirst",
+          handler: "NetworkFirst"
         },
         {
           urlPattern: new RegExp(
             "^(http|https)://(somethingaboutme.info|localhost)(.*)"
           ),
-          handler: "NetworkFirst",
-        },
-      ],
+          handler: "NetworkFirst"
+        }
+      ]
     }),
-    fileManagerPlugin,
+    fileManagerPlugin
   ],
   resolve: {
     extensions: [".js", ".jsx"],
     alias: {
       modules: path.join(__dirname, "node_modules"),
-    },
+      fonts: path.resolve(__dirname, "Client/assets/fonts")
+    }
   },
   optimization: {
     usedExports: true,
@@ -150,26 +161,26 @@ module.exports = {
       new TerserPlugin({
         terserOptions: {
           parse: {
-            ecma: 8,
+            ecma: 8
           },
           compress: {
             ecma: 5,
             warnings: false,
-            inline: 2,
+            inline: 2
           },
           mangle: {
-            safari10: true,
+            safari10: true
           },
           output: {
             ecma: 5,
             comments: false,
-            ascii_only: false,
-          },
+            ascii_only: false
+          }
         },
         parallel: true,
-        cache: true,
+        cache: true
       }),
-      new OptimizeCSSAssetsPlugin({}),
+      new OptimizeCSSAssetsPlugin({})
     ],
     splitChunks: {
       cacheGroups: {
@@ -177,14 +188,14 @@ module.exports = {
           // can be used in chunks array of HtmlWebpackPlugin
           test: /[\\/]node_modules[\\/]/,
           chunks: "all",
-          maxSize: 256 * 1000,
+          maxSize: 256 * 1000
         },
         common: {
           test: /[\\/]src[\\/]components[\\/]/,
           chunks: "all",
-          minSize: 0,
-        },
-      },
-    },
-  },
+          minSize: 0
+        }
+      }
+    }
+  }
 };

@@ -1,18 +1,16 @@
-import React, { useMemo } from "react";
+import React from "react";
 import useStyles from "isomorphic-style-loader/useStyles";
 import style from "./style.scss";
 import { dateToStringFormatNoDayCultureVi } from "../../../../utils/date-utils";
-import getLanguage from "../../languages";
 
 const BoxEducations = ({ portfolioEducations }) => {
   useStyles(style);
-  const language = useMemo(getLanguage, []);
   return (
     <div className="boxEducation">
       <div className="boxEducation__container">
         <h2 className="boxEducation__container__field boxEducation__container__field--title">
           <i className="material-icons">assignment</i>{" "}
-          {language.sectionEducations}
+          EDUCATIONS
         </h2>
         {portfolioEducations &&
           portfolioEducations
