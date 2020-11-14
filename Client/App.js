@@ -1,7 +1,7 @@
 import React, { useState, useLayoutEffect, useEffect, useMemo } from "react";
 import { gsap } from "gsap/dist/gsap";
 import useStyles from "isomorphic-style-loader/useStyles";
-import InitAlert from "./components/alert";
+import AlertContainer from "./components/alert";
 
 import Menu from "./components/top-menu";
 import s from "./App.scss";
@@ -18,10 +18,8 @@ const menuMeta = [
 ];
 
 const App = ({ children }) => {
-  const [isShirk, setIsShirk] = useState(() => false);
   const [active, setActive] = useState(() => "home");
   const [route, setRoute] = useState(() => "");
-  const [isDisplayPlane, setIsDisplayPlane] = useState(() => false);
 
   useStyles(s);
 
@@ -154,25 +152,23 @@ const App = ({ children }) => {
 
   const handleScroll = () => {
     const wrapper = document.getElementById(wrapperId);
-    let nextIsShirk;
-    let nextIsDisplayPlane;
+    const plane = document.getElementById("plane");
+    const topnav = document.getElementById("topnav");
     if (
-      (wrapper && wrapper.scrollTop > 80) ||
-      document.documentElement.scrollTop > 80
+      (wrapper && wrapper.scrollTop > 120) ||
+      document.documentElement.scrollTop > 120
     ) {
-      nextIsShirk = true;
-      nextIsDisplayPlane = true;
+      topnav.classList.add("fixed");
+      plane.style.display = "flex";
     } else {
-      nextIsShirk = false;
-      nextIsDisplayPlane = false;
+      topnav.classList.remove("fixed");
+      plane.style.display = "none";
     }
     const pageYOffset = (wrapper && wrapper.scrollTop) || 0;
     const firstZoneBg = document.getElementById("firstZoneBg");
     if (firstZoneBg) {
       firstZoneBg.style.opacity = `${1 - pageYOffset / 700}`;
     }
-    setIsShirk(() => nextIsShirk);
-    setIsDisplayPlane(() => nextIsDisplayPlane);
   };
 
   useLayoutEffect(() => {
@@ -182,7 +178,6 @@ const App = ({ children }) => {
     };
   }, [route]);
   useEffect(() => {
-    InitAlert();
     import("smoothscroll-polyfill").then(smoothscroll => {
       SmoothScroll = smoothscroll.default;
       if (SmoothScroll) SmoothScroll.polyfill();
@@ -273,15 +268,17 @@ const App = ({ children }) => {
 
   return (
     <>
-      <Menu isShirk={isShirk} active={active} routeDerection={routeDerection} />
+      <Menu active={active} routeDerection={routeDerection} />
       {children}
       <div
+        id="plane"
         className="plane"
-        style={{ display: isDisplayPlane ? "flex" : "none" }}
+        style={{ display: "none" }}
         onClick={gotoTop}
       >
         <i className="material-icons">keyboard_arrow_up</i>
       </div>
+      <AlertContainer />
     </>
   );
 };

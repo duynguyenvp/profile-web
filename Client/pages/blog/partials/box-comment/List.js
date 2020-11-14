@@ -30,26 +30,36 @@ const List = () => {
         url: "/Post/PostStatLikeDislike",
         data
       })
-      .then((res) => {
+      .then(res => {
         if (res.successful && res.result) {
           setCommentState(res.result);
         }
       })
-      .catch((err) => {
+      .catch(err => {
         console.error(err);
       });
   };
 
   const computeComment = useMemo(() => {
-    let list = [...commentLikeDislikeStat];
-    const listChild = list.filter(f => f.commentParentId !== 0);
-    list = list
-      .filter(f => f.commentParentId === 0)
-      .sort((a, b) => {
-        if (a.time < b.time) return -1;
-        if (a.time > b.time) return 1;
-        return 0;
-      });
+    let list = [];
+    const listChild = [];
+    for (let index = 0; index < commentLikeDislikeStat.length; index += 1) {
+      const comment = commentLikeDislikeStat[index];
+      try {
+        if (Number(comment.commentParentId) !== 0) {
+          listChild.push(comment);
+        } else {
+          list.push(comment);
+        }
+      } catch {
+        list.push(comment);
+      }
+    }
+    list = list.sort((a, b) => {
+      if (a.time < b.time) return -1;
+      if (a.time > b.time) return 1;
+      return 0;
+    });
     const listCommentComponent = [];
     for (let i = 0; i < list.length; i += 1) {
       const comment = list[i];

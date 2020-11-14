@@ -4,12 +4,14 @@ let Subcribes = [];
 let user = {};
 
 const unsubscribe = subcribes => {
-  Subcribes = subcribes;
+  Subcribes = [].concat(subcribes);
 };
 
 const subscribe = f => {
   Subcribes.push(f);
-  return () => unsubscribe(Subcribes.filter(a => a !== f));
+  return () => {
+    unsubscribe((Subcribes && Subcribes.filter(a => a !== f)) || []);
+  };
 };
 
 const onChange = () => {

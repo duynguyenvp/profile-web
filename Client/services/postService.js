@@ -3,24 +3,26 @@ import { useEffect, useState } from "react";
 let Subcribes = [];
 let post = {};
 
-const unsubscribePost = (subcribes) => {
-  Subcribes = subcribes;
+const unsubscribePost = subcribes => {
+  Subcribes = [].concat(subcribes);
 };
 
-const subscribePost = (f) => {
+const subscribePost = f => {
   Subcribes.push(f);
-  return () => unsubscribePost(Subcribes.filter(a => a !== f));
+  return () => {
+    unsubscribePost(Subcribes.filter(a => a !== f));
+  };
 };
 
 const onChange = () => {
-  Subcribes.forEach((f) => {
+  Subcribes.forEach(f => {
     f();
   });
 };
 
 const getPostState = () => post;
 
-const setPostState = (data) => {
+const setPostState = data => {
   post = { ...post, ...data };
   onChange();
 };
@@ -39,6 +41,4 @@ export function usePostService() {
   return data;
 }
 
-export {
-  getPostState, setPostState, subscribePost, unsubscribePost
-};
+export { getPostState, setPostState, subscribePost, unsubscribePost };

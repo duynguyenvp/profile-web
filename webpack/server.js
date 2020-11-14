@@ -42,17 +42,6 @@ module.exports = env => {
     }),
     plugins: [
       new FileManagerPlugin({
-        onStart: {
-          copy: [
-            {
-              source: path.resolve(__dirname, "../build/dist/assets.json"),
-              destination: path.resolve(
-                __dirname,
-                "../Server/views/assets.json"
-              )
-            }
-          ]
-        },
         onEnd: {
           copy: [
             {

@@ -3,8 +3,7 @@ import PropTypes from "prop-types";
 
 import {
   getState,
-  subscribe,
-  unsubscribe
+  subscribe
 } from "../../../../services/userService";
 import { getPostState } from "../../../../services/postService";
 import {
@@ -56,7 +55,7 @@ class InsertComment extends Component {
   }
 
   componentWillUnmount() {
-    unsubscribe(this.unsubscribeFuncs());
+    this.unsubscribeFuncs();
   }
 
   initEmojiBox = async () => {
@@ -175,6 +174,7 @@ class InsertComment extends Component {
   };
 
   render() {
+    const { parentId } = this.props;
     const user = getState();
     const { Picker } = this.state;
     if (user && user.username) {
@@ -208,6 +208,7 @@ class InsertComment extends Component {
         </div>
       );
     }
+    if (parentId) return null;
     const { returnUrl } = this.state;
     return (
       <div className="input-comment-require-auth">

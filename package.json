@@ -105,8 +105,7 @@
   },
   "scripts": {
     "lint": "eslint ./",
-    "devserver": "webpack-dev-server --config ./webpack/client.dev.js",
-    "dev": "node ./build/server.js && yarn devserver",
+    "devserver": "webpack-dev-server --config ./webpack/client.devserver.js",
     "client:dev": "node node_modules/webpack/bin/webpack.js --config ./webpack/client.dev.js",
     "client:prod": "node node_modules/webpack/bin/webpack.js --env.prod --config ./webpack/client.prod.js",
     "server:dev": "node node_modules/webpack/bin/webpack.js --config ./webpack/server.js --watch",
@@ -114,7 +113,7 @@
     "babel:node": "./node_modules/.bin/babel-node --presets=@babel/env",
     "build": "concurrently \"yarn client:dev\" \"yarn server:dev\"",
     "build:prod": "concurrently \"yarn client:prod --watch\" \"yarn server:prod --watch\"",
-    "start": "cross-env DOMAIN_API=\"'http://somethingaboutme.info:8443/api'\" nodemon --watch ./build/server.js ./build/server.js",
+    "start": "cross-env DOMAIN_API=\"'http://somethingaboutme.info:8443/api'\" nodemon --watch ./build ./build/server.js",
     "release": "yarn client:prod && yarn server:prod"
   },
   "sideEffects": false,

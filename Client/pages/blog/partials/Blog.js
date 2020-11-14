@@ -47,7 +47,7 @@ const Blog = props => {
 
   const handleScroll = () => {
     const app = document.getElementById("blog__body");
-    if (app.scrollTop > 80 || document.documentElement.scrollTop > 80) {
+    if (app.scrollTop > 120 || document.documentElement.scrollTop > 120) {
       setMenuFixed(true);
     } else {
       setMenuFixed(false);

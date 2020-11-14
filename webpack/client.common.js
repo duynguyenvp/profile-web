@@ -6,8 +6,6 @@ let multipleHtmlPlugins = htmlPageNames.map(name => {
   return new HtmlWebpackPlugin({
     inject: false,
     templateContent: ({ htmlWebpackPlugin }) => {
-      console.log(htmlWebpackPlugin.tags.headTags);
-      console.log(htmlWebpackPlugin.tags.bodyTags);
       return `
         <html>
           <head>

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 
 import InsertComment from "./InsertComment";
 import IconLike from "../../../../assets/ic_like";
@@ -28,7 +28,8 @@ const Comment = ({
 }) => {
   const [isReplyOn, setIsReplyOn] = useState(false);
   const user = useUserService();
-  const renderChilds = useCallback(list => {
+  const renderChilds = useMemo(() => {
+    if (!list) return null;
     const listSorted = list.sort((a, b) => {
       if (a.time < b.time) return -1;
       if (a.time > b.time) return 1;
@@ -40,6 +41,17 @@ const Comment = ({
       result.push(<Comment key={i} {...cmt} />);
     }
     return result;
+  }, [list]);
+
+  const checkParentId = useCallback(id => {
+    try {
+      if (Number(id) === 0) {
+        return true;
+      }
+      return false;
+    } catch {
+      return false;
+    }
   }, []);
 
   const likeAction = () => {
@@ -164,7 +176,7 @@ const Comment = ({
               <IconDislike />
               <span>{dislike}</span>
             </button>
-            {commentParentId === 0 && (
+            {checkParentId(commentParentId) && (
               <button
                 className="comment-reply"
                 onClick={() => {
@@ -176,10 +188,10 @@ const Comment = ({
             )}
           </div>
         </div>
-        {commentParentId === 0 && (isReplyOn || list.length > 0) && (
+        {checkParentId(commentParentId) && (isReplyOn || list.length > 0) && (
           <div className="comment-box-reply">
             {isLogin && <InsertComment parentId={commentId} />}
-            {renderChilds(list)}
+            {renderChilds}
           </div>
         )}
       </div>

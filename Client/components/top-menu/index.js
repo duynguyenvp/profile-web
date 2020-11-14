@@ -7,7 +7,7 @@ import getApiInstance from "../../ajax/generic-api";
 import BoxUserMenu from "./boxUser";
 import { resetState, useUserService } from "../../services/userService";
 
-const Menu = ({ routeDerection, isShirk, active }) => {
+const Menu = ({ routeDerection, active }) => {
   useStyles(s);
   const [isOpen, setIsOpen] = useState(false);
   const [isReady, setIsReady] = useState(false);
@@ -54,11 +54,7 @@ const Menu = ({ routeDerection, isShirk, active }) => {
   };
 
   return (
-    <nav
-      className={`topnav ${isShirk ? "shrink" : ""}`}
-      id="myTopnav"
-      ref={ref}
-    >
+    <nav className="topnav" id="topnav" ref={ref}>
       <div className="nav-container">
         <div id="nav-toggle" className={isOpen ? "active" : ""}>
           <div

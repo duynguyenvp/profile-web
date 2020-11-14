@@ -8,23 +8,25 @@ let data = {
   isDisplayPlane: false
 };
 
-const unsubscribe = (subcribes) => {
+const unsubscribe = subcribes => {
   registeredObjects = subcribes;
 };
 
-const subscribes = (f) => {
+const subscribes = f => {
   registeredObjects.push(f);
-  return () => unsubscribe(registeredObjects.filter(a => a !== f));
+  return () => {
+    unsubscribe(registeredObjects.filter(a => a !== f));
+  };
 };
 
 const onChange = () => {
-  registeredObjects.forEach((f) => {
+  registeredObjects.forEach(f => {
     f();
   });
 };
 
 export const getAppData = () => data;
-export const setAppData = (nextData) => {
+export const setAppData = nextData => {
   data = { ...nextData };
   onChange();
 };

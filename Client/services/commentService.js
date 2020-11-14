@@ -10,24 +10,26 @@ let comment = {
   commentLikeDislikeStat: []
 };
 
-const unsubscribeComment = (subcribes) => {
+const unsubscribeComment = subcribes => {
   Subcribes = subcribes;
 };
 
-const subscribeComment = (f) => {
+const subscribeComment = f => {
   Subcribes.push(f);
-  return () => unsubscribeComment(Subcribes.filter(a => a !== f));
+  return () => {
+    unsubscribeComment(Subcribes.filter(a => a !== f));
+  };
 };
 
 const onChange = () => {
-  Subcribes.forEach((f) => {
+  Subcribes.forEach(f => {
     f();
   });
 };
 
 const getCommentState = () => comment;
 
-const setCommentState = (data) => {
+const setCommentState = data => {
   comment = { ...comment, ...data };
   onChange();
 };

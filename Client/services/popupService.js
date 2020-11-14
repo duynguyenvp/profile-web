@@ -3,17 +3,20 @@ import { randomId } from "../utils/string-utils";
 
 let Subcribes = [];
 let popups = [];
-const subscribe = (f) => {
-  Subcribes.push(f);
-  return Subcribes.filter(a => a !== f);
-};
 
-const unsubscribe = (subcribes) => {
+const unsubscribe = subcribes => {
   Subcribes = subcribes;
 };
 
+const subscribe = f => {
+  Subcribes.push(f);
+  return () => {
+    unsubscribe(Subcribes.filter(a => a !== f));
+  };
+};
+
 const onChange = () => {
-  Subcribes.forEach((f) => {
+  Subcribes.forEach(f => {
     f();
   });
 };
@@ -21,14 +24,14 @@ const onChange = () => {
 const getPopups = () => popups;
 
 // {title: '', duration: -1, children: Component }
-const addPopup = (item) => {
+const addPopup = item => {
   const popup = { id: randomId() };
   popups.push({ ...popup, ...item });
   onChange();
   return popup.id;
 };
 
-const removePopup = (id) => {
+const removePopup = id => {
   popups = popups.filter(f => f.id !== id);
   onChange();
 };
@@ -38,6 +41,4 @@ export const PopupContext = createContext({
   onClose: () => {}
 });
 
-export {
-  getPopups, addPopup, removePopup, subscribe, unsubscribe
-};
+export { getPopups, addPopup, removePopup, subscribe, unsubscribe };

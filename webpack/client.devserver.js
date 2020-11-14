@@ -5,8 +5,7 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
   .BundleAnalyzerPlugin;
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const WebpackAssetsManifest = require("webpack-assets-manifest");
-const TerserPlugin = require("terser-webpack-plugin");
-const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const {
   entries,
@@ -20,10 +19,10 @@ module.exports = {
   devtool: "inline-source-map",
   watch: true,
   output: {
-    filename: "[name].[contenthash].js",
-    chunkFilename: "[id].[contenthash].js",
+    filename: "[name].js",
+    chunkFilename: "[id].js",
     path: path.resolve(__dirname, "../build/dist/"),
-    publicPath: "/dist/"
+    publicPath: "/"
   },
   entry: entries,
   module: {
@@ -80,51 +79,6 @@ module.exports = {
       }
     ]
   },
-  optimization: {
-    usedExports: true,
-    moduleIds: "hashed",
-    runtimeChunk: "single",
-    minimizer: [
-      new TerserPlugin({
-        terserOptions: {
-          parse: {
-            ecma: 8
-          },
-          compress: {
-            ecma: 5,
-            warnings: false,
-            inline: 2
-          },
-          mangle: {
-            safari10: true
-          },
-          output: {
-            ecma: 5,
-            comments: false,
-            ascii_only: false
-          }
-        },
-        parallel: true,
-        cache: true
-      }),
-      new OptimizeCssAssetsPlugin({})
-    ],
-    splitChunks: {
-      cacheGroups: {
-        vendor: {
-          // can be used in chunks array of HtmlWebpackPlugin
-          test: /[\\/]node_modules[\\/]/,
-          chunks: "all",
-          maxSize: 256 * 1000
-        },
-        common: {
-          test: /[\\/]src[\\/]components[\\/]/,
-          chunks: "all",
-          minSize: 0
-        }
-      }
-    }
-  },
   plugins: [
     // new BundleAnalyzerPlugin({ analyzerPort: 9999 }),
     new MiniCssExtractPlugin({
@@ -135,12 +89,8 @@ module.exports = {
       React: "react",
       "window.Quill": "quill"
     }),
-    new CleanWebpackPlugin({
-      verbose: true,
-      dry: false
-    }),
     new WebpackAssetsManifest({
-      output: path.join(__dirname, "../Server/views/assets.json"),
+      output: "assets.json",
       entrypoints: true,
       entrypointsKey: "entryPoints"
     }),
@@ -150,6 +100,17 @@ module.exports = {
     extensions: [".js", ".jsx"],
     alias: {
       modules: path.join(__dirname, "node_modules")
+    }
+  },
+  devServer: {
+    contentBase: path.join(__dirname, "../build/"),
+    index: "home.html",
+    open: true,
+    hot: true,
+    compress: true,
+    port: 9000,
+    proxy: {
+      "/api": "http://localhost:8080"
     }
   }
 };

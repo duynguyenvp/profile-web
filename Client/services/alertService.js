@@ -3,17 +3,20 @@ import { randomId } from "../utils/string-utils";
 
 let alertSubcribes = [];
 let alerts = [];
-const subscribe = (f) => {
-  alertSubcribes.push(f);
-  return alertSubcribes.filter(a => a !== f);
-};
 
-const unsubscribe = (subcribes) => {
+const unsubscribe = subcribes => {
   alertSubcribes = subcribes;
 };
 
+const subscribe = f => {
+  alertSubcribes.push(f);
+  return () => {
+    unsubscribe(alertSubcribes.filter(a => a !== f));
+  };
+};
+
 const onChange = () => {
-  alertSubcribes.forEach((f) => {
+  alertSubcribes.forEach(f => {
     f();
   });
 };
@@ -21,19 +24,19 @@ const onChange = () => {
 const getAlerts = () => alerts;
 
 // { message: '', duration: 5000, type: '<error>|<warning>|<success>' }
-const addAlert = (item) => {
+const addAlert = item => {
   const { message, type, duration } = item;
-  const alert = { id: randomId() };
-  alerts.push({
-    ...alert,
+  const alert = {
+    id: randomId(),
     message,
     type,
     duration
-  });
+  };
+  alerts = [...alerts, alert];
   onChange();
 };
 
-const removeAlert = (id) => {
+const removeAlert = id => {
   alerts = alerts.filter(f => f.id !== id);
   onChange();
 };
@@ -48,10 +51,8 @@ export function useAlertService() {
       unsubcribes();
     };
   });
-
+  console.warn(data);
   return data;
 }
 
-export {
-  getAlerts, addAlert, removeAlert, subscribe, unsubscribe
-};
+export { getAlerts, addAlert, removeAlert, subscribe, unsubscribe };

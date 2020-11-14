@@ -27,7 +27,9 @@ const Page = () => (
     </App>
   </StyleContext.Provider>
 );
-
+function render() {
+  ReactDOM.render(<Page />, document.getElementById("app"));
+}
 if (process.env === "production") {
   ReactDOM.hydrate(<Page />, document.getElementById("app"));
 
@@ -46,12 +48,5 @@ if (process.env === "production") {
     });
   }
 } else {
-  ReactDOM.render(
-    <StyleContext.Provider value={{ insertCss }}>
-      <App>
-        <Home />
-      </App>
-    </StyleContext.Provider>,
-    document.getElementById("app")
-  );
+  render();
 }
